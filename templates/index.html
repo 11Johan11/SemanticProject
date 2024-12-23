@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Movie Recommendation System</h1>
+    </header>
+    <main>
+        <form action="/recommendations" method="POST">
+            <label for="genre">Id:</label>
+            <input type="text" id="id" name="genre" placeholder="e.g., Action, Comedy">
+
+            <label for="genre">Favourite Genre:</label>
+            <input type="text" id="genre" name="genre" placeholder="e.g., Action, Comedy">
+
+            <label for="director">Favourite Director:</label>
+            <input type="text" id="director" name="director" placeholder="e.g., Christopher Nolan">
+
+            <label for="actor">Favourite Actor:</label>
+            <input type="text" id="actor" name="actor" placeholder="e.g., Leonardo DiCaprio">
+
+            <button type="submit">Get Recommendations</button>
+        </form>
+    </main>
+</body>
+</html>
