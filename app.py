@@ -3,6 +3,79 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from rdflib import Graph, URIRef, Literal, Namespace, RDF, RDFS
 import owlrl  # For reasoning
 import json
+import time
+
+from model.sparql.get_director_and_their_movies import get_director_and_their_movies
+from model.sparql.get_cast_members_and_their_movies import get_cast_members_and_their_movies
+from model.sparql.get_genres_and_their_movies import get_genres_and_their_movies
+results = []
+results = get_director_and_their_movies(["Q153723"])
+
+# Create RDFLib graph
+g = Graph()
+MOVIE = Namespace("http://example.org/movie#")
+g.bind("movie", MOVIE)
+
+for result in results:
+    movie_uri = URIRef(result["otherMovie"]["value"])
+    movie_title = Literal(result["otherMovieName"]["value"])
+
+    director_uri = URIRef(result["director"]["value"])
+    director_name = Literal(result["directorName"]["value"])
+
+    g.add((movie_uri, RDF.type, MOVIE.Movie))
+    g.add((movie_uri, MOVIE.title, movie_title))
+
+    g.add((movie_uri, MOVIE.director, director_uri)) #Director type
+
+    g.add((director_uri, MOVIE.name, director_name))
+    g.add((director_uri, RDF.type, MOVIE.Person)) #perhaps not needed but good for future usecase
+
+results = get_cast_members_and_their_movies(["Q153723"])
+#print(json.dumps(results))
+for result in results:
+    movie_uri = URIRef(result["otherMovie"]["value"])
+    movie_title = Literal(result["otherMovieName"]["value"])
+
+    cast_member_uri = URIRef(result["castMember"]["value"])
+    cast_member_name = Literal(result["castMemberName"]["value"])
+
+    g.add((movie_uri, RDF.type, MOVIE.Movie))
+    g.add((movie_uri, MOVIE.title, movie_title))
+
+    g.add((movie_uri, MOVIE.castmember, cast_member_uri)) #Castmember type
+
+    g.add((cast_member_uri, MOVIE.name, cast_member_name))
+    g.add((cast_member_uri, RDF.type, MOVIE.Person)) #perhaps not needed but good for future usecase
+
+# Add reasoning rules/ontology
+#g.add((MOVIE.director, RDFS.subPropertyOf, MOVIE.relatedTo))
+g.add((MOVIE.castmember, RDFS.subPropertyOf, MOVIE.relatedTo))
+
+# Apply reasoning
+owlrl.DeductiveClosure(owlrl.RDFS_Semantics).expand(g)
+
+
+# Query the graph for inferred relationships
+query = """
+SELECT DISTINCT ?movie1 ?movie2 ?person
+WHERE {
+    ?movie1 movie:relatedTo ?person .
+    ?movie2 movie:relatedTo ?person .
+    FILTER (?movie1 != ?movie2)
+}
+"""
+inferred_results = []
+for row in g.query(query):
+    inferred_results.append({
+        "movie1": str(row.movie1),
+        "movie2": str(row.movie2),
+        "related": str(row.person)
+    })
+
+print(inferred_results)
+
+time.sleep(900000)
 
 app = Flask(__name__)
 
@@ -126,8 +199,8 @@ def hans_landa():
     try:
         sparql.setQuery("""
 SELECT ?movies ?director ?directorName ?moviesNames WHERE {
-  #wd:Q338002 ?property ?value.
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],mul,fr,ar,be,bg,bn,ca,cs,da,de,el,en,es,et,fa,fi,he,hi,hu,hy,id,it,ja,jv,ko,nb,nl,eo,pa,pl,pt,ro,ru,sh,sk,sr,sv,sw,te,th,tr,uk,yue,vec,vi,zh". }
+  ##wd:Q338002 ?property ?value.
+  #SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],mul,fr,ar,be,bg,bn,ca,cs,da,de,el,en,es,et,fa,fi,he,hi,hu,hy,id,it,ja,jv,ko,nb,nl,eo,pa,pl,pt,ro,ru,sh,sk,sr,sv,sw,te,th,tr,uk,yue,vec,vi,zh". }
   OPTIONAL { wd:Q153723 wdt:P86 ?composer. }
   #OPTIONAL { ?composer rdfs:label ?composerName. }
   #?movie wdt:P86 ?composer. #go backwards and fetch all the movies for that composer 
@@ -137,7 +210,7 @@ SELECT ?movies ?director ?directorName ?moviesNames WHERE {
   ?movies wdt:P57 ?director.
   ?movies wdt:P1476 ?moviesNames.
   
-  FILTER (lang(?directorName) = "en")
+  FILTER (lang(?directorName) = "en") #keep only english (otherwise there will be a ton)
   FILTER (lang(?moviesNames) = "en")
 }""")
         ret = sparql.queryAndConvert()
