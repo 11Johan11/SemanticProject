@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Drag and Drop</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <!-- GridStack CSS -->
+  <link rel="stylesheet" href="node_modules/gridstack/dist/gridstack.min.css" />
+
+  <style>
+    /* GridStack background + item styling */
+    .grid-stack {
+      background: #FAFAD2;
+      min-height: 80vh; /* so it’s visible */
+    }
+    .grid-stack-item-content {
+      background-color: #18BC9C;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Scrollable column style */
+    .scroll-container {
+      max-height: 80vh; 
+      overflow-y: auto;
+      background: #f8f9fa;
+      padding: 0.5rem; /* reduced padding */
+    }
+
+    /* “Widgets” with DVD-like (2:3) ratio */
+    .draggable-widget {
+      width: 100px;
+      height: 150px;
+      background-color: #ccc;
+      margin: 0 auto 1rem auto; /* center horizontally, space below */
+      padding: 2px;
+      cursor: move;
+      border: 1px solid #999;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Simple styling for the trash area */
+    .trash {
+      min-height: 80%;
+      border: 2px dashed #ccc;
+      border-radius: 4px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f2f2f2;
+      margin-top: 20px; /* some spacing from the grid above */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Add a bit of padding with p-4 so the content isn't touching screen edges -->
+  <div class="container-fluid p-4 ">
+    <div class="row">
+      <!-- LEFT COLUMN: Buttons + Search bar + Scrollable draggable list -->
+      <div class="col-md-3">
+
+        <!-- ROW OF SMALL BUTTONS (TOP) -->
+        <div class="mb-3">
+          <div class="d-flex mb-2">
+            <!-- You can change the icons or titles as desired -->
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Movie">
+              <i class="bi bi-film"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Actor">
+              <i class="bi bi-person-bounding-box"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Camera">
+              <i class="bi bi-camera-reels"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Gear">
+              <i class="bi bi-gear"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" title="Misc">
+              <i class="bi bi-three-dots"></i>
+            </button>
+          </div>
+          
+          <!-- Simple Search Bar -->
+          <div class="input-group">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search..." 
+              aria-label="Search..."
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrollable list of draggable widgets, displayed two per row -->
+        <div class="scroll-container gs-3" id="scroll-grid">
+          <div class="row">
+            <div class="col-6"> 
+              <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
+                <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
+                <div>Drag me in the dashboard!</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
+                <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
+                <div>Drag me in the dashboard!</div>
+              </div>
+            </div>   
+            <div class="col-6">
+              <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
+                <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
+                <div>Drag me in the dashboard!</div>
+              </div>
+            </div>                             
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Main GridStack area -->
+      <div class="col-md-8">
+        <div class="grid-stack grid-stack-item grid-stack-sub-grid ui-droppable" id="advanced-grid"></div>
+        
+        <!-- Recommend Button at the bottom of the advanced grid -->
+        <div class="d-flex justify-content-center mt-3">
+          <button id="recommendBtn" type="button" 
+                  class="btn btn-success btn-lg px-5" 
+                  style="background: #20c997; border: none; font-weight: bold;">
+            Recommend
+          </button>
+        </div>
+      </div><!-- end .col-md-8 -->
+
+      <!-- TRASH AREA: drag items here to remove -->
+      <div class="col-md-1">
+        <div id="trash" class="trash">
+          <i class="bi bi-trash" style="font-size: 1.5rem; margin-right: 5px;"></i>
+          Drop here to remove
+        </div>
+      </div>
+    </div><!-- end .row -->
+  </div><!-- end .container-fluid -->
+
+  <!-- GridStack JS -->
+  <script src="node_modules/gridstack/dist/gridstack-all.js"></script>
+  <!-- Bootstrap JS (bundle includes Popper) -->
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1) Initialize the GridStack on the right, making the trash removable
+      const grid = GridStack.init({
+        float: true,      // let them float instead of auto-position
+        acceptWidgets: true,
+        removable: '#trash', // makes the #trash area remove items
+        columnWidth: 20,
+        cellHeight: 150,
+        margin: '10px',
+      }, '#advanced-grid');
+
+      // 2) Setup drag-in from left column
+      let insert = [ {h: 3, w: 1, content: 'new item'}];
+      GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
+
+      // 3) Attach event listener to the Recommend button
+      const recommendBtn = document.getElementById('recommendBtn');
+      recommendBtn.addEventListener('click', function() {
+        // We’ll send a POST request to /recommend
+        fetch('/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ someValue: 123 })  // send any data you want
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Got from server:", data);
+          alert("Server says: " + data.message);
+        })
+        .catch(err => console.error("Error in /recommend request:", err));
+      });
+    });
+  </script>
+</body>
+</html>
