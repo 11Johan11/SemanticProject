@@ -84,6 +84,7 @@ def get_genres_and_their_movies(movie_ids):
         #print(json.dumps(results))
         return results
     except Exception as e:
+        #TODO: Handle too many requests, timeout/retry etc... 
         print(e)
 
 
