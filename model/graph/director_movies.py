@@ -22,6 +22,9 @@ def graph_for_director_movies(movie_ids,graph,NAMESPACE):
         graph.add((director_uri, NAMESPACE.name, director_name))
         graph.add((director_uri, RDF.type, NAMESPACE.Person)) #perhaps not needed but good for future usecase
 
-        graph.add((NAMESPACE.director, RDFS.subPropertyOf, NAMESPACE.relatedTo)) #for reasoning later
+        #LATER FOR LOCAL SPARQL REASONING (INFERING)
+        graph.add((NAMESPACE.director, RDFS.subPropertyOf, NAMESPACE.relatedTo)) #BROAD REASONING movie:relatedTo
+        graph.add((NAMESPACE.director, RDFS.subPropertyOf, NAMESPACE.relatedPeople)) #SUB REASONING movie:relatedPeople
+        #specific would be movie:director
 
     return graph

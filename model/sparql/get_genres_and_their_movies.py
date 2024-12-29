@@ -54,7 +54,7 @@ def get_genres_and_their_movies(movie_ids):
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids) 
 
     query = """
-    SELECT ?otherMovies ?otherMovieName ?genre ?genreName WHERE {{
+    SELECT ?otherMovie ?otherMovieName ?genre ?genreName WHERE {{
       VALUES ?originalMovie {{ {movie_filter} }}  #dynamically filter based on provided movieIds
       
       #Get genre of the original movies
@@ -63,8 +63,8 @@ def get_genres_and_their_movies(movie_ids):
       ?genre rdfs:label ?genreName.
 
       #Get other movies with the same genres
-      ?otherMovies wdt:P136 ?genre.
-      ?otherMovies wdt:P1476 ?otherMovieName.
+      ?otherMovie wdt:P136 ?genre.
+      ?otherMovie wdt:P1476 ?otherMovieName.
 
       #FILTER (lang(?directorName) = "en")
       FILTER (lang(?moviesNames) = "en")
@@ -88,4 +88,4 @@ def get_genres_and_their_movies(movie_ids):
         print(e)
 
 
-#get_genres_and_their_movies(["Q153723"]) #Inglorious Bastards "Q153723" and Fury "Q14786561"
+#print(get_genres_and_their_movies(["Q153723"])) #Inglorious Bastards "Q153723" and Fury "Q14786561"

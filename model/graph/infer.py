@@ -2,6 +2,7 @@ from model.graph.init import init_graph
 import owlrl
 import time
 
+
 def infer_graph(movie_ids): #EXAMPLE EARLY STAGES
     g = init_graph(movie_ids) 
 
@@ -19,8 +20,8 @@ def infer_graph(movie_ids): #EXAMPLE EARLY STAGES
     SELECT DISTINCT ?sharedCastMember ?otherMovie (COUNT(DISTINCT ?sharedCastMember) AS ?sharedCount)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}  # dynamically filter based on provided movieIds
-        ?targetMovie movie:relatedTo ?sharedCastMember .
-        ?otherMovie movie:relatedTo ?sharedCastMember .
+        ?targetMovie movie:relatedTo ?sharedCastMember . #or specifically ?targetMovie movie:castmember ?sharedCastMember
+        ?otherMovie movie:relatedTo ?sharedCastMember . #or specifically ?otherMovie movie:castmember ?sharedCastMember
         FILTER (?otherMovie != ?targetMovie)
     }}
     GROUP BY ?otherMovie
