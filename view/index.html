@@ -233,6 +233,8 @@
           const query = searchInput.value.trim();
 
           if (query.length >= 3) {
+          clearScrollContainer(); 
+          showLoadingIndicator();        
             searchTimeout = setTimeout(() => {
               performSearch(query);
             }, 2000); // Debounce for 2 seconds
@@ -240,6 +242,21 @@
         });
       });
 
+  function clearScrollContainer() {
+    const row = document.getElementById('replace');
+    row.innerHTML = ''; // Clear the scrollable container
+  }
+
+  function showLoadingIndicator() {
+    const row = document.getElementById('replace');
+    const loadingHTML = `
+      <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>`;
+    row.innerHTML = loadingHTML;
+  }
       function performSearch(query) {
         fetch('/search', {
           method: 'POST',
