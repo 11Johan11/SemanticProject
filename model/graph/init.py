@@ -8,6 +8,6 @@ def init_graph(movie_ids):
     g.bind("movie", MOVIE)
 
     g = graph_for_castmembers_movies(movie_ids,g,MOVIE) 
-    #g = graph_for_director_movies(movie_ids,g)
+    g = graph_for_director_movies(movie_ids,g,MOVIE)
     return g
 

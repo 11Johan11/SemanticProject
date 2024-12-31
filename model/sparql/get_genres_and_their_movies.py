@@ -61,7 +61,7 @@ def get_genres_and_their_movies(movie_ids):
       ?originalMovie wdt:P136 ?genre.
       ?originalMovie wdt:P1476 ?moviesNames.
       ?genre rdfs:label ?genreName.
-
+  
       #Get other movies with the same genres
       ?otherMovie wdt:P136 ?genre.
       ?otherMovie wdt:P1476 ?otherMovieName.
