@@ -18,6 +18,24 @@
       background: #FAFAD2;
       min-height: 80vh; /* so it’s visible */
     }
+.grid-stack-item {
+  position: relative;
+  overflow: hidden; /* Ensures content stays within bounds */
+}
+
+.widget-title-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Black background with transparency */
+  color: white; /* Text color */
+  padding: 10px; /* Add some padding for spacing */
+  font-size: 16px; /* Adjust the font size as needed */
+  font-weight: bold; /* Make the text bold */
+  text-align: center; /* Center the title text */
+  z-index: 1; /* Ensure it appears above the background image */
+}
     .grid-stack-item-content {
       background-color: #18BC9C;
       display: flex;
@@ -27,6 +45,7 @@
       font-weight: bold;
       text-align: center;
     }
+
 
     /* Scrollable column style */
     .scroll-container {
@@ -100,6 +119,7 @@
           <div class="input-group">
             <input 
               type="text" 
+              id="search-input" 
               class="form-control" 
               placeholder="Search..." 
               aria-label="Search..."
@@ -114,7 +134,7 @@
 
         <!-- Scrollable list of draggable widgets, displayed two per row -->
         <div class="scroll-container gs-3" id="scroll-grid">
-          <div class="row">
+          <div class="row" id="replace">
             <div class="col-6"> 
               <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
                 <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
@@ -198,7 +218,60 @@
         })
         .catch(err => console.error("Error in /recommend request:", err));
       });
+
     });
   </script>
+<script>
+        //Search stuff
+      let searchTimeout;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search-input');
+
+        searchInput.addEventListener('input', function () {
+          clearTimeout(searchTimeout);
+          const query = searchInput.value.trim();
+
+          if (query.length >= 3) {
+            searchTimeout = setTimeout(() => {
+              performSearch(query);
+            }, 2000); // Debounce for 2 seconds
+          }
+        });
+      });
+
+      function performSearch(query) {
+        fetch('/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Search Results:', data);
+            updateDraggableWidgets(data.results);
+          })
+          .catch((error) => console.error('Search Error:', error));
+      }
+
+      function updateDraggableWidgets(results) {
+        const row = document.getElementById('replace');
+        row.innerHTML = '';
+
+        results.forEach((item) => {
+          const widgetHTML = `
+          <div class="col-6">
+            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;">
+                  <div class="widget-title-bar">
+      ${item.title}
+    </div>
+            </div>
+          </div>`;
+          row.innerHTML += widgetHTML;
+        });
+
+        GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
+      }  
+</script>
 </body>
 </html>

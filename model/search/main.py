@@ -5,9 +5,10 @@ import time
 from rapidfuzz import fuzz
 
 
+#TODO: perhaps if the similarity score is below 70 dont even bother fetching metadata/including in search results?
 #Search the datadump, fuzz allows typos
-def search(query, threshold=70, limit=100, minChar=3):
-    c=0
+def search(query, threshold=70, limit=30, minChar=3):
+   
     if len(query) < minChar:
         return "Query must contain at least 3 characters."
 
@@ -18,8 +19,8 @@ def search(query, threshold=70, limit=100, minChar=3):
     results = []
     print("Searching....")
     for entry in searchable_movies:
-        if c == limit:
-            break
+        #if c == limit:
+            #break
 
         try:
             title = entry["movieName"]["value"]
@@ -28,16 +29,20 @@ def search(query, threshold=70, limit=100, minChar=3):
             continue
 
         #fuzzy matching
-        similarity_score = fuzz.partial_ratio(query.lower(), title.lower())
+        #similarity_score = fuzz.partial_ratio(query.lower(), title.lower())
+        similarity_score = fuzz.token_set_ratio(query.lower(), title.lower())
+
         #threshold for inclusivity (100 perfect match etc...)
-        if similarity_score > threshold:
-            results.append({"title": title, "score": similarity_score, "uri": uri})
-            c+=1
+        length_penalty = (abs(len(query) - len(title)) / max(len(query), len(title))) * 0.5
+        adjusted_score = similarity_score * (1 - length_penalty)
+        if adjusted_score > threshold:
+            results.append({"title": title, "score": adjusted_score, "uri": uri})
+                    
 
     #sort results by similarity score in descending order
     results = sorted(results, key=lambda x: x["score"], reverse=True)
 
-    return results
+    return results[:limit]
 
 
 def extract_id_from_uri(uri):
@@ -68,6 +73,7 @@ def add_movie_metadata(search_results):
 
             entry["ratings"] = data["movie_results"][0]["vote_average"]
             entry["media_type"] = data["movie_results"][0]["media_type"]
+            entry["popularity"] = data["movie_results"][0]["popularity"]
             entry["poster"] = image_url
         except:
             entry["ratings"] = "0"
@@ -75,6 +81,7 @@ def add_movie_metadata(search_results):
             entry["poster"] = "https://media.istockphoto.com/id/995815438/vector/movie-and-film-modern-retro-vintage-poster-background.jpg?s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
 
         new_search_results.append(entry)
+        new_search_results = sorted(new_search_results, key=lambda x: x.get("popularity", 0), reverse=True) #sort by popularity aswell
         print(entry["ratings"])
     return new_search_results
 
