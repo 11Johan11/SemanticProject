@@ -7,7 +7,8 @@ def init_graph(movie_ids):
     MOVIE = Namespace("http://example.org/movie#")
     g.bind("movie", MOVIE)
 
+    #BUILD THE WHOLE GRAPH
     g = graph_for_castmembers_movies(movie_ids,g,MOVIE) 
-    g = graph_for_director_movies(movie_ids,g,MOVIE)
+    #g = graph_for_director_movies(movie_ids,g,MOVIE)
     return g
 

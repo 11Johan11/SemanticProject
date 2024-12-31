@@ -61,15 +61,22 @@ def get_cast_members_and_their_movies(movie_ids):
       #Get cast members
       ?originalMovie wdt:P161 ?castMember. 
       ?castMember rdfs:label ?castMemberName.
-      ?originalMovie wdt:P1476 ?moviesName.
+      FILTER (lang(?castMemberName) = "en")
+      
+      #?originalMovie wdt:P1476 ?moviesName. not used, we already know the target movie's name
 
       #Get other movies that cast members has been in
       ?otherMovie wdt:P161 ?castMember.
-      ?otherMovie wdt:P1476 ?otherMovieName.
+      #?otherMovie wdt:P1476 ?otherMovieName. not all movies have property title using rdfs:label instead
 
-      FILTER (lang(?castMemberName) = "en")
-      FILTER (lang(?otherMovieName) = "en")
-      FILTER (lang(?moviesName) = "en")
+      #attempt to fetch the english label
+      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameEn. FILTER(LANG(?movieNameEn) = "en") }}
+      #fallback to any available label
+      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameFallback. }}
+      #prioritize english label if available, otherwise use fallback
+      BIND(COALESCE(?movieNameEn, ?movieNameFallback) AS ?otherMovieName)      
+
+      
     }}
     """.format(movie_filter=movie_filter)
 

@@ -13,7 +13,7 @@ app = Flask(__name__, template_folder='view')
 
 #infer_graph(["Q153723"]) inglorious bastards
 #infer_graph(["Q153723"])
-#infer_graph(["Q153723","Q14786561"]) #inglorious bastards & fury
+infer_graph(["Q153723","Q14786561"]) #inglorious bastards & fury
 #infer_graph(["Q153723","Q166262"])#inglorious bastards & batman begins
 #time.sleep(9999999)
 
