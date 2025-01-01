@@ -203,10 +203,48 @@
 
       // 2) Setup drag-in from left column
       let insert = [ {h: 3, w: 1, content: 'new item'}];
-      GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
+  // Default dimensions for draggable widgets
+  const defaultWidgetDimensions = { w: 3, h: 2 };
+
+  // Setup drag-in for draggable widgets
+  GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', {
+    width: defaultWidgetDimensions.w,
+    height: defaultWidgetDimensions.h,
+  });
+ 
+        //CLICK TO ADD TO GRID (FOR LAZY PPL)
+function addWidgetToGrid(item) {
+  const metadata = JSON.parse(item.getAttribute('data-meta'));
+
+  // Create the widget HTML as a string
+  const widgetHTML = `
+    <div class="grid-stack-item" data-meta='${JSON.stringify(metadata)}' gs-w="3" gs-h="2">
+      <div class="grid-stack-item-content" 
+           style="background-image: url('${metadata.poster}'); background-size: cover; background-position: center;">
+        <div class="widget-title-bar">${metadata.title}</div>
+      </div>
+    </div>`;
+
+  // Parse the HTML string into a DOM element
+  const template = document.createElement('template');
+  template.innerHTML = widgetHTML.trim();
+  const widgetElement = template.content.firstChild;
+
+  // Add the widget to the grid
+  grid.makeWidget(widgetElement);
+}
 
 
+          //attach click event to each draggable widget
+          const scrollContainer = document.getElementById('replace');
+          scrollContainer.addEventListener('click', function (event) {
+            const target = event.target.closest('.draggable-widget');
+            if (target) {
+              addWidgetToGrid(target);
+            }
+          });
     });
+
   </script>
 <script>
         //Search stuff
@@ -265,7 +303,7 @@
         results.forEach((item) => {
           const widgetHTML = `
           <div class="col-6">
-            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;"
+            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;  gs-w='3' gs-h='2' "
           data-meta='${JSON.stringify(item)}'
 
             >
@@ -278,7 +316,17 @@
           row.innerHTML += widgetHTML;
         });
 
-        GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
+
+        //update draggable widgets after loading new movies (so they can be dragged)
+  // Default dimensions for draggable widgets
+  const defaultWidgetDimensions = { w: 3, h: 2 };
+
+  // Setup drag-in for draggable widgets
+  GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', {
+    width: defaultWidgetDimensions.w,
+    height: defaultWidgetDimensions.h,
+  });
+  
       }  
 </script>
 
