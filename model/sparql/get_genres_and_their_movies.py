@@ -59,17 +59,21 @@ def get_genres_and_their_movies(movie_ids):
       
       #Get genre of the original movies
       ?originalMovie wdt:P136 ?genre.
-      ?originalMovie wdt:P1476 ?moviesNames.
+      #?originalMovie wdt:P1476 ?moviesNames. not used, we already know the target movie's name
       ?genre rdfs:label ?genreName.
+      FILTER (lang(?genreName) = "en")
   
       #Get other movies with the same genres
       ?otherMovie wdt:P136 ?genre.
-      ?otherMovie wdt:P1476 ?otherMovieName.
 
-      #FILTER (lang(?directorName) = "en")
-      FILTER (lang(?moviesNames) = "en")
-      FILTER (lang(?genreName) = "en")
-      FILTER (lang(?otherMovieName) = "en")
+      #attempt to fetch the english label
+      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameEn. FILTER(LANG(?movieNameEn) = "en") }}
+      #fallback to any available label
+      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameFallback. }}
+      #prioritize english label if available, otherwise use fallback
+      BIND(COALESCE(?movieNameEn, ?movieNameFallback) AS ?otherMovieName) 
+
+      
     }}
     """.format(movie_filter=movie_filter)
 

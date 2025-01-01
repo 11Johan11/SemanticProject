@@ -14,10 +14,31 @@
 
   <style>
     /* GridStack background + item styling */
-    .grid-stack {
-      background: #FAFAD2;
-      min-height: 80vh; /* so it’s visible */
-    }
+.grid-stack {
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Neutral gradient */
+  min-height: 80vh; /* Ensure visibility */
+  border-radius: 5px; /* Add slight rounding for a polished look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.grid-stack-item {
+  position: relative;
+  overflow: hidden; /* Ensures content stays within bounds */
+}
+
+.widget-title-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Black background with transparency */
+  color: white; /* Text color */
+  padding: 10px; /* Add some padding for spacing */
+  font-size: 16px; /* Adjust the font size as needed */
+  font-weight: bold; /* Make the text bold */
+  text-align: center; /* Center the title text */
+  z-index: 1; /* Ensure it appears above the background image */
+}
     .grid-stack-item-content {
       background-color: #18BC9C;
       display: flex;
@@ -27,6 +48,7 @@
       font-weight: bold;
       text-align: center;
     }
+
 
     /* Scrollable column style */
     .scroll-container {
@@ -100,6 +122,7 @@
           <div class="input-group">
             <input 
               type="text" 
+              id="search-input" 
               class="form-control" 
               placeholder="Search..." 
               aria-label="Search..."
@@ -114,7 +137,7 @@
 
         <!-- Scrollable list of draggable widgets, displayed two per row -->
         <div class="scroll-container gs-3" id="scroll-grid">
-          <div class="row">
+          <div class="row" id="replace">
             <div class="col-6"> 
               <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
                 <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
@@ -155,7 +178,7 @@
       <div class="col-md-1">
         <div id="trash" class="trash">
           <i class="bi bi-trash" style="font-size: 1.5rem; margin-right: 5px;"></i>
-          Drop here to remove
+         <!-- Drop here to remove -->
         </div>
       </div>
     </div><!-- end .row -->
@@ -178,27 +201,172 @@
         margin: '10px',
       }, '#advanced-grid');
 
-      // 2) Setup drag-in from left column
-      let insert = [ {h: 3, w: 1, content: 'new item'}];
-      GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
 
-      // 3) Attach event listener to the Recommend button
-      const recommendBtn = document.getElementById('recommendBtn');
-      recommendBtn.addEventListener('click', function() {
-        // We’ll send a POST request to /recommend
-        fetch('/recommend', {
+
+  // Setup drag-in for draggable widgets
+  GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', {
+  width: 3,  // grid columns
+  height: 2, // grid rows
+  });
+ 
+        //CLICK TO ADD TO GRID (FOR LAZY PPL)
+function addWidgetToGrid(item) {
+  const metadata = JSON.parse(item.getAttribute('data-meta'));
+
+  // Create the widget HTML as a string
+  const widgetHTML = `
+    <div class="grid-stack-item" data-meta='${JSON.stringify(metadata)}' gs-w="3" gs-h="2">
+      <div class="grid-stack-item-content" 
+           style="background-image: url('${metadata.poster}'); background-size: cover; background-position: center;">
+        <div class="widget-title-bar">${metadata.title}</div>
+      </div>
+    </div>`;
+
+  // Parse the HTML string into a DOM element
+  const template = document.createElement('template');
+  template.innerHTML = widgetHTML.trim();
+  const widgetElement = template.content.firstChild;
+
+  // Add the widget to the grid
+  grid.makeWidget(widgetElement);
+}
+
+
+          //attach click event to each draggable widget
+          const scrollContainer = document.getElementById('replace');
+          scrollContainer.addEventListener('click', function (event) {
+            const target = event.target.closest('.draggable-widget');
+            if (target) {
+              addWidgetToGrid(target);
+            }
+          });
+    });
+
+  </script>
+<script>
+        //Search stuff
+      let searchTimeout;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        showInfoText();
+        const searchInput = document.getElementById('search-input');
+
+        searchInput.addEventListener('input', function () {
+          clearTimeout(searchTimeout);
+          const query = searchInput.value.trim();
+
+          if (query.length >= 3) {
+          clearScrollContainer(); 
+          showLoadingIndicator();        
+            searchTimeout = setTimeout(() => {
+              performSearch(query);
+            }, 2000); // Debounce for 2 seconds
+          } else 
+          {
+            clearScrollContainer();
+            showInfoText();
+          }
+        });
+      });
+
+  function clearScrollContainer() {
+    const row = document.getElementById('replace');
+    row.innerHTML = ''; // Clear the scrollable container
+  }
+
+function showInfoText() {
+  const row = document.getElementById('replace');
+  const infoHTML = `
+    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100px; color: #6c757d; text-align: center;">
+      <i class="bi bi-search" style="font-size: 2rem; margin-bottom: 10px;"></i>
+      <div style="font-size: 1.2rem; font-weight: bold;">Search for a movie to get started!</div>
+    </div>`;
+  row.innerHTML = infoHTML;
+}
+  function showLoadingIndicator() {
+    const row = document.getElementById('replace');
+    const loadingHTML = `
+      <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>`;
+    row.innerHTML = loadingHTML;
+  }
+      function performSearch(query) {
+        fetch('/search', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ someValue: 123 })  // send any data you want
+          body: JSON.stringify({ query }),
         })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Got from server:", data);
-          alert("Server says: " + data.message);
-        })
-        .catch(err => console.error("Error in /recommend request:", err));
-      });
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Search Results:', data);
+            updateDraggableWidgets(data.results);
+          })
+          .catch((error) => console.error('Search Error:', error));
+      }
+
+      function updateDraggableWidgets(results) {
+        const row = document.getElementById('replace');
+        row.innerHTML = '';
+
+        results.forEach((item) => {
+          const widgetHTML = `
+          <div class="col-6">
+            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;  gs-w='3' gs-h='2' "
+          data-meta='${JSON.stringify(item)}'
+
+            >
+
+                  <div class="widget-title-bar">
+      ${item.title}
+    </div>
+            </div>
+          </div>`;
+          row.innerHTML += widgetHTML;
+        });
+
+
+
+  // Setup drag-in for draggable widgets
+  GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', {
+      width: 3,  // grid columns
+  height: 2, // grid rows
+  });
+
+      }  
+</script>
+
+<script>
+  //recommend
+  document.addEventListener('DOMContentLoaded', function () {
+  const recommendBtn = document.getElementById('recommendBtn');
+
+  recommendBtn.addEventListener('click', function () {
+    // Gather all widgets in the dashboard
+    const widgets = document.querySelectorAll('#advanced-grid .grid-stack-item');
+
+    // Extract metadata from each widget
+    const allMetadata = Array.from(widgets).map(widget => {
+      return JSON.parse(widget.getAttribute('data-meta'));
     });
-  </script>
+
+    // Send data to the server
+    fetch('/recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ movies: allMetadata }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Recommendation Response:', data);
+        alert(`Server Response: ${data.message}`);
+      })
+      .catch(err => console.error('Error in /recommend request:', err));
+  });
+});
+
+</script>
 </body>
 </html>

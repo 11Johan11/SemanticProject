@@ -60,15 +60,20 @@ def get_director_and_their_movies(movie_ids):
       #Get director of original movie
       ?originalMovie wdt:P57 ?director.
       ?director rdfs:label ?directorName.
-      ?originalMovie wdt:P1476 ?moviesNames.
+      #?originalMovie wdt:P1476 ?moviesNames. not used, we already know the target movie's name
 
       #Get other movies directed by the same director
       ?otherMovie wdt:P57 ?director.
-      ?otherMovie wdt:P1476 ?otherMovieName.
-
       FILTER (lang(?directorName) = "en")
-      FILTER (lang(?moviesNames) = "en")
-      FILTER (lang(?otherMovieName) = "en")
+
+      #attempt to fetch the english label
+      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameEn. FILTER(LANG(?movieNameEn) = "en") }}
+      #fallback to any available label
+      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameFallback. }}
+      #prioritize english label if available, otherwise use fallback
+      BIND(COALESCE(?movieNameEn, ?movieNameFallback) AS ?otherMovieName) 
+
+      
     }}
     """.format(movie_filter=movie_filter)
 
