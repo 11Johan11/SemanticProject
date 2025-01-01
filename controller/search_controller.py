@@ -10,14 +10,14 @@ def handle_search():
     #get json data from request 
     data = request.get_json()
     query = data.get('query', '').strip()
-    search_type = data.get('type', 'movies').strip().lower() #fallback to movies if no type provided
+    search_type = data.get('type', 'movie').strip().lower() #fallback to movies if no type provided
 
     #validate length
     if len(query) < 3:
         return jsonify({'error': 'Query must be at least 3 characters long'}), 400
 
     #only handle movies for now
-    if search_type == 'movies':
+    if search_type == 'movie':
         results = add_movie_metadata(search(query))
         print(results)
         return jsonify({'results': results})

@@ -1,22 +1,52 @@
 let searchTimeout;
 
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search-input');
-    const type = searchInput.dataset.type; //determine if searching for actors/movies based on data attribute
-    const placeholderText = type === 'movies' 
-        ? 'Search for a movie to get started!' 
-        : 'Search for an actor to get started!';
+    const searchSwitchButtons = document.querySelectorAll('#search-switch');
+
+    let type = searchInput.dataset.type; //determine if searching for actors/movies based on data attribute
+    let placeholderText = "Search for " + type + "...";
+
+
     setupSearch(type, placeholderText);
+
+ //listen for button click, setupSearch again
+  searchSwitchButtons.forEach((button) => {
+    button.addEventListener('click', function () {
+      newType = button.title.toLowerCase(); //use buttons title to assign data-type to the searchInput
+      let type = newType;
+      console.log(type);
+      searchInput.setAttribute('data-type', newType);
+      setupSearch(newType, "Search for " + newType + "...");
+      updateButtonStyles(button);
+    });
+  });
+
+function updateButtonStyles(activeButton) {
+searchSwitchButtons.forEach((button) => {
+  if (button === activeButton) {
+    button.classList.add('btn-primary');
+    button.classList.remove('btn-outline-secondary');
+  } else {
+    button.classList.add('btn-outline-secondary');
+    button.classList.remove('btn-primary');
+  }
+});
+}
+
 });
 
 function setupSearch(type, placeholderText) {
     const searchInput = document.getElementById('search-input');
+    console.log(type);
     showInfoText(placeholderText);
 
     searchInput.addEventListener('input', function () {
         clearTimeout(searchTimeout);
         const query = searchInput.value.trim();
-        console.log(query);
+        //console.log(query);
         if (query.length >= 3) {
             clearScrollContainer();
             showLoadingIndicator();
@@ -80,7 +110,7 @@ function updateDraggableWidgets(results, type) {
 
     console.log(results);
     console.log(type);
-    if (type=="movies") {
+    if (type=="movie") {
         results.forEach((item) => {
             const widgetHTML = `
               <div class="col-6">

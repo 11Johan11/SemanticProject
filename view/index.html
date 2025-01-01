@@ -101,13 +101,13 @@
         <div class="mb-3">
           <div class="d-flex mb-2">
             <!-- You can change the icons or titles as desired -->
-            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Movie">
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="search-switch" title="Movie">
               <i class="bi bi-film"></i>
             </button>
-            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Actor">
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="search-switch" title="Actor">
               <i class="bi bi-person-bounding-box"></i>
             </button>
-            <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Camera">
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="search-switch" title="Camera">
               <i class="bi bi-camera-reels"></i>
             </button>
             <button type="button" class="btn btn-sm btn-outline-secondary me-2" title="Gear">
@@ -123,7 +123,7 @@
             <input 
               type="text" 
               id="search-input" 
-              data-type="movies"
+              data-type="movie"
               class="form-control" 
               placeholder="Search..." 
               aria-label="Search..."
@@ -247,5 +247,8 @@ function addWidgetToGrid(item) {
 
 <script src="static/search.js"></script>
 <script src="static/recommendBtn.js"></script>
+
+
+
 </body>
 </html>
