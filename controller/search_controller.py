@@ -5,7 +5,6 @@ search_blueprint = Blueprint('search', __name__)
 
 @search_blueprint.route('/search', methods=['POST'])
 def handle_search():
-    print("HALLLLLÅÅÅÅ")
     print(request.json)
     #get json data from request 
     data = request.get_json()
