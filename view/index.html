@@ -123,6 +123,7 @@
             <input 
               type="text" 
               id="search-input" 
+              data-type="movies"
               class="form-control" 
               placeholder="Search..." 
               aria-label="Search..."
@@ -243,130 +244,8 @@ function addWidgetToGrid(item) {
     });
 
   </script>
-<script>
-        //Search stuff
-      let searchTimeout;
 
-      document.addEventListener('DOMContentLoaded', function () {
-        showInfoText();
-        const searchInput = document.getElementById('search-input');
-
-        searchInput.addEventListener('input', function () {
-          clearTimeout(searchTimeout);
-          const query = searchInput.value.trim();
-
-          if (query.length >= 3) {
-          clearScrollContainer(); 
-          showLoadingIndicator();        
-            searchTimeout = setTimeout(() => {
-              performSearch(query);
-            }, 2000); // Debounce for 2 seconds
-          } else 
-          {
-            clearScrollContainer();
-            showInfoText();
-          }
-        });
-      });
-
-  function clearScrollContainer() {
-    const row = document.getElementById('replace');
-    row.innerHTML = ''; // Clear the scrollable container
-  }
-
-function showInfoText() {
-  const row = document.getElementById('replace');
-  const infoHTML = `
-    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100px; color: #6c757d; text-align: center;">
-      <i class="bi bi-search" style="font-size: 2rem; margin-bottom: 10px;"></i>
-      <div style="font-size: 1.2rem; font-weight: bold;">Search for a movie to get started!</div>
-    </div>`;
-  row.innerHTML = infoHTML;
-}
-  function showLoadingIndicator() {
-    const row = document.getElementById('replace');
-    const loadingHTML = `
-      <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>`;
-    row.innerHTML = loadingHTML;
-  }
-      function performSearch(query) {
-        fetch('/search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Search Results:', data);
-            updateDraggableWidgets(data.results);
-          })
-          .catch((error) => console.error('Search Error:', error));
-      }
-
-      function updateDraggableWidgets(results) {
-        const row = document.getElementById('replace');
-        row.innerHTML = '';
-
-        results.forEach((item) => {
-          const widgetHTML = `
-          <div class="col-6">
-            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;  gs-w='3' gs-h='2' "
-          data-meta='${JSON.stringify(item)}'
-
-            >
-
-                  <div class="widget-title-bar">
-      ${item.title}
-    </div>
-            </div>
-          </div>`;
-          row.innerHTML += widgetHTML;
-        });
-
-
-
-  // Setup drag-in for draggable widgets
-  GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', {
-      width: 3,  // grid columns
-  height: 2, // grid rows
-  });
-
-      }  
-</script>
-
-<script>
-  //recommend
-  document.addEventListener('DOMContentLoaded', function () {
-  const recommendBtn = document.getElementById('recommendBtn');
-
-  recommendBtn.addEventListener('click', function () {
-    // Gather all widgets in the dashboard
-    const widgets = document.querySelectorAll('#advanced-grid .grid-stack-item');
-
-    // Extract metadata from each widget
-    const allMetadata = Array.from(widgets).map(widget => {
-      return JSON.parse(widget.getAttribute('data-meta'));
-    });
-
-    // Send data to the server
-    fetch('/recommend', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ movies: allMetadata }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Recommendation Response:', data);
-        alert(`Server Response: ${data.message}`);
-      })
-      .catch(err => console.error('Error in /recommend request:', err));
-  });
-});
-
-</script>
+<script src="static/search.js"></script>
+<script src="static/recommendBtn.js"></script>
 </body>
 </html>
