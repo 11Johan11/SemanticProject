@@ -14,10 +14,13 @@
 
   <style>
     /* GridStack background + item styling */
-    .grid-stack {
-      background: #FAFAD2;
-      min-height: 80vh; /* so it’s visible */
-    }
+.grid-stack {
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Neutral gradient */
+  min-height: 80vh; /* Ensure visibility */
+  border-radius: 5px; /* Add slight rounding for a polished look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
 .grid-stack-item {
   position: relative;
   overflow: hidden; /* Ensures content stays within bounds */
@@ -175,7 +178,7 @@
       <div class="col-md-1">
         <div id="trash" class="trash">
           <i class="bi bi-trash" style="font-size: 1.5rem; margin-right: 5px;"></i>
-          Drop here to remove
+         <!-- Drop here to remove -->
         </div>
       </div>
     </div><!-- end .row -->
@@ -202,22 +205,6 @@
       let insert = [ {h: 3, w: 1, content: 'new item'}];
       GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
 
-      // 3) Attach event listener to the Recommend button
-      const recommendBtn = document.getElementById('recommendBtn');
-      recommendBtn.addEventListener('click', function() {
-        // We’ll send a POST request to /recommend
-        fetch('/recommend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ someValue: 123 })  // send any data you want
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Got from server:", data);
-          alert("Server says: " + data.message);
-        })
-        .catch(err => console.error("Error in /recommend request:", err));
-      });
 
     });
   </script>
@@ -278,7 +265,11 @@
         results.forEach((item) => {
           const widgetHTML = `
           <div class="col-6">
-            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;">
+            <div class="grid-stack-item draggable-widget newWidget" style="background-image: url('${item.poster}'); background-size: cover; background-position: center;"
+          data-meta='${JSON.stringify(item)}'
+
+            >
+
                   <div class="widget-title-bar">
       ${item.title}
     </div>
@@ -289,6 +280,37 @@
 
         GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', undefined);
       }  
+</script>
+
+<script>
+  //recommend
+  document.addEventListener('DOMContentLoaded', function () {
+  const recommendBtn = document.getElementById('recommendBtn');
+
+  recommendBtn.addEventListener('click', function () {
+    // Gather all widgets in the dashboard
+    const widgets = document.querySelectorAll('#advanced-grid .grid-stack-item');
+
+    // Extract metadata from each widget
+    const allMetadata = Array.from(widgets).map(widget => {
+      return JSON.parse(widget.getAttribute('data-meta'));
+    });
+
+    // Send data to the server
+    fetch('/recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ movies: allMetadata }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Recommendation Response:', data);
+        alert(`Server Response: ${data.message}`);
+      })
+      .catch(err => console.error('Error in /recommend request:', err));
+  });
+});
+
 </script>
 </body>
 </html>

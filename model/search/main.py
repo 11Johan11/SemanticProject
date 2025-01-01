@@ -54,6 +54,12 @@ def add_movie_metadata(search_results):
     #TMDB API
     #use backdrop path for movie poster
 
+    session = requests.Session()  #session (faster than reopening the connection each time)
+    session.headers.update({
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
+    })
+
     new_search_results = []
     for entry in search_results:
         wikidata_id = extract_id_from_uri(entry["uri"])
@@ -65,7 +71,8 @@ def add_movie_metadata(search_results):
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
         }
 
-        response = requests.get(url, headers=headers)
+        response = session.get(url) #TODO: handle connection limit/error etc...
+        #response = requests.get(url, headers=headers)
         data = json.loads(response.text)
         try: 
             poster_path = data["movie_results"][0]["poster_path"]
