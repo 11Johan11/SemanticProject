@@ -7,6 +7,11 @@ def graph_for_director_movies(movie_ids,graph,NAMESPACE):
 
     results = get_director_and_their_movies(movie_ids)
 
+    #Very important to also make sure the target movie is in the graph, forgot this before and sometimes it wasnt connected and produced no results
+    for movie_id in movie_ids:
+        target_movie_uri = URIRef(f"http://www.wikidata.org/entity/{movie_id}")
+        graph.add((target_movie_uri, RDF.type, NAMESPACE.Movie)) 
+
     for result in results:
         movie_uri = URIRef(result["otherMovie"]["value"])
         movie_title = Literal(result["otherMovieName"]["value"])
@@ -18,6 +23,7 @@ def graph_for_director_movies(movie_ids,graph,NAMESPACE):
         graph.add((movie_uri, NAMESPACE.title, movie_title))
 
         graph.add((movie_uri, NAMESPACE.director, director_uri)) #Director type
+        graph.add((target_movie_uri, NAMESPACE.genre, director_uri)) #Connect target movie with all directors     
 
         graph.add((director_uri, NAMESPACE.name, director_name))
         graph.add((director_uri, RDF.type, NAMESPACE.Person)) #perhaps not needed but good for future usecase
