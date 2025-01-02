@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from model.graph.infer import infer_graph
+from model.graph.infer import infer_shared_actors
 
 def extract_id_from_uri(uri):
     return uri.split("/")[-1]

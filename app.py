@@ -7,15 +7,18 @@ import time
 from controller.search_controller import search_blueprint
 from controller.recommend_controller import recommend_blueprint
 
-from model.graph.infer import infer_graph
+from model.graph.infer import infer_shared_actors, infer_shared_genres
+
 from flask import Flask, render_template
 app = Flask(__name__, template_folder='view', static_folder='view/static', static_url_path='/static')
  
 
-#infer_graph(["Q153723"]) inglorious bastards
-#infer_graph(["Q47300912"])
-#infer_graph(["Q153723","Q14786561"]) #inglorious bastards & fury
-#infer_graph(["Q153723","Q166262"])#inglorious bastards & batman begins
+#infer_shared_actors(["Q153723"]) #inglorious bastards
+#infer_shared_actors(["Q47300912"])
+#infer_shared_actors(["Q153723","Q14786561"]) #inglorious bastards & fury
+#infer_shared_actors(["Q153723","Q166262"])#inglorious bastards & batman begins
+
+#infer_shared_genres(["Q676513"])
 #time.sleep(9999999)
 
 

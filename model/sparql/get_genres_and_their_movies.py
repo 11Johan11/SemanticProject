@@ -49,33 +49,42 @@ sparql.setReturnFormat(JSON)
 def extract_id_from_uri(uri):
     return uri.split("/")[-1]
 
+#Genres is also a subproperty for directors (important to note)
+#Only fetch other movies with more than 2 matching genres, (OTHERWISE IT TAKES WAYYYYY TO LONG)
 def get_genres_and_their_movies(movie_ids):
 
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids) 
+    print(movie_filter)
 
     query = """
-    SELECT ?otherMovie ?otherMovieName ?genre ?genreName WHERE {{
+    SELECT DISTINCT ?otherMovie ?otherMovieName ?genre ?genreName WHERE {{
+
       VALUES ?originalMovie {{ {movie_filter} }}  #dynamically filter based on provided movieIds
-      
-      #Get genre of the original movies
+
       ?originalMovie wdt:P136 ?genre.
-      #?originalMovie wdt:P1476 ?moviesNames. not used, we already know the target movie's name
       ?genre rdfs:label ?genreName.
       FILTER (lang(?genreName) = "en")
-  
-      #Get other movies with the same genres
-      ?otherMovie wdt:P136 ?genre.
-
-      #attempt to fetch the english label
-      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameEn. FILTER(LANG(?movieNameEn) = "en") }}
-      #fallback to any available label
-      OPTIONAL {{ ?otherMovie rdfs:label ?movieNameFallback. }}
-      #prioritize english label if available, otherwise use fallback
-      BIND(COALESCE(?movieNameEn, ?movieNameFallback) AS ?otherMovieName) 
-
       
+      # Get other movies with the same genres
+      ?otherMovie wdt:P136 ?genre.
+      ?otherMovie wdt:P31 wd:Q11424. #make sure its an instance of a movie otherwise some directors that work in those genres also get fetched as otherMovie
+
+      # Ensure at least two matching genres
+      {{
+        SELECT ?otherMovie (COUNT(?sharedGenre) AS ?genreCount) WHERE {{
+          wd:Q153723 wdt:P136 ?sharedGenre.
+          ?otherMovie wdt:P136 ?sharedGenre.
+        }}
+        GROUP BY ?otherMovie
+        HAVING(?genreCount >= 2)
+      }}
+
+      # Fetch English label for the movie
+      ?otherMovie rdfs:label ?otherMovieName.
+      FILTER (lang(?otherMovieName) = "en")
     }}
     """.format(movie_filter=movie_filter)
+
 
     #print(query)
 
@@ -85,7 +94,8 @@ def get_genres_and_their_movies(movie_ids):
         ret = sparql.queryAndConvert()
         results = ret["results"]["bindings"]
 
-        #print(json.dumps(results))
+        print(json.dumps(results))
+        #print(results)
         return results
     except Exception as e:
         #TODO: Handle too many requests, timeout/retry etc... 
