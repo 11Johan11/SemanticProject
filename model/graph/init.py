@@ -1,19 +1,38 @@
-from rdflib import Graph, URIRef, Literal, Namespace, RDF, RDFS
-from model.graph.castmembers_movies import graph_for_castmembers_movies
-from model.graph.director_movies import graph_for_director_movies
-from model.graph.genre_movies import graph_for_genre_movies
+import time
+import pickle
+from rdflib import Graph
 
-def init_graph(movie_ids):
-    g = Graph()
-    MOVIE = Namespace("http://example.org/movie#")
-    g.bind("movie", MOVIE)
+#to faster speedup loading the large ttl file (our local wikidata graph), we make sure to have it saved as a pickle 
+#file, which is much faster for python to load
+def save_graph_as_pickle(graph, pickle_path):
+    """Save the RDF graph as a pickle file."""
+    with open(pickle_path, 'wb') as f:
+        pickle.dump(graph, f, protocol=pickle.HIGHEST_PROTOCOL)
+    print(f"Graph saved as pickle at {pickle_path}")
 
-    #BUILD THE WHOLE GRAPH
-    #g = graph_for_castmembers_movies(movie_ids,g,MOVIE) 
-    print("Done1")
-    #g = graph_for_director_movies(movie_ids,g,MOVIE)
-    print("Done2")
-    g = graph_for_genre_movies(movie_ids,g,MOVIE)
-    print("Done3")
-    return g
+def load_graph_from_pickle(pickle_path):
+    """Load the RDF graph from a pickle file."""
+    with open(pickle_path, 'rb') as f:
+        graph = pickle.load(f)
+    print(f"Graph loaded from pickle at {pickle_path}")
+    return graph
 
+def init_graph():
+    pickle_path = "model/graph/local_graph/complete_graph.pkl"
+    
+    try:
+        #Try loading the graph from the pickle file
+        print("Attempting to load graph from pickle...")
+        graph = load_graph_from_pickle(pickle_path)
+    except (FileNotFoundError, EOFError):
+        #If pickle file doesn't exist or is corrupted, parse the TTL file
+        print("Pickle file not found or invalid. Loading from TTL...")
+        graph = Graph()
+        graph.parse("model/graph/local_graph/complete_graph.ttl", format="turtle")
+        print("Loaded graph from TTL")
+        
+        #Save the graph as a pickle for future use
+        save_graph_as_pickle(graph, pickle_path)
+ 
+    return graph
+    

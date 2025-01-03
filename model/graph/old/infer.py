@@ -2,28 +2,29 @@ from model.graph.init import init_graph
 import owlrl
 import time
 
+def movie_uris(movie_ids):
+    movie_filter = " ".join(f"<http://www.wikidata.org/entity/{movie}>" for movie in movie_ids) 
+    return movie_filter
 
 def infer_shared_actors(movie_ids): #EXAMPLE EARLY STAGES
-    g = init_graph() #load our local graph
-
-    print("Starting to reason...")
+    g = init_graph(movie_ids) 
 
     #apply reasoning
-    #owlrl.DeductiveClosure(owlrl.RDFS_Semantics).expand(g)
+    owlrl.DeductiveClosure(owlrl.RDFS_Semantics).expand(g)
 
     #query the graph for inferred relationships
 
     target_movie_count = len(movie_ids)
 
-    movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
-
+    movie_filter = movie_uris(movie_ids)
+    print(movie_filter)
     #Count shared cast members for specific movie(s)
     query = """
     SELECT DISTINCT ?sharedCastMember ?otherMovie (COUNT(DISTINCT ?sharedCastMember) AS ?sharedCount)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}  # dynamically filter based on provided movieIds
-        ?targetMovie wdt:P161 ?sharedCastMember . 
-        ?otherMovie wdt:P161 ?sharedCastMember .
+        ?targetMovie movie:relatedTo ?sharedCastMember . #or specifically ?targetMovie movie:castmember ?sharedCastMember
+        ?otherMovie movie:relatedTo ?sharedCastMember . #or specifically ?otherMovie movie:castmember ?sharedCastMember
         FILTER (?otherMovie != ?targetMovie)
     }}
     GROUP BY ?otherMovie
@@ -42,8 +43,8 @@ def infer_shared_actors(movie_ids): #EXAMPLE EARLY STAGES
         SELECT DISTINCT ?sharedCastMember
         WHERE {{
             VALUES ?targetMovie {{ {movie_filter} }}  # dynamically filter based on provided movieIds
-            ?targetMovie wdt:P161 ?sharedCastMember .
-            <{movie}> wdt:P161 ?sharedCastMember . #custom other movie to get the actors that is being shared
+            ?targetMovie movie:relatedTo ?sharedCastMember .
+            <{movie}> movie:relatedTo ?sharedCastMember . #custom other movie to get the actors that is being shared
         }}
         """.format(movie_filter=movie_filter, movie=movie)
 
@@ -54,23 +55,22 @@ def infer_shared_actors(movie_ids): #EXAMPLE EARLY STAGES
 
 
 def infer_shared_genres(movie_ids):
-    g = init_graph() 
+    g = init_graph(movie_ids) 
 
     #apply reasoning
-    #owlrl.DeductiveClosure(owlrl.RDFS_Semantics).expand(g)   
+    owlrl.DeductiveClosure(owlrl.RDFS_Semantics).expand(g)   
 
     target_movie_count = len(movie_ids)
 
-    movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
-
+    movie_filter = movie_uris(movie_ids)
     print(movie_filter)
     #Count shared genres for specific movie(s)
     query = """
     SELECT DISTINCT ?sharedGenre ?otherMovie (COUNT(DISTINCT ?sharedGenre) AS ?sharedCount)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}  # dynamically filter based on provided movieIds
-        ?targetMovie wdt:P136 ?sharedGenre . 
-        ?otherMovie wdt:P136 ?sharedGenre .
+        ?targetMovie movie:genre ?sharedGenre . 
+        ?otherMovie movie:genre ?sharedGenre .
         FILTER (?otherMovie != ?targetMovie)
     }}
     GROUP BY ?otherMovie

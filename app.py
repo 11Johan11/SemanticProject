@@ -14,17 +14,19 @@ app = Flask(__name__, template_folder='view', static_folder='view/static', stati
  
 
 #infer_shared_actors(["Q153723"]) #inglorious bastards
-#infer_shared_actors(["Q47300912"])
+#infer_shared_actors(["Q217189"])
 #infer_shared_actors(["Q153723","Q14786561"]) #inglorious bastards & fury
 #infer_shared_actors(["Q153723","Q166262"])#inglorious bastards & batman begins
 
 #infer_shared_genres(["Q676513"])
+
+#infer_shared_actors(["Q153723","Q166262"])
 #time.sleep(9999999)
 
 
 #register Blueprints
 app.register_blueprint(search_blueprint)
-print(app.url_map)
+#print(app.url_map)
 app.register_blueprint(recommend_blueprint)
 
 @app.route('/node_modules/<path:filename>')
