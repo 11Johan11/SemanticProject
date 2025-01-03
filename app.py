@@ -4,12 +4,15 @@ from rdflib import Graph, URIRef, Literal, Namespace, RDF, RDFS
 import owlrl  # For reasoning
 import json
 import time
+from flask import g
 from controller.search_controller import search_blueprint
 from controller.recommend_controller import recommend_blueprint
 
 from model.graph.infer import infer_shared_actors, infer_shared_genres
 
 from flask import Flask, render_template
+
+
 app = Flask(__name__, template_folder='view', static_folder='view/static', static_url_path='/static')
  
 
@@ -23,6 +26,13 @@ app = Flask(__name__, template_folder='view', static_folder='view/static', stati
 #infer_shared_actors(["Q153723","Q166262"])
 #time.sleep(9999999)
 
+
+#Preload searchable movies (in the future preload searchable actors,etc...)
+with app.app_context():
+    print("Loading data...")
+    with open("search_movie_dump.json", "r", encoding="utf-8") as f:
+        searchable_movies = json.load(f) #global variable
+        app.config['SEARCHABLE_MOVIES'] = searchable_movies
 
 #register Blueprints
 app.register_blueprint(search_blueprint)
