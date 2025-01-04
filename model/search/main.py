@@ -38,7 +38,7 @@ def search( query,searchable_movies, threshold=70, limit=30, minChar=3):
 
     #sort results by similarity score in descending order
     results = sorted(results, key=lambda x: x["score"], reverse=True)
-
+    print(results)
     return results[:limit]
 
 
