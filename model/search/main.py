@@ -5,40 +5,42 @@ import time
 from rapidfuzz import fuzz
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+
 #TODO: perhaps if the similarity score is below 70 dont even bother fetching metadata/including in search results?
 #Search the datadump, fuzz allows typos
-def search( query,searchable_movies, threshold=70, limit=30, minChar=3):
-   
+def search( query,searchable_data, threshold=70, limit=30, minChar=3):
+    
+
+    results = []
+
     if len(query) < minChar:
         return "Query must contain at least 3 characters."
 
-    print(len(searchable_movies))
-    results = []
     print("Searching....")
-    for entry in searchable_movies:
+    for entry in searchable_data:
         #if c == limit:
             #break
 
         try:
-            title = entry["movieName"]["value"]
-            uri = entry["q"]["value"]
+            name = entry["name"]
+            uri = entry["uri"] #wikidata uri
         except:
             continue
 
         #fuzzy matching
-        #similarity_score = fuzz.partial_ratio(query.lower(), title.lower())
-        similarity_score = fuzz.token_set_ratio(query.lower(), title.lower())
+        #similarity_score = fuzz.partial_ratio(query.lower(), name.lower())
+        similarity_score = fuzz.token_set_ratio(query.lower(), name.lower())
 
         #threshold for inclusivity (100 perfect match etc...)
-        length_penalty = (abs(len(query) - len(title)) / max(len(query), len(title))) * 0.5
+        length_penalty = (abs(len(query) - len(name)) / max(len(query), len(name))) * 0.5
         adjusted_score = similarity_score * (1 - length_penalty)
         if adjusted_score > threshold:
-            results.append({"title": title, "score": adjusted_score, "uri": uri})
+            results.append({"name": name, "score": adjusted_score, "uri": uri})
                     
 
     #sort results by similarity score in descending order
     results = sorted(results, key=lambda x: x["score"], reverse=True)
-    print(results)
+
     return results[:limit]
 
 
@@ -92,6 +94,7 @@ def add_movie_metadata(search_results):
     #sort by popularity
     new_search_results.sort(key=lambda x: x.get("popularity", 0), reverse=True)
     return new_search_results
+
 
 
 #Example usage
