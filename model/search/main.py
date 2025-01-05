@@ -3,40 +3,39 @@ import json
 import time
 #from fuzzywuzzy import fuzz
 from rapidfuzz import fuzz
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 #TODO: perhaps if the similarity score is below 70 dont even bother fetching metadata/including in search results?
 #Search the datadump, fuzz allows typos
-def search(query, threshold=70, limit=30, minChar=3):
-   
+def search( query,searchable_data, threshold=70, limit=30, minChar=3):
+    
+
+    results = []
+
     if len(query) < minChar:
         return "Query must contain at least 3 characters."
 
-    print("Loading data...")
-    with open("search_movie_dump.json", "r", encoding="utf-8") as f:
-        searchable_movies = json.load(f)
-    print(len(searchable_movies))
-    results = []
     print("Searching....")
-    for entry in searchable_movies:
+    for entry in searchable_data:
         #if c == limit:
             #break
 
         try:
-            title = entry["movieName"]["value"]
-            uri = entry["q"]["value"]
+            name = entry["name"]
+            uri = entry["uri"] #wikidata uri
         except:
             continue
 
         #fuzzy matching
-        #similarity_score = fuzz.partial_ratio(query.lower(), title.lower())
-        similarity_score = fuzz.token_set_ratio(query.lower(), title.lower())
+        #similarity_score = fuzz.partial_ratio(query.lower(), name.lower())
+        similarity_score = fuzz.token_set_ratio(query.lower(), name.lower())
 
         #threshold for inclusivity (100 perfect match etc...)
-        length_penalty = (abs(len(query) - len(title)) / max(len(query), len(title))) * 0.5
+        length_penalty = (abs(len(query) - len(name)) / max(len(query), len(name))) * 0.5
         adjusted_score = similarity_score * (1 - length_penalty)
         if adjusted_score > threshold:
-            results.append({"title": title, "score": adjusted_score, "uri": uri})
+            results.append({"name": name, "score": adjusted_score, "uri": uri})
                     
 
     #sort results by similarity score in descending order
@@ -50,47 +49,53 @@ def extract_id_from_uri(uri):
 
 #Appends movie poster image path, ratings (TMDB ratings), media_type 
 def add_movie_metadata(search_results):
-
-    #TMDB API
-    #use backdrop path for movie poster
-
+    # TMDB API
     session = requests.Session()  #session (faster than reopening the connection each time)
     session.headers.update({
         "accept": "application/json",
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
     })
 
-    new_search_results = []
-    for entry in search_results:
+    def fetch_movie_data(entry):
         wikidata_id = extract_id_from_uri(entry["uri"])
-
         url = f"https://api.themoviedb.org/3/find/{wikidata_id}?external_source=wikidata_id"
+        try:
+            response = session.get(url)
+            response.raise_for_status()
+            data = response.json()
+            
+            if data["movie_results"]:
+                movie = data["movie_results"][0]
+                poster_path = movie.get("poster_path")
+                entry.update({
+                    "ratings": movie.get("vote_average", "0"),
+                    "media_type": movie.get("media_type", "movie"),
+                    "popularity": movie.get("popularity", 0),
+                    "poster": f"https://image.tmdb.org/t/p/original/{poster_path}" if poster_path else "https://media.istockphoto.com/id/995815438/vector/movie-and-film-modern-retro-vintage-poster-background.jpg?s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
+                })
+            else:
+                raise ValueError("No movie results found")
+        except Exception as e:
+            entry.update({
+                "ratings": "0",
+                "media_type": "movie",
+                "popularity": 0,
+                "poster": "https://media.istockphoto.com/id/995815438/vector/movie-and-film-modern-retro-vintage-poster-background.jpg?s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
+            })
+            print(e)
+        return entry
 
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
-        }
+    new_search_results = []
+    with ThreadPoolExecutor(max_workers=30) as executor:
+        futures = {executor.submit(fetch_movie_data, entry): entry for entry in search_results}
+        for future in as_completed(futures):
+            new_search_results.append(future.result())
 
-        response = session.get(url) #TODO: handle connection limit/error etc...
-        #response = requests.get(url, headers=headers)
-        data = json.loads(response.text)
-        try: 
-            poster_path = data["movie_results"][0]["poster_path"]
-            image_url = f"https://image.tmdb.org/t/p/original/{poster_path}"
-
-            entry["ratings"] = data["movie_results"][0]["vote_average"]
-            entry["media_type"] = data["movie_results"][0]["media_type"]
-            entry["popularity"] = data["movie_results"][0]["popularity"]
-            entry["poster"] = image_url
-        except:
-            entry["ratings"] = "0"
-            entry["media_type"] = "movie"
-            entry["poster"] = "https://media.istockphoto.com/id/995815438/vector/movie-and-film-modern-retro-vintage-poster-background.jpg?s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
-
-        new_search_results.append(entry)
-        new_search_results = sorted(new_search_results, key=lambda x: x.get("popularity", 0), reverse=True) #sort by popularity aswell
-        print(entry["ratings"])
+    #sort by popularity
+    new_search_results.sort(key=lambda x: x.get("popularity", 0), reverse=True)
     return new_search_results
+
+
 
 #Example usage
 #query = "avengers"

@@ -118,7 +118,7 @@ function updateDraggableWidgets(results, type) {
                   gs-w="3" gs-h="2"
                   data-meta='${JSON.stringify(item)}'>
                   <div class="widget-title-bar">
-                    ${item.title}
+                    ${item.name}
                   </div>
                 </div>
               </div>`;
