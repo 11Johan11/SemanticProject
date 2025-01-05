@@ -40,24 +40,53 @@ searchSwitchButtons.forEach((button) => {
 
 function setupSearch(type, placeholderText) {
     const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
     console.log(type);
     showInfoText(placeholderText);
-
-    searchInput.addEventListener('input', function () {
+    
+    const handleInput = function () {
         clearTimeout(searchTimeout);
         const query = searchInput.value.trim();
-        //console.log(query);
+        if (query.length >= 3) {
+            searchTimeout = setTimeout(() => {
+                clearScrollContainer();
+                showLoadingIndicator();
+                performSearch(query, type);
+            }, 2000); //debounce for 2 seconds
+        }
+    };
+
+    const handleKeydown = function (event) {
+        if (event.key === 'Enter') {
+            clearTimeout(searchTimeout);
+            const query = searchInput.value.trim();
+            if (query.length >= 3) {
+                clearScrollContainer();
+                showLoadingIndicator();
+                performSearch(query, type);
+            }
+        }
+    };
+
+    const handleClick = function () {
+        clearTimeout(searchTimeout);
+        const query = searchInput.value.trim();
         if (query.length >= 3) {
             clearScrollContainer();
             showLoadingIndicator();
-            searchTimeout = setTimeout(() => {
-                performSearch(query, type);
-            }, 2000); //debounce for 2 seconds
-        } else {
-            clearScrollContainer(type);
-            showInfoText(placeholderText);
+            performSearch(query, type);
         }
-    });
+    };
+
+    //remove old listeners to prevent duplication
+    searchInput.removeEventListener('input', handleInput);
+    searchInput.removeEventListener('keydown', handleKeydown);
+    searchButton.removeEventListener('click', handleClick);
+
+    //add the updated listeners
+    searchInput.addEventListener('input', handleInput);
+    searchInput.addEventListener('keydown', handleKeydown);
+    searchButton.addEventListener('click', handleClick);       
 }
 
 function clearScrollContainer() {
