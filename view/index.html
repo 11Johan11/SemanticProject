@@ -197,11 +197,12 @@
         float: true,      // let them float instead of auto-position
         acceptWidgets: true,
         removable: '#trash', // makes the #trash area remove items
-        columnWidth: 20,
-        cellHeight: 150,
+        //columnWidth: 20,
+        //cellHeight: 150,
         margin: '10px',
       }, '#advanced-grid');
 
+      window.grid = grid; 
 
 
   // Setup drag-in for draggable widgets
@@ -210,37 +211,7 @@
   height: 2, // grid rows
   });
  
-        //CLICK TO ADD TO GRID (FOR LAZY PPL)
-function addWidgetToGrid(item) {
-  const metadata = JSON.parse(item.getAttribute('data-meta'));
-
-  // Create the widget HTML as a string
-  const widgetHTML = `
-    <div class="grid-stack-item" data-meta='${JSON.stringify(metadata)}' gs-w="3" gs-h="2">
-      <div class="grid-stack-item-content" 
-           style="background-image: url('${metadata.poster}'); background-size: cover; background-position: center;">
-        <div class="widget-title-bar">${metadata.name}</div>
-      </div>
-    </div>`;
-
-  // Parse the HTML string into a DOM element
-  const template = document.createElement('template');
-  template.innerHTML = widgetHTML.trim();
-  const widgetElement = template.content.firstChild;
-
-  // Add the widget to the grid
-  grid.makeWidget(widgetElement);
-}
-
-
-          //attach click event to each draggable widget
-          const scrollContainer = document.getElementById('replace');
-          scrollContainer.addEventListener('click', function (event) {
-            const target = event.target.closest('.draggable-widget');
-            if (target) {
-              addWidgetToGrid(target);
-            }
-          });
+  
     });
 
   </script>
