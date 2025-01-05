@@ -11,7 +11,7 @@ from controller.recommend_controller import recommend_blueprint
 
 from model.graph.infer import infer_shared_actors, infer_shared_genres
 from model.graph.init import init_graph
-from model.search.search_preload import load_movies
+from model.search.search_preload import load_movies, load_actors
 
 from flask import Flask, render_template
 
@@ -41,6 +41,10 @@ with app.app_context():
         #preload the searchable movies
         movies = load_movies(graph)
         app.config['SEARCHABLE_MOVIES'] = movies
+
+        #preload the searchable actors
+        actors = load_actors(graph)
+        app.config['SEARCHABLE_ACTORS'] = actors        
 
 #register Blueprints
 app.register_blueprint(search_blueprint)

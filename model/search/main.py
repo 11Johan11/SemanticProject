@@ -6,7 +6,6 @@ from rapidfuzz import fuzz
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-#TODO: perhaps if the similarity score is below 70 dont even bother fetching metadata/including in search results?
 #Search the datadump, fuzz allows typos
 def search( query,searchable_data, threshold=70, limit=30, minChar=3):
     
@@ -95,6 +94,49 @@ def add_movie_metadata(search_results):
     new_search_results.sort(key=lambda x: x.get("popularity", 0), reverse=True)
     return new_search_results
 
+
+def add_actor_metadata(search_results):
+    # TMDB API
+    session = requests.Session()  #session (faster than reopening the connection each time)
+    session.headers.update({
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
+    })
+
+    def fetch_actor_data(entry):
+        wikidata_id = extract_id_from_uri(entry["uri"])
+        url = f"https://api.themoviedb.org/3/find/{wikidata_id}?external_source=wikidata_id"
+        try:
+            response = session.get(url)
+            response.raise_for_status()
+            data = response.json()
+            
+            if data["person_results"]:
+                person = data["person_results"][0]
+                profile_path = person.get("profile_path")
+                entry.update({
+                    "popularity": person.get("popularity", 0),
+                    "profile": f"https://image.tmdb.org/t/p/original/{profile_path}" if profile_path else "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+                })
+            else:
+                raise ValueError("No actor results found")
+        except Exception as e:
+            entry.update({
+                "popularity": 0,
+                "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+            })
+            print(e)
+        return entry
+
+    new_search_results = []
+    with ThreadPoolExecutor(max_workers=30) as executor:
+        futures = {executor.submit(fetch_actor_data, entry): entry for entry in search_results}
+        for future in as_completed(futures):
+            new_search_results.append(future.result())
+
+    #sort by popularity
+    new_search_results.sort(key=lambda x: x.get("popularity", 0), reverse=True)
+    return new_search_results
 
 
 #Example usage
