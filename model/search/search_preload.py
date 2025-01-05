@@ -30,5 +30,31 @@ def load_movies(g):
         with open("model/search/search_movie_dump.json", "w", encoding="utf-8") as f:
             json.dump(movies, f, indent=4, ensure_ascii=False)
 
-
+    print("Movies loaded")
     return movies
+
+def load_actors(g):
+    actors = None
+    try:
+        print("Trying to preload actor dump from json file....")
+        with open("model/search/search_actor_dump.json", "r", encoding="utf-8") as f:
+            actors = json.load(f)
+            
+    #query our local graph and load & dump
+    except (FileNotFoundError, EOFError):
+        print("Actor dump not found, Querying local graph for a new dump...")
+        local_query = """
+            SELECT DISTINCT ?actor ?actorName WHERE {
+                ?movie wdt:P161 ?actor.       
+                ?actor rdfs:label ?actorName.        
+            }
+        """
+        actors = []
+        for row in g.query(local_query):
+            actors.append({"uri": str(row.actor), "name": str(row.actorName)});
+
+        with open("model/search/search_actor_dump.json", "w", encoding="utf-8") as f:
+            json.dump(actors, f, indent=4, ensure_ascii=False)
+
+    print("Actors loaded")
+    return actors

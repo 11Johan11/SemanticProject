@@ -130,7 +130,7 @@
             />
             <div class="input-group-append">
               <span class="input-group-text">
-                <i class="bi bi-search"></i>
+                <button class="btn btn-sm bi bi-search" id="search-button"></button>
               </span>
             </div>
           </div>
@@ -161,19 +161,34 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN: Main GridStack area -->
-      <div class="col-md-8">
-        <div class="grid-stack grid-stack-item grid-stack-sub-grid ui-droppable" id="advanced-grid"></div>
-        
-        <!-- Recommend Button at the bottom of the advanced grid -->
-        <div class="d-flex justify-content-center mt-3">
-          <button id="recommendBtn" type="button" 
-                  class="btn btn-success btn-lg px-5" 
-                  style="background: #20c997; border: none; font-weight: bold;">
-            Recommend
-          </button>
-        </div>
-      </div><!-- end .col-md-8 -->
+<div class="col-md-8">
+  <div class="grid-stack grid-stack-item grid-stack-sub-grid ui-droppable" id="advanced-grid"></div>
+
+  <div class="d-flex justify-content-between mt-3">
+    <!-- Clear Button -->
+    <div class="align-self-start">
+      <button id="clearAllBtn"
+              type="button"
+              class="btn btn-outline-secondary btn-lg px-4"
+              style="font-weight: bold;">
+        <i class="bi bi-brush"></i>
+        Clear
+      </button>
+    </div>
+
+    <!-- Spacer for center alignment -->
+    <div class="flex-grow-1 d-flex justify-content-center">
+      <!-- Recommend Button -->
+      <button id="recommendBtn" type="button" 
+              class="btn btn-success btn-lg px-5"
+              style="background: #20c997; border: none; font-weight: bold;">
+        Recommend
+      </button>
+    </div>
+  </div>
+</div>
+
+
 
       <!-- TRASH AREA: drag items here to remove -->
       <div class="col-md-1">
@@ -197,11 +212,12 @@
         float: true,      // let them float instead of auto-position
         acceptWidgets: true,
         removable: '#trash', // makes the #trash area remove items
-        columnWidth: 20,
-        cellHeight: 150,
+        //columnWidth: 20,
+        //cellHeight: 150,
         margin: '10px',
       }, '#advanced-grid');
 
+      window.grid = grid; 
 
 
   // Setup drag-in for draggable widgets
@@ -210,37 +226,22 @@
   height: 2, // grid rows
   });
  
-        //CLICK TO ADD TO GRID (FOR LAZY PPL)
-function addWidgetToGrid(item) {
-  const metadata = JSON.parse(item.getAttribute('data-meta'));
+  
+  //dhruhil 
+  const clearAllBtn = document.getElementById('clearAllBtn');
 
-  // Create the widget HTML as a string
-  const widgetHTML = `
-    <div class="grid-stack-item" data-meta='${JSON.stringify(metadata)}' gs-w="3" gs-h="2">
-      <div class="grid-stack-item-content" 
-           style="background-image: url('${metadata.poster}'); background-size: cover; background-position: center;">
-        <div class="widget-title-bar">${metadata.name}</div>
-      </div>
-    </div>`;
+  clearAllBtn.addEventListener('click', function () {
+    // Confirm action before clearing
+    const confirmClear = confirm('Are you sure you want to clear the entire dashboard?');
+    if (confirmClear) {
+      const gridElement = document.getElementById('advanced-grid');
+      const grid = GridStack.init({}, gridElement);
 
-  // Parse the HTML string into a DOM element
-  const template = document.createElement('template');
-  template.innerHTML = widgetHTML.trim();
-  const widgetElement = template.content.firstChild;
+      // Remove all widgets from the grid
+      grid.removeAll();
+    }
+  });
 
-  // Add the widget to the grid
-  grid.makeWidget(widgetElement);
-}
-
-
-          //attach click event to each draggable widget
-          const scrollContainer = document.getElementById('replace');
-          scrollContainer.addEventListener('click', function (event) {
-            const target = event.target.closest('.draggable-widget');
-            if (target) {
-              addWidgetToGrid(target);
-            }
-          });
     });
 
   </script>
