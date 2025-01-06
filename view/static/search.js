@@ -141,7 +141,7 @@ function updateDraggableWidgets(results, type) {
   const typeConfig = {
     movie:    { gsWidth: 3, gsHeight: 5, imageKey: 'poster' },
     actor:    { gsWidth: 2, gsHeight: 2, imageKey: 'profile' },
-    director: { gsWidth: 2, gsHeight: 2, imageKey: 'poster' }, //add more here
+    director: { gsWidth: 2, gsHeight: 2, imageKey: 'profile' }, //add more here
   };
 
   //fallback
