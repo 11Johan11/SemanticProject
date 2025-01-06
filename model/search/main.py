@@ -26,6 +26,11 @@ def search( query,searchable_data, threshold=70, limit=30, minChar=3):
         except:
             continue
 
+        try:
+            imdb = entry["imdb"]
+        except:
+            imdb = None
+
         #fuzzy matching
         #similarity_score = fuzz.partial_ratio(query.lower(), name.lower())
         similarity_score = fuzz.token_set_ratio(query.lower(), name.lower())
@@ -34,7 +39,7 @@ def search( query,searchable_data, threshold=70, limit=30, minChar=3):
         length_penalty = (abs(len(query) - len(name)) / max(len(query), len(name))) * 0.5
         adjusted_score = similarity_score * (1 - length_penalty)
         if adjusted_score > threshold:
-            results.append({"name": name, "score": adjusted_score, "uri": uri})
+            results.append({"name": name, "score": adjusted_score, "uri": uri, "imdb": imdb})
                     
 
     #sort results by similarity score in descending order
@@ -46,53 +51,107 @@ def search( query,searchable_data, threshold=70, limit=30, minChar=3):
 def extract_id_from_uri(uri):
     return uri.split("/")[-1]
 
+
 #Appends movie poster image path, ratings (TMDB ratings), media_type 
+#fetch TMDB metadata
+def _fetch_tmdb_data(entry, session):
+    wikidata_id = extract_id_from_uri(entry["uri"])
+    url = f"https://api.themoviedb.org/3/find/{wikidata_id}?external_source=wikidata_id"
+    try:
+        response = session.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+
+        if data["movie_results"]:
+            movie = data["movie_results"][0]
+            poster_path = movie.get("poster_path")
+            entry.update({
+                "ratings": movie.get("vote_average", "0"),
+                "media_type": movie.get("media_type", "movie"),
+                "popularity": movie.get("popularity", 0),
+                "imdb": entry["imdb"], 
+                "poster": (f"https://image.tmdb.org/t/p/original/{poster_path}"
+                           if poster_path else 
+                           "https://media.istockphoto.com/id/995815438/vector/"
+                           "movie-and-film-modern-retro-vintage-poster-background.jpg?"
+                           "s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ=")
+            })
+        else:
+            raise ValueError("No movie results found")
+
+    except Exception as e:
+        #fallback values if TMDB fetch fails
+        entry.update({
+            "ratings": "0",
+            "media_type": "movie",
+            "popularity": 0,
+            "poster": "https://media.istockphoto.com/id/995815438/vector/"
+                      "movie-and-film-modern-retro-vintage-poster-background.jpg?"
+                      "s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
+        })
+        print(f"TMDB fetch error for {wikidata_id}: {e}")
+
+    return entry
+
+
+#fetch IMDb ratings
+def _fetch_omdb_data(entry, session):
+
+    imdb_id = entry.get("imdb")
+    #print(imdb_id)
+    if not imdb_id:
+        #if there is no imdb
+        return entry
+
+    try:
+        url = f"https://www.omdbapi.com/?i={imdb_id}&apikey=bbe16d5f"
+        response = session.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        imdb_rating = data.get("imdbRating")  # e.g. "7.3"
+        entry.update({"imdb_ratings": imdb_rating})
+        #print(imdb_rating)
+    except Exception as e:
+        entry.update({"imdb_ratings": None})
+        print(f"Error fetching IMDb rating for {imdb_id}: {e}")
+
+    return entry
+
+
+#main function: add_movie_metadata (+ 2 helper functions fetch_omdb_data and fetch_tmdb_data)
 def add_movie_metadata(search_results):
-    # TMDB API
-    session = requests.Session()  #session (faster than reopening the connection each time)
-    session.headers.update({
+    #create a session for TMDB
+    tmdb_session = requests.Session()
+    tmdb_session.headers.update({
         "accept": "application/json",
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
     })
 
-    def fetch_movie_data(entry):
-        wikidata_id = extract_id_from_uri(entry["uri"])
-        url = f"https://api.themoviedb.org/3/find/{wikidata_id}?external_source=wikidata_id"
-        try:
-            response = session.get(url)
-            response.raise_for_status()
-            data = response.json()
-            
-            if data["movie_results"]:
-                movie = data["movie_results"][0]
-                poster_path = movie.get("poster_path")
-                entry.update({
-                    "ratings": movie.get("vote_average", "0"),
-                    "media_type": movie.get("media_type", "movie"),
-                    "popularity": movie.get("popularity", 0),
-                    "poster": f"https://image.tmdb.org/t/p/original/{poster_path}" if poster_path else "https://media.istockphoto.com/id/995815438/vector/movie-and-film-modern-retro-vintage-poster-background.jpg?s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
-                })
-            else:
-                raise ValueError("No movie results found")
-        except Exception as e:
-            entry.update({
-                "ratings": "0",
-                "media_type": "movie",
-                "popularity": 0,
-                "poster": "https://media.istockphoto.com/id/995815438/vector/movie-and-film-modern-retro-vintage-poster-background.jpg?s=612x612&w=0&k=20&c=UvRsJaKcp0EKIuqDKp6S7Dwhltt0D5rbegPkS-B8nDQ="
-            })
-            print(e)
-        return entry
-
-    new_search_results = []
+    #fetch TMDB data in parallel using 30 workers
+    tmdb_fetched_results = []
     with ThreadPoolExecutor(max_workers=30) as executor:
-        futures = {executor.submit(fetch_movie_data, entry): entry for entry in search_results}
+        futures = {
+            executor.submit(_fetch_tmdb_data, entry, tmdb_session): entry
+            for entry in search_results
+        }
         for future in as_completed(futures):
-            new_search_results.append(future.result())
+            tmdb_fetched_results.append(future.result())
 
-    #sort by popularity
-    new_search_results.sort(key=lambda x: x.get("popularity", 0), reverse=True)
-    return new_search_results
+    #fetch IMDb ratings in parallel using another 30 workers
+    imdb_session = requests.Session()
+    omdb_fetched_results = []
+    with ThreadPoolExecutor(max_workers=30) as executor:
+        futures = {
+            executor.submit(_fetch_omdb_data, entry, imdb_session): entry
+            for entry in tmdb_fetched_results
+        }
+        for future in as_completed(futures):
+            omdb_fetched_results.append(future.result())
+
+    #sort by popularity decending order (from tmdb)
+    omdb_fetched_results.sort(key=lambda x: x.get("popularity", 0), reverse=True)
+    #print(omdb_fetched_results)
+    return omdb_fetched_results
 
 
 def add_actor_metadata(search_results):
