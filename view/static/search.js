@@ -147,9 +147,49 @@ function updateDraggableWidgets(results, type) {
   //fallback
   const config = typeConfig[type] || { gsWidth: 2, gsHeight: 3, imageKey: 'poster' };
 
+results.forEach((item) => {
+  let ratingHTML = "";
+  if (type == "movie") {
+    ratingHTML = `
+<!-- Parent container must have position: relative -->
+<div style="
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 35px;       /* Smaller overall width */
+  height: 50px;      /* Smaller overall height */
+  background-color: #f1c40f; /* Yellow banner */
+  color: black;
+  display: flex;
+  align-items: flex-start;   /* Text near the top */
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  /* 
+    Inverted V starts further down (around 75%).
+    Adjust clip-path if you want it even lower or higher. 
+  */
+  clip-path: polygon(
+    0% 0%,      /* Top-left corner */
+    100% 0%,    /* Top-right corner */
+    100% 100%,  /* Bottom-right corner */
+    85% 100%,   /* Start in from right edge for wide V */
+    50% 75%,    /* Move up for the inverted V peak */
+    15% 100%,   /* Move in from left edge */
+    0% 100%     /* Bottom-left corner */
+  );
+  z-index: 5;
+">
+  <!-- Optional: Add some padding-top if you want the text lower -->
+  ${item.imdb_ratings}
+</div>
+    `
+  }
+    
+
 
   //populate with the new widgets from the search results
-  results.forEach((item) => {
+  
     const widgetHTML = `
       <div class="col-6">
         <div class="grid-stack-item draggable-widget newWidget"
@@ -160,6 +200,7 @@ function updateDraggableWidgets(results, type) {
              gs-h="${config.gsHeight}"
              data-meta='${JSON.stringify(item)}'>
           <div class="widget-title-bar">${item.name}</div>
+          ${ratingHTML}
         </div>
       </div>`;
     row.innerHTML += widgetHTML;
@@ -173,7 +214,45 @@ function updateDraggableWidgets(results, type) {
 
   //function to add a widget when clicked
   function addWidgetToGrid(item) {
-    const metadata = JSON.parse(item.getAttribute('data-meta'));
+   let ratingHTML = "";
+   const metadata = JSON.parse(item.getAttribute('data-meta'));
+  if (type == "movie") {
+    ratingHTML = `
+<!-- Parent container must have position: relative -->
+<div style="
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 35px;       /* Smaller overall width */
+  height: 50px;      /* Smaller overall height */
+  background-color: #f1c40f; /* Yellow banner */
+  color: black;
+  display: flex;
+  align-items: flex-start;   /* Text near the top */
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  /* 
+    Inverted V starts further down (around 75%).
+    Adjust clip-path if you want it even lower or higher. 
+  */
+  clip-path: polygon(
+    0% 0%,      /* Top-left corner */
+    100% 0%,    /* Top-right corner */
+    100% 100%,  /* Bottom-right corner */
+    85% 100%,   /* Start in from right edge for wide V */
+    50% 75%,    /* Move up for the inverted V peak */
+    15% 100%,   /* Move in from left edge */
+    0% 100%     /* Bottom-left corner */
+  );
+  z-index: 5;
+">
+  <!-- Optional: Add some padding-top if you want the text lower -->
+  ${metadata.imdb_ratings}
+</div>
+    `
+  }    
+    
 
     //build the widget HTML
     const widgetHTML = `
@@ -185,6 +264,7 @@ function updateDraggableWidgets(results, type) {
                     background-size: cover; 
                     background-position: center;">
           <div class="widget-title-bar">${metadata.name}</div>
+          ${ratingHTML}
         </div>
       </div>`;
 
