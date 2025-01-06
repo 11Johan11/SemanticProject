@@ -7,7 +7,7 @@ from rdflib.plugins.sparql import prepareQuery
 print("Loading graph...")
 g = Graph()
 
-files = ["movies.ttl", "movies_with_actors.ttl", "movies_with_directors.ttl", "movies_with_genres.ttl", "movies_with_mainsubjects.ttl"]
+files = ["movies.ttl", "movies_with_actors.ttl", "movies_with_directors.ttl", "movies_with_genres.ttl", "movies_with_mainsubjects.ttl", "movies_with_publicationdates.ttl" ]
 for file_path in files:
     g.parse(file_path, format="turtle")
     print("Loaded graph " + file_path)
