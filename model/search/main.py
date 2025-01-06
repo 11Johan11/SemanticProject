@@ -154,7 +154,7 @@ def add_movie_metadata(search_results):
     return omdb_fetched_results
 
 
-def add_actor_metadata(search_results):
+def add_person_metadata(search_results):
     # TMDB API
     session = requests.Session()  #session (faster than reopening the connection each time)
     session.headers.update({
@@ -162,7 +162,7 @@ def add_actor_metadata(search_results):
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4N2NhYWVlZjk5OTRlZTIxNDk3ZDA1Mzc0ZTg1ODdiYSIsIm5iZiI6MTczNTU3NDYwMy44OTQsInN1YiI6IjY3NzJjNDRiNjIzNGMxYjQ2ZjYxNGU3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7jM6UhZJFYPblmV8e-UE5QzvjT8Nl1TA5jvebToAZFg"
     })
 
-    def fetch_actor_data(entry):
+    def fetch_person_data(entry):
         wikidata_id = extract_id_from_uri(entry["uri"])
         url = f"https://api.themoviedb.org/3/find/{wikidata_id}?external_source=wikidata_id"
         try:
@@ -189,7 +189,7 @@ def add_actor_metadata(search_results):
 
     new_search_results = []
     with ThreadPoolExecutor(max_workers=30) as executor:
-        futures = {executor.submit(fetch_actor_data, entry): entry for entry in search_results}
+        futures = {executor.submit(fetch_person_data, entry): entry for entry in search_results}
         for future in as_completed(futures):
             new_search_results.append(future.result())
 

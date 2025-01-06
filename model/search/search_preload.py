@@ -58,3 +58,29 @@ def load_actors(g):
 
     print("Actors loaded")
     return actors
+
+def load_directors(g):
+    directors = None
+    try:
+        print("Trying to preload directors dump from json file....")
+        with open("model/search/search_director_dump.json", "r", encoding="utf-8") as f:
+            directors = json.load(f)
+            
+    #query our local graph and load & dump
+    except (FileNotFoundError, EOFError):
+        print("Director dump not found, Querying local graph for a new dump...")
+        local_query = """
+            SELECT DISTINCT ?director ?directorName WHERE {
+                ?movie wdt:P57 ?director.       
+                ?director rdfs:label ?directorName.        
+            }
+        """
+        directors = []
+        for row in g.query(local_query):
+            directors.append({"uri": str(row.director), "name": str(row.directorName)});
+
+        with open("model/search/search_director_dump.json", "w", encoding="utf-8") as f:
+            json.dump(directors, f, indent=4, ensure_ascii=False)
+
+    print("Directors loaded")
+    return directors
