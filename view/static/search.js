@@ -179,7 +179,7 @@ results.forEach((item) => {
     0% 100%     /* Bottom-left corner */
   );
   z-index: 5;
-">
+"title="Official IMDB rating">
   <!-- Optional: Add some padding-top if you want the text lower -->
   ${item.imdb_ratings}
 </div>
@@ -246,7 +246,7 @@ results.forEach((item) => {
     0% 100%     /* Bottom-left corner */
   );
   z-index: 5;
-">
+" title="Official IMDB rating">
   <!-- Optional: Add some padding-top if you want the text lower -->
   ${metadata.imdb_ratings}
 </div>
