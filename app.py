@@ -19,6 +19,7 @@ from flask import Flask, render_template
 app = Flask(__name__, template_folder='view', static_folder='view/static', static_url_path='/static')
  
 
+#get_actors_over_30_popularity(infer_shared_actors(["Q153723"]))
 #infer_shared_actors(["Q153723"]) #inglorious bastards
 #infer_shared_actors(["Q217189"])
 #infer_shared_actors(["Q153723","Q14786561"]) #inglorious bastards & fury
