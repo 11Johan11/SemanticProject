@@ -5,133 +5,120 @@ from model.search.main import add_person_metadata
 import time
 import json
 
+#todo perhaps if there's > 5 target movies dont bother fetching for movies with distinct target movie = 1? HAVING (COUNT(DISTINCT ?targetMovie) > 1)
 def infer_shared_actors(movie_ids):
-    g = init_graph()  #load our local graph
+    g = init_graph()  # Load our local graph
     print("Starting to reason...")
 
     target_movie_count = len(movie_ids)
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # ↓↓↓ REMOVED LINE ↓↓↓
-    # HAVING (COUNT(DISTINCT ?targetMovie) = {target_movie_count}) #remove this if actors dont need to occur in both movies
-    query = """
-    SELECT DISTINCT ?sharedCastMember ?otherMovie (COUNT(DISTINCT ?sharedCastMember) AS ?sharedCount)
+    # Main query to fetch shared actors, counts, and target movie URIs
+    query = f"""
+    SELECT DISTINCT ?sharedCastMember ?otherMovie (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+                   (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}
         ?targetMovie wdt:P161 ?sharedCastMember .
         ?otherMovie wdt:P161 ?sharedCastMember .
-        FILTER (?otherMovie != ?targetMovie)
+        FILTER (?otherMovie != ?targetMovie) 
     }}
-    GROUP BY ?otherMovie
-    ORDER BY DESC(?sharedCount)
-    """.format(movie_filter=movie_filter, target_movie_count=target_movie_count)
+    GROUP BY ?sharedCastMember ?otherMovie
+    ORDER BY DESC(?originalSharedMovies)
+    """
 
     moviesThatSharedActors = []
     for row in g.query(query):
-        # ↓↓↓ ADDED originalSharedMovies ↓↓↓
         moviesThatSharedActors.append({
             "movie": str(row.otherMovie),
-            "originalSharedMovies": int(row.sharedCount)
+            "originalSharedMovies": int(row.originalSharedMovies),  # Store the count
+            "sharedMovieUris": str(row.sharedMovieUris).split(",")  # Split URIs into a list
         })
 
-    # ↓↓↓ CHANGED structure to include originalSharedMovies ↓↓↓
-    popularity_over_30_actors = {}
+    # Structure to include originalSharedMovies, sharedMovieUris, and shared actors
+    movies_with_shared_actors = {}
     for entry in moviesThatSharedActors:
-        popularity_over_30_actors[entry["movie"]] = {
+        movies_with_shared_actors[entry["movie"]] = {
             "originalSharedMovies": entry["originalSharedMovies"],
+            "sharedMovieUris": entry["sharedMovieUris"],  # Add shared movie URIs
             "actors": []
         }
-        query = """
+        query = f"""
         SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName
         WHERE {{
             VALUES ?targetMovie {{ {movie_filter} }}
             ?targetMovie wdt:P161 ?sharedCastMember .
             ?sharedCastMember rdfs:label ?sharedCastMemberName .
-            <{movie}> wdt:P161 ?sharedCastMember .
+            <{entry["movie"]}> wdt:P161 ?sharedCastMember .
         }}
-        """.format(movie_filter=movie_filter, movie=entry["movie"])
-
+        """
         for row in g.query(query):
-            popularity_over_30_actors[entry["movie"]]["actors"].append({
+            movies_with_shared_actors[entry["movie"]]["actors"].append({
                 "uri": row.sharedCastMember,
                 "name": row.sharedCastMemberName
             })
 
-    return popularity_over_30_actors
+    #print(json.dumps(movies_with_shared_actors, indent=2))
+    #time.sleep(9999999)
+    return movies_with_shared_actors
 
-
-
-def get_actors_over_30_popularity(movies_with_actors, THRESHOLD=30):
-    actor_info_map = {}
-
-    for movie, cast_list in movies_with_actors.items():
-        # CHANGED: to handle both dict/list for 'cast_list'
-        # If it's a dict (with "actors"), use cast_list["actors"]
-        # Otherwise, assume it's already a list of dicts
-        if isinstance(cast_list, dict) and "actors" in cast_list:  # ADDED
-            cast_list = cast_list["actors"]                       # ADDED
-
-        for castmember in cast_list:
-            # If castmember is not a dict, skip it
-            if not isinstance(castmember, dict):  # ADDED
-                continue                          # ADDED
-            uri_str = str(castmember["uri"])
-            name_str = castmember.get("name", "")
-            actor_info_map[uri_str] = {
-                "uri": uri_str,
-                "name": name_str
-            }
-
-    # ADDED: Define all_actor_list for add_person_metadata
-    all_actor_list = [{"uri": key} for key in actor_info_map.keys()]
-
-    for info in add_person_metadata(all_actor_list):
-        uri = str(info["uri"])
-        popularity = info.get("popularity", 0)
-        profile = info.get("profile", "")
-        if uri in actor_info_map:
-            actor_info_map[uri]["popularity"] = popularity
-            actor_info_map[uri]["profile"] = profile
-
-    # CHANGED: movies_with_actors_and_popularity can hold originalSharedMovies + actors
-    movies_with_actors_and_popularity = {
-        movie: {
-            "originalSharedMovies": 0,  # default 0
-            "actors": []
-        }
-        for movie in movies_with_actors.keys()
+"""
+structure that add_pers
+[
+    {
+        "uri": "http://www.wikidata.org/entity/Q3607626",
+    },
+    {
+        "uri": "http://www.wikidata.org/entity/Q329178"
     }
+]
 
-    for movie, cast_list in movies_with_actors.items():
-        # If cast_list is dict and contains 'originalSharedMovies', copy that value
-        if isinstance(cast_list, dict) and "originalSharedMovies" in cast_list:  # ADDED
-            movies_with_actors_and_popularity[movie]["originalSharedMovies"] = cast_list["originalSharedMovies"]  # ADDED
-            cast_list = cast_list["actors"]  # ADDED
+actor_metadata = [{"uri": "http://www.wikidata.org/entity/Q4957491", "popularity": 1.508, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}, {"uri": "http://www.wikidata.org/entity/Q382523", "popularity": 1.495, "profile": "https://image.tmdb.org/t/p/original//uIyS0Rx2hDJNBBSoC3wQH49FXVi.jpg"}, {"uri": "http://www.wikidata.org/entity/Q2850927", "popularity": 1.48, "profile": "https://image.tmdb.org/t/p/original//p2uX1gxUt8BNBPT1f0UsUQDpogZ.jpg"}, {"uri": "http://www.wikidata.org/entity/Q2003843", "popularity": 1.38, "profile": "https://image.tmdb.org/t/p/original//wNle9vJfQmhJONZA8SdQbVZMqJh.jpg"}, {"uri": "http://www.wikidata.org/entity/Q15434786", "popularity": 1.323, "profile": "https://image.tmdb.org/t/p/original//88gHRiuIhFunoytQuobkzmDIaIc.jpg"}, {"uri": "http://www.wikidata.org/entity/Q20685594", "popularity": 0.045, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}, {"uri": "http://www.wikidata.org/entity/Q1514600", "popularity": 0, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}, {"uri": "http://www.wikidata.org/entity/Q5345686", "popularity": 0, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}]
 
-        # If cast_list is not a list, skip
-        if not isinstance(cast_list, list):  # ADDED
-            continue
+"""
 
-        for castmember in cast_list:
-            if not isinstance(castmember, dict):  # ADDED
-                continue
-            uri_str = str(castmember["uri"])
-            actor_data = actor_info_map.get(uri_str)
-            if actor_data and actor_data.get("popularity", 0) >= THRESHOLD:
-                movies_with_actors_and_popularity[movie]["actors"].append(actor_data)
+def fetch_and_map_actor_metadata(movies_with_shared_actors):
+    all_actor_uris = []
+    unique_uris = set()  #to ensure unique uris (no duplicates)
 
-    movies_with_actors_and_popularity = sorted(
-        movies_with_actors_and_popularity.items(),
-        key=lambda x: len(x[1]["actors"]),
-        reverse=True
-    )
-    movies_with_actors_and_popularity = dict(movies_with_actors_and_popularity)
+    for movie_data in movies_with_shared_actors.values():
+        for actor in movie_data["actors"]:
+            actor_uri = str(actor["uri"])
+            if actor_uri not in unique_uris:
+                all_actor_uris.append({"uri": actor_uri})
+                unique_uris.add(actor_uri)
 
-    with open('movies_with_actors_and_popularity.json', 'w') as json_file:
-        json.dump(movies_with_actors_and_popularity, json_file, indent=4)
+    #fetch all metadata using add_person_metadata
+    actor_metadata = add_person_metadata(all_actor_uris)
 
-    time.sleep(999999)
-    return movies_with_actors_and_popularity
+    #convert metadata to a dictionary for faster lookup
+    metadata_dict = {entry["uri"]: entry for entry in actor_metadata}
+
+    #map metadata back to the original structure
+    for movie, movie_data in movies_with_shared_actors.items():
+        for actor in movie_data["actors"]:
+            metadata = metadata_dict.get(str(actor["uri"]), {})
+            actor["profile"] = metadata.get("profile", "")
+            actor["popularity"] = metadata.get("popularity", 0)
+
+    movies_with_shared_actors_metadata = movies_with_shared_actors
+
+    return movies_with_shared_actors_metadata
+
+
+def filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
+    # Filtered result dictionary
+    filtered_movies = {}
+
+    for movie_uri, movie_data in movies_with_shared_actors_metadata.items():
+        # Filter actors in the current movie based on popularity
+        movie_data["actors"] = [actor for actor in movie_data["actors"] if actor["popularity"] >= threshold]
+
+        # Only include the movie if it has remaining actors
+        if movie_data["actors"]:
+            filtered_movies[movie_uri] = movie_data
+
+    return filtered_movies
 
 
 def infer_shared_genres(movie_ids):

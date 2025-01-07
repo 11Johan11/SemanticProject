@@ -9,17 +9,21 @@ import os
 from controller.search_controller import search_blueprint
 from controller.recommend_controller import recommend_blueprint
 
-from model.graph.infer import infer_shared_actors, infer_shared_genres
+from model.graph.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity
+
 from model.graph.init import init_graph
 from model.search.search_preload import load_movies, load_actors, load_directors
 
+#maga = filter_actor_popularity(fetch_and_map_actor_metadata(infer_shared_actors(["Q153723","Q14786561"])), threshold=30)
+#print(json.dumps(maga))
+#time.sleep(99999)
 from flask import Flask, render_template
 
 
 app = Flask(__name__, template_folder='view', static_folder='view/static', static_url_path='/static')
  
 
-#get_actors_over_30_popularity(infer_shared_actors(["Q153723"]))
+
 #infer_shared_actors(["Q153723"]) #inglorious bastards
 #infer_shared_actors(["Q217189"])
 #infer_shared_actors(["Q153723","Q14786561"]) #inglorious bastards & fury
@@ -64,4 +68,5 @@ def home():
  return render_template('index.html')
 
 if __name__ == '__main__':
+
     app.run(debug=True)
