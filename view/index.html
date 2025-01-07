@@ -12,82 +12,214 @@
   <!-- GridStack CSS -->
   <link rel="stylesheet" href="node_modules/gridstack/dist/gridstack.min.css" />
 
-  <style>
-    /* GridStack background + item styling */
-.grid-stack {
-  background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Neutral gradient */
-  min-height: 80vh; /* Ensure visibility */
-  border-radius: 5px; /* Add slight rounding for a polished look */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  <!--<link rel="stylesheet" href="styles.css">-->
+<style>
+  /* GridStack background + item styling */
+  .grid-stack {
+    background: linear-gradient(to bottom, #2b2b2b, #1a1a1a); /* Neutral gradient */
+    min-height: 80vh; /* Ensure visibility */
+    border-radius: 10px; /* Add slight rounding for a polished look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+  }
+  #recommendBtn {
+  background: linear-gradient(to right, #20c997, #128f76); /* Green gradient */
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Clear button */
+#clearAllBtn {
+    background: #495057;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+  }
+
+  #clearAllBtn:hover {
+    color: #20c997; /* Change icon color on hover */
+    transition: color 0.3s ease; /* Smooth hover effect */
+    }
+
+  .grid-stack-item {
+    position: relative;
+    overflow: hidden; /* Ensures content stays within bounds */
+  }
+  /* Search input styling */
+  #search-input {
+    background: #2c2c2c;
+    color: #f8f9fa;
+    border: 1px solid #495057;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: inset 0 1px 3px rgba(156, 146, 146, 0.5); /* Subtle inner shadow */
+  }
+
+  #search-input::placeholder {
+  color: #868e96; /* Light gray color for placeholder */
+  opacity: 1; /* Ensure it's fully visible */
+  }
+
+  body {
+  background: radial-gradient(circle at center, #2c2c2c, #121212 60%); /* Radial gradient */
+  background-attachment: fixed; /* Prevent scrolling background */
+  color: #f8f9fa; /* Default light text */
+  }
+
+  #search-input:focus {
+    outline: none;
+    border-color: #20c997;
+    box-shadow: 0 0 8px rgba(32, 201, 151, 0.5); /* Highlight effect */
+  }
+
+    
+  .grid-stack-item-content, 
+.draggable-widget.newWidget {
+  background: linear-gradient(to bottom, #18bc9c, #128f76); /* Gradient for items */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px; /* Slight rounding for smoothness */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
 }
 
-.grid-stack-item {
-  position: relative;
-  overflow: hidden; /* Ensures content stays within bounds */
+/* Ensure hover effects apply to both */
+.grid-stack-item-content:hover,
+.draggable-widget.newWidget:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6); /* Stronger shadow on hover */
 }
 
+/* Banner and other internal styles remain consistent */
 .widget-title-bar {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.grid-stack-item .rating-banner,
+.draggable-widget.newWidget .rating-banner {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Black background with transparency */
-  color: white; /* Text color */
-  padding: 10px; /* Add some padding for spacing */
-  font-size: 16px; /* Adjust the font size as needed */
-  font-weight: bold; /* Make the text bold */
-  text-align: center; /* Center the title text */
-  z-index: 1; /* Ensure it appears above the background image */
+  right: 0;
+  width: 35px;
+  height: 50px;
+  background-color: #f1c40f; /* Yellow banner */
+  color: black;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  clip-path: polygon(
+    0% 0%, 
+    100% 0%, 
+    100% 100%, 
+    85% 100%, 
+    50% 75%, 
+    15% 100%, 
+    0% 100%
+  );
+  z-index: 5;
 }
-    .grid-stack-item-content {
-      background-color: #18BC9C;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      font-weight: bold;
-      text-align: center;
-    }
 
+      /* Input group container adjustments */
+      .input-group-text {
+        background: #1a1a1a; /* Black background */
+        border: none; /* Remove any borders */
+        padding: 0; /* Remove unnecessary padding */
+        display: flex; /* Flexbox for alignment */
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px; /* Rounded corners */
+        height: 40px; /* Adjust height to match input */
+        width: 40px; /* Adjust width for square button */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Optional shadow for depth */
+      }
 
-    /* Scrollable column style */
-    .scroll-container {
-      max-height: 80vh; 
-      overflow-y: auto;
-      background: #f8f9fa;
-      padding: 0.5rem; /* reduced padding */
-    }
+      /* Button inside the input group */
+      #search-button {
+        background: none; /* Transparent background to inherit parent */
+        border: none; /* Remove button border */
+        width: 100%; /* Take full width of the parent */
+        height: 100%; /* Take full height of the parent */
+        color: #f8f9fa; /* White icon for contrast */
+        cursor: pointer; /* Pointer cursor for interactivity */
+        font-size: 20px; /* Adjust icon size */
+      }
 
-    /* “Widgets” with DVD-like (2:3) ratio */
-    .draggable-widget {
-      width: 100px;
-      height: 150px;
-      background-color: #ccc;
-      margin: 0 auto 1rem auto; /* center horizontally, space below */
-      padding: 2px;
-      cursor: move;
-      border: 1px solid #999;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-weight: bold;
-    }
+      /* Button hover effect */
+      #search-button:hover {
+        color: #20c997; /* Change icon color on hover */
+        transition: color 0.3s ease; /* Smooth hover effect */
+      }
 
-    /* Simple styling for the trash area */
-    .trash {
-      min-height: 80%;
-      border: 2px dashed #ccc;
-      border-radius: 4px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f2f2f2;
-      margin-top: 20px; /* some spacing from the grid above */
-    }
-  </style>
+  
+      /* Scrollable column style */
+      .scroll-container {
+        max-height: 80vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #1a1a1a; /* Dark background for container */
+        padding: 10px; /* Uniform padding */
+        border: 1px solid #343a40; /* Border for clear separation */
+        border-radius: 8px;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+      }
+      .btn {
+        color: #fff;
+        background-color: #495057; /* Dark gray button */
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.3s ease; /* Smooth effects */
+      }
+      .btn:hover {
+        color: #20c997; /* Change icon color on hover */
+        transition: color 0.3s ease; /* Smooth hover effect */
+      }
+      /* “Widgets” with DVD-like (2:3) ratio */
+      .draggable-widget {
+        width: 100px;
+        height: 150px;
+        background-color: #ccc;
+        margin: 0 auto 1rem auto; /* center horizontally, space below */
+        padding: 2px;
+        cursor: move;
+        border: 1px solid #999;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-weight: bold;
+      }
+  
+      /* Simple styling for the trash area */
+      .trash {
+        min-height: 80%;
+        border: 2px dashed #ccc;
+        border-radius: 4px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e9ecef;
+        background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
+        margin-top: 20px; /* some spacing from the grid above */
+      }
+    </style>
 </head>
 
 <body>
@@ -138,25 +270,7 @@
 
         <!-- Scrollable list of draggable widgets, displayed two per row -->
         <div class="scroll-container gs-3" id="scroll-grid">
-          <div class="row" id="replace">
-            <div class="col-6"> 
-              <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
-                <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
-                <div>Drag me in the dashboard!</div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
-                <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
-                <div>Drag me in the dashboard!</div>
-              </div>
-            </div>   
-            <div class="col-6">
-              <div class="grid-stack-item draggable-widget newWidget" gs-x="2" gs-y="2" gs-w="2" gs-h="2">
-                <ion-icon name="add-circle" role="img" class="md hydrated" aria-label="add circle"></ion-icon>
-                <div>Drag me in the dashboard!</div>
-              </div>
-            </div>                             
+          <div class="row" id="replace">                           
           </div>
         </div>
       </div>

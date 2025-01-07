@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         row.innerHTML = ''; //clear the scrollable container
     }
 
+
     function showInfoText(placeholderText) {
         const row = document.getElementById('replace');
         const infoHTML = `
