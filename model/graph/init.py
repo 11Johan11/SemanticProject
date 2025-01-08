@@ -41,6 +41,7 @@ def init_graph():
      
     endpoint_url = "http://localhost:3030/dataset/sparql"  #fuseki
     store = SPARQLStore(endpoint_url)
+    store.method = 'POST'
     graph = Graph(store)
     return graph
     

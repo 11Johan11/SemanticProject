@@ -263,3 +263,31 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
     print(f"Results saved to {output_file}")
     return movies_with_shared_genres
 
+def fetch_publicationdate(movie_ids):
+    g = init_graph()
+    movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
+    
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    
+    SELECT ?targetMovie (MIN(?date) AS ?publicationDate) WHERE {{
+        VALUES ?targetMovie {{ {movie_filter} }}
+        ?targetMovie wdt:P577 ?date.
+    }}
+    GROUP BY ?targetMovie
+    """
+
+    results = []
+
+    for row in g.query(query):
+        # Format the publicationDate as YYYY-MM-DD
+        raw_date = str(row.publicationDate)
+        formatted_date = raw_date.split("T")[0]  # Extract date portion before 'T'
+        results.append({
+            "movie": str(row.targetMovie),
+            "publicationDate": formatted_date
+        })
+    return results

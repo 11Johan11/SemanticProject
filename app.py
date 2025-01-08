@@ -9,22 +9,28 @@ import os
 from controller.search_controller import search_blueprint
 from controller.recommend_controller import recommend_blueprint
 
-from model.graph.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors
-
+from model.graph.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors, fetch_publicationdate
 from model.graph.init import init_graph
 from model.search.search_preload import load_movies, load_actors, load_directors
+from combine_recommendation_data import combine_recommendation_data
 
 #maga = filter_actor_popularity(fetch_and_map_actor_metadata(infer_shared_actors(["Q153723","Q14786561"])), threshold=30)
 #with open("movies_that_shared_actors.json", "w", encoding="utf-8") as file:
 #    json.dump(maga, file, ensure_ascii=False, indent=2)
 #time.sleep(99999)
 
-"""
+""""
 maga = fetch_and_map_director_metadata(infer_shared_directors(["Q153723","Q14786561"]))
 with open("movies_that_shared_directors.json", "w", encoding="utf-8") as file:
     json.dump(maga, file, ensure_ascii=False, indent=2)
 time.sleep(99999)
 """
+
+
+combine_recommendation_data(["Q153723","Q14786561"])
+#print(fetch_publicationdate(["Q153723","Q14786561"]))
+time.sleep(99999)
+
 from flask import Flask, render_template
 
 
