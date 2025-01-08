@@ -314,6 +314,29 @@
     </div><!-- end .row -->
   </div><!-- end .container-fluid -->
 
+  <!-- Recommend Modal -->
+<div class="modal fade" id="recommendModal" tabindex="-1" aria-labelledby="recommendModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- make it large, or use .modal-xl for extra large -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recommendModalLabel">Recommended Movies</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- We will inject our recommended movie HTML here via JS -->
+        <div id="recommendationContent" class="row">
+          <!-- Example (Injected) -->
+          <!-- <div class="col-md-4">[movie widget 1]</div> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- Footer actions if needed -->
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- GridStack JS -->
   <script src="node_modules/gridstack/dist/gridstack-all.js"></script>
   <!-- Bootstrap JS (bundle includes Popper) -->

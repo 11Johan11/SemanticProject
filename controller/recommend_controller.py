@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+from model.calculate_movie_points import calculate_movie_points
+from combine_recommendation_data import combine_recommendation_data
 from model.graph.infer import infer_shared_actors
 
 def extract_id_from_uri(uri):
@@ -20,7 +22,5 @@ def recommend():
     for movie in movies:
         movie_ids.append(extract_id_from_uri(movie["uri"]))
 
-    print(movie_ids)
-    infer_graph(movie_ids)
-
-    return jsonify("hello")
+    combined_data, original_movie_data = combine_recommendation_data(movie_ids)
+    return calculate_movie_points(combined_data, original_movie_data)
