@@ -19,7 +19,7 @@ def combine_recommendation_data(list_of_movies):
 
     # Combine the data into a single dictionary
     combined_data = {}
-
+    
     # Process actors
     for uri, data in shared_actor_data.items():
         if uri not in combined_data:
@@ -57,13 +57,12 @@ def combine_recommendation_data(list_of_movies):
         combined_data[uri]["genres"].extend(data.get("genres", []))
 
 
-    list_of_movies = []
+    shit_list = []
     for uri, data in combined_data.items():
-        list_of_movies.append(extract_id_from_uri(uri))
+        shit_list.append(extract_id_from_uri(uri))
 
-    # Fetch date data
-    #print(list_of_movies)
-    date_data = fetch_publicationdate(list_of_movies)
+
+    date_data = fetch_publicationdate(shit_list)
     date_data_dict = {item["movie"]: item["publicationDate"] for item in date_data}
 
     for uri, data in combined_data.items():
@@ -73,9 +72,16 @@ def combine_recommendation_data(list_of_movies):
             pass
 
 
-
+    
     # Write the combined data to a JSON file
     output_file = "shared_data.json"
     with open(output_file, "w", encoding="utf-8") as file:
         json.dump(combined_data, file, ensure_ascii=False, indent=2)
+    output_file = "original_movie_data.json"       
+
+    original_movie_data = fetch_publicationdate(list_of_movies) 
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(original_movie_data, file, ensure_ascii=False, indent=2)
+
     print(f"Combined data written to {output_file}")
+    return combined_data, original_movie_data
