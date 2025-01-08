@@ -6,6 +6,7 @@ import time
 import json
 
 #todo perhaps if there's > 5 target movies dont bother fetching for movies with distinct target movie = 1? HAVING (COUNT(DISTINCT ?targetMovie) > 1)
+#infer shared directors just like actos its wdt:P57
 def infer_shared_actors(movie_ids):
     g = init_graph()  # Load our local graph
     print("Starting to reason...")
@@ -13,63 +14,51 @@ def infer_shared_actors(movie_ids):
     target_movie_count = len(movie_ids)
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # Main query to fetch shared actors, counts, and target movie URIs
+    # Consolidated query to fetch shared actors, counts, and details
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedCastMember ?otherMovie (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie 
+                   (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}
         ?targetMovie wdt:P161 ?sharedCastMember .
+        ?sharedCastMember rdfs:label ?sharedCastMemberName .
         ?otherMovie wdt:P161 ?sharedCastMember .
         FILTER (?otherMovie != ?targetMovie) 
     }}
-    GROUP BY ?sharedCastMember ?otherMovie
+    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie
     ORDER BY DESC(?originalSharedMovies)
     """
 
-    moviesThatSharedActors = []
+
+    # Execute the query and process the results
+    movies_with_shared_actors = {}
     for row in g.query(query):
-        moviesThatSharedActors.append({
-            "movie": str(row.otherMovie),
-            "originalSharedMovies": int(row.originalSharedMovies),  # Store the count
-            "sharedMovieUris": str(row.sharedMovieUris).split(",")  # Split URIs into a list
+        other_movie = str(row.otherMovie)
+        shared_cast_member = str(row.sharedCastMember)
+        shared_cast_member_name = str(row.sharedCastMemberName)
+        original_shared_movies = int(row.originalSharedMovies)
+        shared_movie_uris = str(row.sharedMovieUris).split(",")
+
+        # Initialize the structure if the movie isn't already present
+        if other_movie not in movies_with_shared_actors:
+            movies_with_shared_actors[other_movie] = {
+                "originalSharedMovies": original_shared_movies,
+                "sharedMovieUris": shared_movie_uris,
+                "actors": []
+            }
+
+        # Add the shared cast member details
+        movies_with_shared_actors[other_movie]["actors"].append({
+            "uri": shared_cast_member,
+            "name": shared_cast_member_name
         })
 
-    # Structure to include originalSharedMovies, sharedMovieUris, and shared actors
-    movies_with_shared_actors = {}
-    for entry in moviesThatSharedActors:
-        movies_with_shared_actors[entry["movie"]] = {
-            "originalSharedMovies": entry["originalSharedMovies"],
-            "sharedMovieUris": entry["sharedMovieUris"],  # Add shared movie URIs
-            "actors": []
-        }
-        query = f"""
-        PREFIX wd: <http://www.wikidata.org/entity/>
-        PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
-            
-        SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName
-        WHERE {{
-            VALUES ?targetMovie {{ {movie_filter} }}
-            ?targetMovie wdt:P161 ?sharedCastMember .
-            ?sharedCastMember rdfs:label ?sharedCastMemberName .
-            <{entry["movie"]}> wdt:P161 ?sharedCastMember .
-        }}
-        """
-        for row in g.query(query):
-            movies_with_shared_actors[entry["movie"]]["actors"].append({
-                "uri": row.sharedCastMember,
-                "name": row.sharedCastMemberName
-            })
-
-    #print(json.dumps(movies_with_shared_actors, indent=2))
-    #time.sleep(9999999)
     return movies_with_shared_actors
 
 """
@@ -129,6 +118,89 @@ def filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
             filtered_movies[movie_uri] = movie_data
 
     return filtered_movies
+
+
+def infer_shared_directors(movie_ids):
+    g = init_graph()  # Load our local graph
+    print("Starting to reason...")
+
+    target_movie_count = len(movie_ids)
+    movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
+
+    # Consolidated query to fetch shared directors, counts, and details
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+    SELECT DISTINCT ?sharedDirector ?sharedDirectorName ?otherMovie 
+                   (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+                   (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
+    WHERE {{
+        VALUES ?targetMovie {{ {movie_filter} }}
+        ?targetMovie wdt:P57 ?sharedDirector .
+        ?sharedDirector rdfs:label ?sharedDirectorName .
+        ?otherMovie wdt:P57 ?sharedDirector .
+        FILTER (?otherMovie != ?targetMovie) 
+    }}
+    GROUP BY ?sharedDirector ?sharedDirectorName ?otherMovie
+    ORDER BY DESC(?originalSharedMovies)
+    """
+
+    # Execute the query and process the results
+    movies_with_shared_directors = {}
+    for row in g.query(query):
+        other_movie = str(row.otherMovie)
+        shared_director = str(row.sharedDirector)
+        shared_director_name = str(row.sharedDirectorName)
+        original_shared_movies = int(row.originalSharedMovies)
+        shared_movie_uris = str(row.sharedMovieUris).split(",")
+
+        # Initialize the structure if the movie isn't already present
+        if other_movie not in movies_with_shared_directors:
+            movies_with_shared_directors[other_movie] = {
+                "originalSharedMovies": original_shared_movies,
+                "sharedMovieUris": shared_movie_uris,
+                "directors": []
+            }
+
+        # Add the shared director details
+        movies_with_shared_directors[other_movie]["directors"].append({
+            "uri": shared_director,
+            "name": shared_director_name
+        })
+
+    return movies_with_shared_directors
+
+def fetch_and_map_director_metadata(movies_with_shared_directors):
+    all_director_uris = []
+    unique_uris = set()  # To ensure unique URIs (no duplicates)
+
+    for movie_data in movies_with_shared_directors.values():
+        for director in movie_data["directors"]:
+            director_uri = str(director["uri"])
+            if director_uri not in unique_uris:
+                all_director_uris.append({"uri": director_uri})
+                unique_uris.add(director_uri)
+
+    # Fetch all metadata using add_person_metadata
+    director_metadata = add_person_metadata(all_director_uris)
+
+    # Convert metadata to a dictionary for faster lookup
+    metadata_dict = {entry["uri"]: entry for entry in director_metadata}
+
+    # Map metadata back to the original structure
+    for movie, movie_data in movies_with_shared_directors.items():
+        for director in movie_data["directors"]:
+            metadata = metadata_dict.get(str(director["uri"]), {})
+            director["profile"] = metadata.get("profile", "")
+            director["popularity"] = metadata.get("popularity", 0)
+
+    movies_with_shared_directors_metadata = movies_with_shared_directors
+
+    return movies_with_shared_directors_metadata
+
 
 
 def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
