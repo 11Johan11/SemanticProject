@@ -6,6 +6,9 @@ from rapidfuzz import fuzz
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
+#perhaps fix so that if we get less than 30 search results, redo the search without the initials and lower the penalty of length
+#example of this Top Gun (top gun shows not Top Gun Maverick)
+#Harry Potter (no harry potter movie shows up because the length of the harry potter titles is much larger)
 #Search the datadump, fuzz allows typos
 def search( query,searchable_data, threshold=70, limit=30, minChar=3):
     

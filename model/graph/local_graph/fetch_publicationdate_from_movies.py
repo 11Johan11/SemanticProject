@@ -2,6 +2,7 @@ import time
 from SPARQLWrapper import SPARQLWrapper, JSON
 from rdflib import Graph, URIRef, Literal, Namespace, RDF, RDFS
 from rdflib.plugins.sparql import prepareQuery
+from rdflib.namespace import XSD
 #P57 Director 
 #P161 Cast Member 
 #P136 Genre 
@@ -75,9 +76,17 @@ sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 sparql.setMethod("POST")
 sparql.setReturnFormat(JSON)
 
-# Define batch processing
+#define batch processing
 batch_size = 5000
-retry_attempts = 5  # Number of retries per batch
+retry_attempts = 5  #number of retries per batch
+
+def is_valid_datetime(value):
+    try:
+        # Check if it conforms to the xsd:dateTime format
+        Literal(value, datatype=XSD.dateTime)
+        return True
+    except ValueError:
+        return False
 
 def process_batch(batch):
     movie_filter = " ".join(f"wd:{movie}" for movie in batch)
@@ -111,13 +120,15 @@ for i in range(0, len(movie_ids), batch_size):
             
             for result in results:
                 movie_uri = URIRef(result["targetMovie"]["value"])
-                publicationDate = URIRef(result["publicationDate"]["value"])
-                #mainsubject_name = Literal(result["mainsubjectLabel"]["value"], lang="en") if "mainsubjectLabel" in result else Literal("Unknown", lang="en")
+                publication_date_str = result["publicationDate"]["value"]
 
-                # Add mainsubject triples to the graph
-                #g.add((mainsubject_uri, RDF.type, entities.Q5))  # Instance of human
-                #g.add((mainsubject_uri, RDFS.label, mainsubject_name))
-                g.add((movie_uri, properties.P577, publicationDate))  #publicationdate relationship
+
+                if is_valid_datetime(publication_date_value):
+                    publicationDate = Literal(publication_date_value, datatype=XSD.dateTime)
+                    g.add((movie_uri, properties.P577, publicationDate))  # Add as a literal
+
+
+                g.add((movie_uri, properties.P577, publicationDate))
             
             print(f"Successfully processed batch {i // batch_size + 1}.")
             break  # Exit retry loop if successful

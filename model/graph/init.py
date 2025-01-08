@@ -1,6 +1,9 @@
 import time
 import pickle
 from rdflib import Graph
+from rdflib.plugins.stores.sparqlstore import SPARQLStore 
+
+
 
 #to faster speedup loading the large ttl file (our local wikidata graph), we make sure to have it saved as a pickle 
 #file, which is much faster for python to load
@@ -19,7 +22,7 @@ def load_graph_from_pickle(pickle_path):
 
 def init_graph():
     pickle_path = "model/graph/local_graph/complete_graph.pkl"
-    
+    """
     try:
         #Try loading the graph from the pickle file
         print("Attempting to load graph from pickle...")
@@ -27,12 +30,17 @@ def init_graph():
     except (FileNotFoundError, EOFError):
         #If pickle file doesn't exist or is corrupted, parse the TTL file
         print("Pickle file not found or invalid. Loading from TTL...")
-        graph = Graph()
-        graph.parse("model/graph/local_graph/complete_graph.ttl", format="turtle")
+
+        #graph.parse("model/graph/local_graph/complete_graph.ttl", format="turtle")
         print("Loaded graph from TTL")
         
         #Save the graph as a pickle for future use
         save_graph_as_pickle(graph, pickle_path)
- 
+ """
+     # Initialize a persistent BerkeleyDB-backed graph
+     
+    endpoint_url = "http://localhost:3030/dataset/sparql"  #fuseki
+    store = SPARQLStore(endpoint_url)
+    graph = Graph(store)
     return graph
     

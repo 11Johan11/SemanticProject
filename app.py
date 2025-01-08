@@ -23,6 +23,9 @@ from flask import Flask, render_template
 app = Flask(__name__, template_folder='view', static_folder='view/static', static_url_path='/static')
  
 
+#infer_shared_genres(["Q153723"])
+#time.sleep(99999)
+
 
 #infer_shared_actors(["Q153723"]) #inglorious bastards
 #infer_shared_actors(["Q217189"])

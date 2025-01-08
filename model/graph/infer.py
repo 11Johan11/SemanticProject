@@ -15,6 +15,11 @@ def infer_shared_actors(movie_ids):
 
     # Main query to fetch shared actors, counts, and target movie URIs
     query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
     SELECT DISTINCT ?sharedCastMember ?otherMovie (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
@@ -44,6 +49,11 @@ def infer_shared_actors(movie_ids):
             "actors": []
         }
         query = f"""
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+            
         SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName
         WHERE {{
             VALUES ?targetMovie {{ {movie_filter} }}
@@ -121,34 +131,63 @@ def filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
     return filtered_movies
 
 
-def infer_shared_genres(movie_ids):
-    g = init_graph() 
+def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
 
-    #apply reasoning
-    #owlrl.DeductiveClosure(owlrl.RDFS_Semantics).expand(g)   
-
-    target_movie_count = len(movie_ids)
+    g = init_graph()  # Load our local graph
 
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    print(movie_filter)
-    #Count shared genres for specific movie(s)
-    query = """
-    SELECT DISTINCT ?sharedGenre ?otherMovie (COUNT(DISTINCT ?sharedGenre) AS ?sharedCount)
+    # Combined query to fetch all relevant data in one go
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+       
+    SELECT DISTINCT ?otherMovie ?sharedGenre ?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+                   (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
-        VALUES ?targetMovie {{ {movie_filter} }}  # dynamically filter based on provided movieIds
-        ?targetMovie wdt:P136 ?sharedGenre . 
+        VALUES ?targetMovie {{ {movie_filter} }}
+        ?targetMovie wdt:P136 ?sharedGenre .
         ?otherMovie wdt:P136 ?sharedGenre .
+        ?sharedGenre rdfs:label ?sharedGenreName .
         FILTER (?otherMovie != ?targetMovie)
     }}
-    GROUP BY ?otherMovie
-    HAVING (COUNT(DISTINCT ?targetMovie) = {target_movie_count}) #remove this if actors dont need to occur in both movies
-    ORDER BY DESC(?sharedCount)
-    """.format(movie_filter=movie_filter, target_movie_count=target_movie_count)
+    GROUP BY ?otherMovie ?sharedGenre ?sharedGenreName
+    ORDER BY DESC(?originalSharedMovies)
+    """
 
-
-    moviesThatSharedActors = []
+    print("Running combined query...")
+    results = []
     for row in g.query(query):
-        print(f"Other Movie: {row.otherMovie}, Shared Count: {row.sharedCount}")
-        moviesThatSharedActors.append(row.otherMovie)
- 
+        results.append({
+            "movie": str(row.otherMovie),
+            "genre_uri": str(row.sharedGenre),
+            "genre_name": str(row.sharedGenreName),
+            "originalSharedMovies": int(row.originalSharedMovies),
+            "sharedMovieUris": str(row.sharedMovieUris).split(",")
+        })
+
+    # Process results into the desired structure
+    print("Processing combined results...")
+    movies_with_shared_genres = {}
+    for result in results:
+        movie = result["movie"]
+        if movie not in movies_with_shared_genres:
+            movies_with_shared_genres[movie] = {
+                "originalSharedMovies": result["originalSharedMovies"],
+                "sharedMovieUris": result["sharedMovieUris"],
+                "genres": []
+            }
+        movies_with_shared_genres[movie]["genres"].append({
+            "uri": result["genre_uri"],
+            "name": result["genre_name"]
+        })
+
+    # Save the result to a JSON file
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(movies_with_shared_genres, file, ensure_ascii=False, indent=2)
+
+    print(f"Results saved to {output_file}")
+    return movies_with_shared_genres
+
