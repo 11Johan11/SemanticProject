@@ -1,5 +1,5 @@
 import json
-
+import time
 def calculate_movie_points(movie_data, extra_movie_data):
     # Extract publication years of inferred movies for comparison
     inferred_years = []
@@ -41,6 +41,7 @@ def calculate_movie_points(movie_data, extra_movie_data):
             pass
 
         recommended_movies.append({
+            "title": details["title"],
             "movie_uri": movie_uri,
             "points": points,
             "shared_movies": details["sharedMovieUris"],
@@ -52,7 +53,7 @@ def calculate_movie_points(movie_data, extra_movie_data):
     # Sort movies by points (descending)
     recommended_movies.sort(key=lambda x: x["points"], reverse=True)
 
-    with open("recommended_movies.json", "w") as json_file:
-        json.dump(recommended_movies, json_file, indent=4)
+    #with open("recommended_movies.json", "w") as json_file:
+        #json.dump(recommended_movies, json_file, indent=4)
 
-    return json.dumps(recommended_movies, indent=4)
+    return recommended_movies

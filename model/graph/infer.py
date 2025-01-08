@@ -21,7 +21,7 @@ def infer_shared_actors(movie_ids):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie 
+    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie ?otherMovieName
                    (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
@@ -29,9 +29,10 @@ def infer_shared_actors(movie_ids):
         ?targetMovie wdt:P161 ?sharedCastMember .
         ?sharedCastMember rdfs:label ?sharedCastMemberName .
         ?otherMovie wdt:P161 ?sharedCastMember .
+        ?otherMovie rdfs:label ?otherMovieName . 
         FILTER (?otherMovie != ?targetMovie) 
     }}
-    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie
+    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie ?otherMovieName
     ORDER BY DESC(?originalSharedMovies)
     """
 
@@ -44,10 +45,12 @@ def infer_shared_actors(movie_ids):
         shared_cast_member_name = str(row.sharedCastMemberName)
         original_shared_movies = int(row.originalSharedMovies)
         shared_movie_uris = str(row.sharedMovieUris).split(",")
+        other_movie_name = str(row.otherMovieName)
 
         # Initialize the structure if the movie isn't already present
         if other_movie not in movies_with_shared_actors:
             movies_with_shared_actors[other_movie] = {
+                "title": other_movie_name,
                 "originalSharedMovies": original_shared_movies,
                 "sharedMovieUris": shared_movie_uris,
                 "actors": []
@@ -134,7 +137,7 @@ def infer_shared_directors(movie_ids):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedDirector ?sharedDirectorName ?otherMovie 
+    SELECT DISTINCT ?sharedDirector ?sharedDirectorName ?otherMovie ?otherMovieName
                    (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
@@ -142,9 +145,10 @@ def infer_shared_directors(movie_ids):
         ?targetMovie wdt:P57 ?sharedDirector .
         ?sharedDirector rdfs:label ?sharedDirectorName .
         ?otherMovie wdt:P57 ?sharedDirector .
+        ?otherMovie rdfs:label ?otherMovieName .
         FILTER (?otherMovie != ?targetMovie) 
     }}
-    GROUP BY ?sharedDirector ?sharedDirectorName ?otherMovie
+    GROUP BY ?sharedDirector ?sharedDirectorName ?otherMovie ?otherMovieName
     ORDER BY DESC(?originalSharedMovies)
     """
 
@@ -156,10 +160,12 @@ def infer_shared_directors(movie_ids):
         shared_director_name = str(row.sharedDirectorName)
         original_shared_movies = int(row.originalSharedMovies)
         shared_movie_uris = str(row.sharedMovieUris).split(",")
+        other_movie_name = str(row.otherMovieName)
 
         # Initialize the structure if the movie isn't already present
         if other_movie not in movies_with_shared_directors:
             movies_with_shared_directors[other_movie] = {
+                "title": other_movie_name,
                 "originalSharedMovies": original_shared_movies,
                 "sharedMovieUris": shared_movie_uris,
                 "directors": []
@@ -216,16 +222,17 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
        
-    SELECT DISTINCT ?otherMovie ?sharedGenre ?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    SELECT DISTINCT ?otherMovie ?otherMovieName ?sharedGenre ?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}
         ?targetMovie wdt:P136 ?sharedGenre .
         ?otherMovie wdt:P136 ?sharedGenre .
+        ?otherMovie rdfs:label ?otherMovieName .
         ?sharedGenre rdfs:label ?sharedGenreName .
         FILTER (?otherMovie != ?targetMovie)
     }}
-    GROUP BY ?otherMovie ?sharedGenre ?sharedGenreName
+    GROUP BY ?otherMovie ?otherMovieName ?sharedGenre ?sharedGenreName
     ORDER BY DESC(?originalSharedMovies)
     """
 
@@ -233,6 +240,7 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
     results = []
     for row in g.query(query):
         results.append({
+            "title": str(row.otherMovieName),
             "movie": str(row.otherMovie),
             "genre_uri": str(row.sharedGenre),
             "genre_name": str(row.sharedGenreName),
@@ -247,6 +255,7 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
         movie = result["movie"]
         if movie not in movies_with_shared_genres:
             movies_with_shared_genres[movie] = {
+                "title": result["title"],
                 "originalSharedMovies": result["originalSharedMovies"],
                 "sharedMovieUris": result["sharedMovieUris"],
                 "genres": []

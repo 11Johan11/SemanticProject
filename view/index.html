@@ -166,6 +166,10 @@
       }
 
   
+      .modal-content
+      {
+        background: linear-gradient(to bottom, #18bc9c, #128f76);
+      }
       /* Scrollable column style */
       .scroll-container {
         max-height: 80vh;
@@ -290,6 +294,7 @@
       </button>
     </div>
 
+
     <!-- Spacer for center alignment -->
     <div class="flex-grow-1 d-flex justify-content-center">
       <!-- Recommend Button -->
@@ -314,6 +319,8 @@
     </div><!-- end .row -->
   </div><!-- end .container-fluid -->
 
+
+
   <!-- Recommend Modal -->
 <div class="modal fade" id="recommendModal" tabindex="-1" aria-labelledby="recommendModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg"> <!-- make it large, or use .modal-xl for extra large -->
@@ -323,14 +330,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- We will inject our recommended movie HTML here via JS -->
+        <!-- todo in future fix filtering here -->
         <div id="recommendationContent" class="row">
-          <!-- Example (Injected) -->
-          <!-- <div class="col-md-4">[movie widget 1]</div> -->
+          <!-- movies will be injected here -->
         </div>
       </div>
       <div class="modal-footer">
-        <!-- Footer actions if needed -->
+        <!-- something at the bottom?? :)? -->
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>

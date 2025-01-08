@@ -24,6 +24,7 @@ def combine_recommendation_data(list_of_movies):
     for uri, data in shared_actor_data.items():
         if uri not in combined_data:
             combined_data[uri] = {
+                "title": data["title"],
                 "originalSharedMovies": data["originalSharedMovies"],
                 "sharedMovieUris": data["sharedMovieUris"],
                 "actors": data.get("actors", []),
@@ -36,6 +37,7 @@ def combine_recommendation_data(list_of_movies):
     for uri, data in shared_director_data.items():
         if uri not in combined_data:
             combined_data[uri] = {
+                "title": data["title"],
                 "originalSharedMovies": data["originalSharedMovies"],
                 "sharedMovieUris": data["sharedMovieUris"],
                 "actors": [],
@@ -48,6 +50,7 @@ def combine_recommendation_data(list_of_movies):
     for uri, data in shared_genre_data.items():
         if uri not in combined_data:
             combined_data[uri] = {
+                "title": data["title"],
                 "originalSharedMovies": data["originalSharedMovies"],
                 "sharedMovieUris": data["sharedMovieUris"],
                 "actors": [],
@@ -74,14 +77,14 @@ def combine_recommendation_data(list_of_movies):
 
     
     # Write the combined data to a JSON file
-    output_file = "shared_data.json"
-    with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(combined_data, file, ensure_ascii=False, indent=2)
-    output_file = "original_movie_data.json"       
+    #output_file = "shared_data.json"
+    #with open(output_file, "w", encoding="utf-8") as file:
+        #json.dump(combined_data, file, ensure_ascii=False, indent=2)
+    #output_file = "original_movie_data.json"       
 
     original_movie_data = fetch_publicationdate(list_of_movies) 
-    with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(original_movie_data, file, ensure_ascii=False, indent=2)
+    #with open(output_file, "w", encoding="utf-8") as file:
+        #json.dump(original_movie_data, file, ensure_ascii=False, indent=2)
 
-    print(f"Combined data written to {output_file}")
+    #print(f"Combined data written to {output_file}")
     return combined_data, original_movie_data
