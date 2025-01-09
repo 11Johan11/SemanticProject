@@ -35,38 +35,26 @@ def recommend():
     for movie in movies:
         movie_ids.append(extract_id_from_uri(movie["uri"]))
 
-    combined_data, original_movie_data = combine_recommendation_data(movie_ids)
-    
-    recommended_movies = calculate_movie_points(combined_data, original_movie_data) # !!!!!!
+    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids)
+
+    print("Calculating movie points...")
+    recommended_movies = calculate_movie_points(shared_results, movie_data_for_target_movies) # !!!!!!
     recommended_movies = recommended_movies[:200] #start with 200 best
 
 
-    #map them back to the searchable movies to add imdb id tags
-    searchable_movies = current_app.config['SEARCHABLE_MOVIES']
-    
-    #extract all uris from the recommended movies
-    recommended_movies_uris = []
-    for data in recommended_movies:
-        recommended_movies_uris.append(data["movie_uri"])
-    recommended_movies_uris = set(recommended_movies_uris) #fast lookup
-
-    #prepare a list for all recommended uris and with their imdb ids to fetch metadata for 
-    fetch_movie_metadata_for_this = []
-    for searchable_movie in searchable_movies:
-        if searchable_movie["uri"] in recommended_movies_uris:
-            fetch_movie_metadata_for_this.append(searchable_movie)
-
-
-    """
     fetch_movie_metadata_for_this = []
     for movie in recommended_movies:
-        fetch_movie_metadata_for_this.append({"uri": movie["movie_uri"], "imdb": None})
-    """
+        fetch_movie_metadata_for_this.append({"uri": movie["movie_uri"], "imdb": movie["imdbId"]})
+    
+    print("Getting movie metadata....")
     recommended_movies_metadata = add_movie_metadata(fetch_movie_metadata_for_this) # !!!!!!
 
 
     recommended_movies = _map_metadata_to_recommended_movies(recommended_movies, recommended_movies_metadata)
  
+    with open("johan_recommended_with_metadata.json", "w", encoding="utf-8") as file:
+        json.dump(recommended_movies, file, ensure_ascii=False, indent=2)
+
 
     #now we got everything, imdb ratings, recommmended score, everything
     #TODO IS TO DO A FINAL POLISH ON THE SCORE AND LOWER SCORES WITH BAD IMDB RATINGS
@@ -101,8 +89,12 @@ def recommend():
     recommended_movies_adjusted.sort(key=lambda x: x["points"], reverse=True)  #sort again
     recommended_movies_adjusted = recommended_movies_adjusted[:100] #discard the rest of the 100 potential shit movies
 
+    #with open("johan_recommended_with_metadata_adjusted.json", "w", encoding="utf-8") as file:
+        #json.dump(recommended_movies_adjusted, file, ensure_ascii=False, indent=2)
 
-    return json.dumps(recommended_movies)
+    #time.sleep(99999999)
+
+    return json.dumps(recommended_movies_adjusted)
 
 
 

@@ -9,7 +9,7 @@ import os
 from controller.search_controller import search_blueprint
 from controller.recommend_controller import recommend_blueprint
 
-from model.graph.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors, fetch_publicationdate
+from model.graph.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors
 from model.graph.init import init_graph
 from model.search.search_preload import load_movies, load_actors, load_directors
 from combine_recommendation_data import combine_recommendation_data

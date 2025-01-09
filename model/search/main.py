@@ -68,10 +68,13 @@ def _fetch_tmdb_data(entry, session):
         if data["movie_results"]:
             movie = data["movie_results"][0]
             poster_path = movie.get("poster_path")
+            backdrop_path = movie.get("backdrop_path")
             entry.update({
                 "ratings": movie.get("vote_average", "0"),
                 "media_type": movie.get("media_type", "movie"),
                 "popularity": movie.get("popularity", 0),
+                "backdrop": f"https://image.tmdb.org/t/p/original/{backdrop_path}",
+                "overview": movie.get("overview", ""),
                 "imdb": entry["imdb"], 
                 "poster": (f"https://image.tmdb.org/t/p/original/{poster_path}"
                            if poster_path else 

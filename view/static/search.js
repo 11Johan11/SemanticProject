@@ -1,5 +1,12 @@
 let searchTimeout;
 
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, (match) => {
+    const escape = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    return escape[match];
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search-input');
     const searchSwitchButtons = document.querySelectorAll('#search-switch');
@@ -199,7 +206,7 @@ results.forEach((item) => {
                     background-position: center;"
              gs-w="${config.gsWidth}"
              gs-h="${config.gsHeight}"
-             data-meta='${JSON.stringify(item)}'>
+             data-meta='${escapeHtml(JSON.stringify(item))}'>
           <div class="widget-title-bar">${item.name}</div>
           ${ratingHTML}
         </div>
@@ -257,7 +264,7 @@ results.forEach((item) => {
 
     //build the widget HTML
     const widgetHTML = `
-      <div class="grid-stack-item" data-meta='${JSON.stringify(metadata)}'
+      <div class="grid-stack-item" data-meta='${escapeHtml(JSON.stringify(metadata))}'
            gs-w="${config.gsWidth}"
            gs-h="${config.gsHeight}">
         <div class="grid-stack-item-content"

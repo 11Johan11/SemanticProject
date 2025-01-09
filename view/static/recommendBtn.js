@@ -1,5 +1,9 @@
 //recommend
 document.addEventListener('DOMContentLoaded', function () {
+
+
+
+
   const recommendBtn = document.getElementById('recommendBtn');
   
   recommendBtn.addEventListener('click', function () {
@@ -61,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     media_type: metadata.media_type || 'unknown',
                     name: movie.title || 'Unknown',
                     popularity: metadata.popularity || 0,
+                    backdrop: metadata.backdrop,
+                    overview: metadata.overview,
                     poster: poster,
                     ratings: metadata.ratings || 0,
                     score: movie.points,
@@ -121,9 +127,58 @@ document.addEventListener('DOMContentLoaded', function () {
     recommendBtn.innerHTML = 'Recommend';
     recommendBtn.disabled = false;
 
+   
+
+
+
     // Initialize and show the modal
     const recommendModal = new bootstrap.Modal(document.getElementById('recommendModal'), {});
     recommendModal.show();
+
+
+    //now fixx so we can clcik the movies for extra info
+    document.addEventListener('click', function (e) {
+      const movieWidget = e.target.closest('.grid-stack-item');
+      if (movieWidget) {
+        const movieMeta = JSON.parse(decodeURIComponent(movieWidget.getAttribute('data-meta')));
+
+        console.log(movieMeta)
+        // Populate the movie details modal
+        const movieDetailsContent = document.getElementById('movieDetailsContent');
+        movieDetailsContent.innerHTML = `
+            <div style="position: relative; display: inline-block; max-width: 100%; margin-bottom: 20px;">
+              <img 
+                src="${movieMeta.backdrop || movieMeta.poster || 'https://via.placeholder.com/300'}" 
+                alt="${movieMeta.name || 'Backdrop'}" 
+                style="width: 100%; height: auto; display: block;"
+              >
+              <div style="
+                position: absolute; 
+                bottom: 0; 
+                width: 100%; 
+                background: rgba(0, 0, 0, 0.7); 
+                color: white; 
+                padding: 10px; 
+                box-sizing: border-box;
+              ">
+                <p style="margin: 0;">${movieMeta.overview || 'No overview available.'}</p>
+              </div>
+            </div>
+            <h3>${movieMeta.name || 'Unknown'}</h3>
+            <p><strong>IMDb Rating:</strong> ${movieMeta.imdb_ratings || 'N/A'}</p>
+            <p><strong>Media Type:</strong> ${movieMeta.media_type || 'N/A'}</p>
+            <p><strong>Popularity:</strong> ${movieMeta.popularity || 'N/A'}</p>
+            <p><strong>Score:</strong> ${movieMeta.score || 'N/A'}</p>
+            <p><strong>URI:</strong> <a href="${movieMeta.uri || '#'}" target="_blank">${movieMeta.uri || 'N/A'}</a></p>
+        `;
+
+        // Show the movie details modal
+        const movieDetailsModal = new bootstrap.Modal(document.getElementById('movieDetailsModal'), {});
+        movieDetailsModal.show();
+      }
+    });
+
+
       })
       .catch(err => {
         console.error('Error in /recommend request:', err);

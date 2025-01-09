@@ -266,13 +266,13 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
         })
 
     # Save the result to a JSON file
-    with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(movies_with_shared_genres, file, ensure_ascii=False, indent=2)
+    #with open(output_file, "w", encoding="utf-8") as file:
+        #json.dump(movies_with_shared_genres, file, ensure_ascii=False, indent=2)
 
-    print(f"Results saved to {output_file}")
+    #print(f"Results saved to {output_file}")
     return movies_with_shared_genres
 
-def fetch_publicationdate(movie_ids):
+def fetch_movie_data(movie_ids):
     g = init_graph()
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
     
@@ -282,21 +282,30 @@ def fetch_publicationdate(movie_ids):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
     
-    SELECT ?targetMovie (MIN(?date) AS ?publicationDate) WHERE {{
+    SELECT DISTINCT ?targetMovie ?publicationDate ?imdbId ?title {{
         VALUES ?targetMovie {{ {movie_filter} }}
-        ?targetMovie wdt:P577 ?date.
+        ?targetMovie wdt:P577 ?publicationDate.
+        ?targetMovie wdt:P345 ?imdbId.
+        ?targetMovie rdfs:label ?title.
+
     }}
-    GROUP BY ?targetMovie
     """
 
-    results = []
+    results = {}
 
     for row in g.query(query):
-        # Format the publicationDate as YYYY-MM-DD
+        #format the publicationDate as YYYY-MM-DD
+        #try:
         raw_date = str(row.publicationDate)
-        formatted_date = raw_date.split("T")[0]  # Extract date portion before 'T'
-        results.append({
-            "movie": str(row.targetMovie),
-            "publicationDate": formatted_date
-        })
+        formatted_date = raw_date.split("T")[0]  #extract date portion before 'T'
+        #except:
+       
+
+        results[str(row.targetMovie)] = {
+            "publicationDate": formatted_date,
+            "title": str(row.title),
+            "imdbId": str(row.imdbId)
+        }
     return results
+
+#def fetch_everything(movie_ids):
