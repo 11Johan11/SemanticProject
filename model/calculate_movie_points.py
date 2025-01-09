@@ -167,7 +167,8 @@ def calculate_movie_points(movie_data, movie_data_for_target_movies):
         "genres": 5,
         "directors": 15,
         "wishedActor": 30,
-        "wishedDirector": 30
+        "wishedDirector": 30,
+        "actor_director_combo": 50  # Extra points for wishedActor and wishedDirector in the same movie
     }
 
     # Extract publication years of target movies
@@ -189,42 +190,66 @@ def calculate_movie_points(movie_data, movie_data_for_target_movies):
 
     for movie_uri, details in movie_data.items():
         points = 0
+        point_breakdown = {}  # Record of why points were awarded
 
         for shared_entry in details.get("shared_result", []):
             shared_movies = shared_entry["sharedMovies"]
             common = shared_entry["common"]
 
+            # Check for regular categories like actors, genres, etc.
             for category, items in common.items():
                 if category in WEIGHTS:
-                    multiplier = len(shared_movies)  # More shared movies, higher weight
-                    points += len(items) * WEIGHTS[category] * multiplier
+                    multiplier = max(len(shared_movies), 1)  # At least 1 multiplier even if sharedMovies is empty
+                    category_points = len(items) * WEIGHTS[category] * multiplier
+                    points += category_points
 
+                    # Record the contribution of this category
+                    point_breakdown[category] = {
+                        "items": items,
+                        "shared_movies": shared_movies,
+                        "weight": WEIGHTS[category],
+                        "points_awarded": category_points
+                    }
 
+            # Check for wishedActor and wishedDirector interaction
+            if "wishedActor" in common and "wishedDirector" in common:
+                interaction_points = WEIGHTS["actor_director_combo"] * max(len(shared_movies), 1)
+                points += interaction_points
 
+                # Record the interaction points
+                point_breakdown["actor_director_combo"] = {
+                    "wishedActor": common["wishedActor"],
+                    "wishedDirector": common["wishedDirector"],
+                    "shared_movies": shared_movies,
+                    "points_awarded": interaction_points
+                }
 
         # Calculate proximity bonus
         try:
             publication_year = int(details.get("publicationDate", "0").split("-")[0])
-            points += calculate_proximity_bonus(publication_year)
+            proximity_points = calculate_proximity_bonus(publication_year)
+            points += proximity_points
+
+            # Record proximity bonus
+            point_breakdown["proximity_bonus"] = {
+                "publication_year": publication_year,
+                "target_years": target_years,
+                "points_awarded": proximity_points
+            }
         except ValueError:
-            pass
+            point_breakdown["proximity_bonus"] = "Invalid or missing publication year"
 
         recommended_movies.append({
             "title": details.get("title"),
             "imdbId": details.get("imdbId"),
             "movie_uri": movie_uri,
             "points": points,
+            "point_breakdown": point_breakdown,
             "shared_result": details.get("shared_result"),
             "publicationDate": details.get("publicationDate")
         })
 
     # Sort movies by points (descending)
     recommended_movies.sort(key=lambda x: x["points"], reverse=True)
-
-    #with open("johan_recommended_movies.json", "w", encoding="utf-8") as file:
-        #json.dump(recommended_movies, file, ensure_ascii=False, indent=2)    
-
-    #TODO: perhaps also add actors uris
-    #time.sleep(99999)
 
     return recommended_movies

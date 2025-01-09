@@ -176,101 +176,45 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
             add_shared_result(movie_uri, shared_movies, {"genres": genres})
 
 
-    """
-
-  "http://www.wikidata.org/entity/Q1004433": {
-    "shared_result": [
-      {
-        "sharedMovies": [    
-          "Q496654",
-          "Q56312570"
-        ],
-        "common": {
-          "actors": [
-            "Adam Sandler"     should have wishedActor Adam Sandler here not 
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [    not down here, the shharedMovie is only supposed to be the input movies so it should be up 
-          "Q1004433"
-        ],
-        "common": {
-          "wishedActor": "Adam Sandler",
-          "wishedActorUri": "http://www.wikidata.org/entity/Q132952",
-          "movieName": "Bulletproof"
-        }
-      }
-    ],
-
-
-
-    """
-
     #WISHED ACTORS
+    # Process wished actors
     for movie_uri, data in actor_movies.items():
         wished_actors = data.get("wishedActors", [])
         if not wished_actors:
-            continue  # Skip movies with no wished actors
+            continue
 
         if movie_uri not in shared_results:
-            shared_results[movie_uri] = {
-                "shared_result": []
-            }
+            shared_results[movie_uri] = {"shared_result": []}
 
-        found = False
-        for result in shared_results[movie_uri]["shared_result"]:
-            for wished_actor in wished_actors:
-                if wished_actor["wishedActorName"] in result.get("common", {}).get("actors", []):
-                    result["common"].setdefault("wishedActor", []).append(wished_actor["wishedActorName"])
-                    result["common"].setdefault("wishedActorUri", []).append(wished_actor["wishedActorUri"])
-                    found = True
+        for wished_actor in wished_actors:
+            add_shared_result(
+                movie_uri,
+                [movie_uri],  # Only include the specific movie as shared
+                {
+                    "wishedActor": [wished_actor["wishedActorName"]],
+                    "wishedActorUri": [wished_actor["wishedActorUri"]],
+                },
+            )
 
-        if not found:
-            shared_results[movie_uri]["shared_result"].append({
-                "sharedMovies": list_of_movies,  # Input movies only
-                "common": {
-                    "wishedActor": [actor["wishedActorName"] for actor in wished_actors],
-                    "wishedActorUri": [actor["wishedActorUri"] for actor in wished_actors],
-                }
-            })
-
+    # Process wished directors
     for movie_uri, data in director_movies.items():
         wished_directors = data.get("wishedDirectors", [])
         if not wished_directors:
-            continue  #Skip movies with no wished directors
+            continue
 
         if movie_uri not in shared_results:
-            shared_results[movie_uri] = {
-                "shared_result": []
-            }
+            shared_results[movie_uri] = {"shared_result": []}
 
-        found = False
-        for result in shared_results[movie_uri]["shared_result"]:
-            for wished_director in wished_directors:
-                if wished_director["wishedDirectorName"] in result.get("common", {}).get("directors", []):
-                    result["common"].setdefault("wishedDirector", []).append(wished_director["wishedDirectorName"])
-                    result["common"].setdefault("wishedDirectorUri", []).append(wished_director["wishedDirectorUri"])
-                    found = True
+        for wished_director in wished_directors:
+            add_shared_result(
+                movie_uri,
+                [movie_uri],  # Only include the specific movie as shared
+                {
+                    "wishedDirector": [wished_director["wishedDirectorName"]],
+                    "wishedDirectorUri": [wished_director["wishedDirectorUri"]],
+                },
+            )
 
-        if not found:
-            shared_results[movie_uri]["shared_result"].append({
-                "sharedMovies": list_of_movies,  # Input movies only
-                "common": {
-                    "wishedDirector": [director["wishedDirectorName"] for director in wished_directors],
-                    "wishedDirectorUri": [director["wishedDirectorUri"] for director in wished_directors],
-                }
-            })
 
     new_list_of_movies = []
     for uri, data in shared_results.items():
@@ -291,9 +235,270 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
 
 
   
-    #with open("johan.json", "w", encoding="utf-8") as file:
-        #json.dump(shared_results, file, ensure_ascii=False, indent=2)
+    with open("johan.json", "w", encoding="utf-8") as file:
+        json.dump(shared_results, file, ensure_ascii=False, indent=2)
 
+
+    """
+},
+  "http://www.wikidata.org/entity/Q16704857": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Лера",
+    "publicationDate": "2007-01-01",
+    "imdbId": "tt3498014"
+  },
+  "http://www.wikidata.org/entity/Q167051": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film",
+            "romance film"
+          ]
+        }
+      },
+      {
+        "sharedMovies": [
+          "Q163872",
+          "Q1405126",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "wishedActor": [
+            "Brad Pitt"
+          ],
+          "wishedActorUri": [
+            "http://www.wikidata.org/entity/Q35332"
+          ]
+        }
+      }
+    ],
+    "title": "The Dark Side of the Sun",
+    "publicationDate": "1988-01-01",
+    "imdbId": "tt0118930"
+  },
+  "http://www.wikidata.org/entity/Q1670513": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Sunshine State",
+    "publicationDate": "2002-01-01",
+    "imdbId": "tt0286179"
+  },
+  "http://www.wikidata.org/entity/Q16705797": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Summer's Children",
+    "publicationDate": "1979-01-01",
+    "imdbId": "tt0088203"
+  },
+  "http://www.wikidata.org/entity/Q16706317": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Whispering Pages",
+    "publicationDate": "1994-01-01",
+    "imdbId": "tt0108338"
+  },
+  "http://www.wikidata.org/entity/Q16707610": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film",
+            "historical film"
+          ]
+        }
+      }
+    ],
+    "title": "Her Name Was Fanny Kaplan",
+    "publicationDate": "2016-07-19",
+    "imdbId": "tt5017008"
+  },
+  "http://www.wikidata.org/entity/Q1670780": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "The Substance of Fire",
+    "publicationDate": "1997-01-01",
+    "imdbId": "tt0117773"
+  },
+  "http://www.wikidata.org/entity/Q16707866": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Une lettre ne s'écrit pas",
+    "publicationDate": "2013-01-01",
+    "imdbId": "tt2375735"
+  },
+  "http://www.wikidata.org/entity/Q16708461": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "In the Line of Duty: Blaze of Glory",
+    "publicationDate": "1997-01-01",
+    "imdbId": "tt0119363"
+  },
+  "http://www.wikidata.org/entity/Q1670881": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Oberstadtgass",
+    "publicationDate": "1956-01-01",
+    "imdbId": "tt0049566"
+  },
+  "http://www.wikidata.org/entity/Q167092": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+    "title": "Snowed In",
+    "publicationDate": "1926-01-01",
+    "imdbId": "tt0017408"
+  },
+  "http://www.wikidata.org/entity/Q16711026": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q1405126",
+          "Q163872",
+          "Q172241",
+          "Q44578"
+        ],
+        "common": {
+          "genres": [
+            "drama film"
+          ]
+        }
+      }
+    ],
+
+
+
+    """
 
     #time.sleep(999999)
 

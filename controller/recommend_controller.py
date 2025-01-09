@@ -50,6 +50,7 @@ def recommend():
 
     shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids, actor_ids, director_ids)
 
+
     print("Calculating movie points...")
     recommended_movies = calculate_movie_points(shared_results, movie_data_for_target_movies) # !!!!!!
     recommended_movies = recommended_movies[:200] #start with 200 best
@@ -86,14 +87,29 @@ def recommend():
                 imdb_rating = float(imdb_rating)
                 # Calculate multiplier
                 if imdb_rating < low_rating_threshold:
-                    multiplier = imdb_rating/ 10.0  # Strong penalty
+                    multiplier = imdb_rating / 10.0  # Strong penalty
                 else:
                     multiplier = imdb_rating / baseline_rating  # Normalization
                 # Adjust points
-                movie["points"] *= multiplier
+                original_points = movie["points"]
+                adjusted_points = original_points * multiplier
+                movie["points"] = adjusted_points
+
+                # Add to point breakdown
+                if "point_breakdown" not in movie:
+                    movie["point_breakdown"] = {}
+
+                movie["point_breakdown"]["imdb_adjustment"] = {
+                    "original_points": original_points,
+                    "imdb_rating": imdb_rating,
+                    "multiplier": multiplier,
+                    "adjusted_points": adjusted_points
+                }
             else:
                 # No adjustment if no metadata or ratings
-                continue
+                if "point_breakdown" not in movie:
+                    movie["point_breakdown"] = {}
+                movie["point_breakdown"]["imdb_adjustment"] = "No IMDb rating available"
 
         return recommended_movies
 
