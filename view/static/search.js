@@ -197,7 +197,8 @@ results.forEach((item) => {
 
 
   //populate with the new widgets from the search results
-  
+    
+    item["type"] = type;
     const widgetHTML = `
       <div class="col-6">
         <div class="grid-stack-item draggable-widget newWidget"
@@ -224,6 +225,7 @@ results.forEach((item) => {
   function addWidgetToGrid(item) {
    let ratingHTML = "";
    const metadata = JSON.parse(item.getAttribute('data-meta'));
+   metadata["type"] = type;
   if (type == "movie") {
     ratingHTML = `
 <!-- Parent container must have position: relative -->
