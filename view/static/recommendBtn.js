@@ -170,6 +170,18 @@ document.addEventListener('DOMContentLoaded', function () {
             <p><strong>Popularity:</strong> ${movieMeta.popularity || 'N/A'}</p>
             <p><strong>Score:</strong> ${movieMeta.score || 'N/A'}</p>
             <p><strong>URI:</strong> <a href="${movieMeta.uri || '#'}" target="_blank">${movieMeta.uri || 'N/A'}</a></p>
+            <p><strong>IMDB:</strong> <a href="https://www.imdb.com/title/${movieMeta.imdb || '#'}" target="_blank">${movieMeta.imdb || 'N/A'}</a></p>
+            <div style="
+              margin-top: 30px; 
+              padding: 15px; 
+              border-radius: 5px; 
+              background: linear-gradient(135deg, #333333, #555555); 
+              color: white; 
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            ">
+              <h3>Recommendation Insight</h3>
+              <p>${movieMeta.recommendationInsight || 'No insights available at the moment.'}</p>
+            </div>        
         `;
 
         // Show the movie details modal
