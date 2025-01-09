@@ -68,10 +68,13 @@ def _fetch_tmdb_data(entry, session):
         if data["movie_results"]:
             movie = data["movie_results"][0]
             poster_path = movie.get("poster_path")
+            backdrop_path = movie.get("backdrop_path")
             entry.update({
                 "ratings": movie.get("vote_average", "0"),
                 "media_type": movie.get("media_type", "movie"),
                 "popularity": movie.get("popularity", 0),
+                "backdrop": f"https://image.tmdb.org/t/p/original/{backdrop_path}",
+                "overview": movie.get("overview", ""),
                 "imdb": entry["imdb"], 
                 "poster": (f"https://image.tmdb.org/t/p/original/{poster_path}"
                            if poster_path else 
@@ -132,7 +135,7 @@ def add_movie_metadata(search_results):
 
     #fetch TMDB data in parallel using 30 workers
     tmdb_fetched_results = []
-    with ThreadPoolExecutor(max_workers=30) as executor:
+    with ThreadPoolExecutor(max_workers=100) as executor:
         futures = {
             executor.submit(_fetch_tmdb_data, entry, tmdb_session): entry
             for entry in search_results
@@ -143,7 +146,7 @@ def add_movie_metadata(search_results):
     #fetch IMDb ratings in parallel using another 30 workers
     imdb_session = requests.Session()
     omdb_fetched_results = []
-    with ThreadPoolExecutor(max_workers=30) as executor:
+    with ThreadPoolExecutor(max_workers=100) as executor:
         futures = {
             executor.submit(_fetch_omdb_data, entry, imdb_session): entry
             for entry in tmdb_fetched_results

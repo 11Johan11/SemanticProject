@@ -166,6 +166,10 @@
       }
 
   
+      .modal-content
+      {
+        background: linear-gradient(to bottom, #18bc9c, #128f76);
+      }
       /* Scrollable column style */
       .scroll-container {
         max-height: 80vh;
@@ -290,6 +294,7 @@
       </button>
     </div>
 
+
     <!-- Spacer for center alignment -->
     <div class="flex-grow-1 d-flex justify-content-center">
       <!-- Recommend Button -->
@@ -313,6 +318,49 @@
       </div>
     </div><!-- end .row -->
   </div><!-- end .container-fluid -->
+
+
+
+  <!-- Recommend Modal -->
+<div class="modal fade" id="recommendModal" tabindex="-1" aria-labelledby="recommendModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- make it large, or use .modal-xl for extra large -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recommendModalLabel">Recommended Movies</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- todo in future fix filtering here -->
+        <div id="recommendationContent" class="row">
+          <!-- movies will be injected here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- something at the bottom?? :)? -->
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Movie Details Modal -->
+<div class="modal fade" id="movieDetailsModal" tabindex="-1" aria-labelledby="movieDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="movieDetailsModalLabel">Movie Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="movieDetailsContent">
+        <!-- Movie details will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- GridStack JS -->
   <script src="node_modules/gridstack/dist/gridstack-all.js"></script>
