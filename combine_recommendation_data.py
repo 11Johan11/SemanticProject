@@ -235,8 +235,8 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
 
 
   
-    with open("johan.json", "w", encoding="utf-8") as file:
-        json.dump(shared_results, file, ensure_ascii=False, indent=2)
+    #with open("johan.json", "w", encoding="utf-8") as file:
+        #json.dump(shared_results, file, ensure_ascii=False, indent=2)
 
 
     """
