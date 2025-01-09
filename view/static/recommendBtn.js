@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ movies: allMetadata }),
+      body: JSON.stringify({ allMetadata }),
     })
       .then(response => response.json())
 .then((data) => {

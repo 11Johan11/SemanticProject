@@ -23,17 +23,32 @@ recommend_blueprint = Blueprint('recommend', __name__)
 @recommend_blueprint.route('/recommend', methods=['POST'])
 def recommend():
     data = request.get_json()
-    movies = data.get('movies', [])
+    #movies = data.get('movies', [])
 
-    #num movies
-    movies_count = len(movies)
-    print("Received Metadata:", movies)
-    print("Total Movies:", movies_count)
+    #num moviesquentin
+    #movies_count = len(movies)
+    #print("Received Metadata:", movies)
+    #print("Total Movies:", movies_count)
  
+    print(data)
 
     movie_ids = []
-    for movie in movies:
-        movie_ids.append(extract_id_from_uri(movie["uri"]))
+    actor_ids = []
+    director_ids = []
+    for media in data["allMetadata"]:
+        print(media)
+        if media["type"] == "movie":
+            movie_ids.append(extract_id_from_uri(media["uri"]))
+        elif media["type"] == "actor":
+            actor_ids.append(extract_id_from_uri(media["uri"]))
+        elif media["type"] == "director":
+            director_ids.append(extract_id_from_uri(media["uri"]))
+
+    print(movie_ids)
+    print(actor_ids)
+    print(director_ids)
+
+    time.sleep(999999)
 
     shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids)
 
