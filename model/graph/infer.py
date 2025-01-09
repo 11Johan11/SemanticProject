@@ -215,20 +215,19 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
 
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # Combined query to fetch all relevant data in one go
+    # Combined query to fetch all relevant data in one go #?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
        
-    SELECT DISTINCT ?otherMovie ?otherMovieName ?sharedGenre ?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    SELECT DISTINCT ?otherMovie ?sharedGenre ?sharedGenreName
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}
         ?targetMovie wdt:P136 ?sharedGenre .
         ?otherMovie wdt:P136 ?sharedGenre .
-        ?otherMovie rdfs:label ?otherMovieName .
         ?sharedGenre rdfs:label ?sharedGenreName .
         FILTER (?otherMovie != ?targetMovie)
     }}
@@ -240,11 +239,11 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
     results = []
     for row in g.query(query):
         results.append({
-            "title": str(row.otherMovieName),
+            #"title": str(row.otherMovieName),
             "movie": str(row.otherMovie),
             "genre_uri": str(row.sharedGenre),
             "genre_name": str(row.sharedGenreName),
-            "originalSharedMovies": int(row.originalSharedMovies),
+            #"originalSharedMovies": int(row.originalSharedMovies),
             "sharedMovieUris": str(row.sharedMovieUris).split(",")
         })
 
@@ -255,8 +254,8 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
         movie = result["movie"]
         if movie not in movies_with_shared_genres:
             movies_with_shared_genres[movie] = {
-                "title": result["title"],
-                "originalSharedMovies": result["originalSharedMovies"],
+                #"title": result["title"],
+                #"originalSharedMovies": result["originalSharedMovies"],
                 "sharedMovieUris": result["sharedMovieUris"],
                 "genres": []
             }
