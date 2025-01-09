@@ -1,5 +1,21 @@
 let searchTimeout;
 
+function deactivateModal() {
+    const modal = document.getElementById('movieDetailsModal');
+    
+    // Remove the event listeners that show the modal
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+    if (modalInstance) {
+        modalInstance.dispose(); // Remove Bootstrap's event handling
+    }
+
+    // Ensure the modal cannot be shown by removing classes and attributes
+    modal.classList.remove('fade', 'show');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none'; // Hide the modal completely
+}
+
+
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, (match) => {
     const escape = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -8,6 +24,7 @@ function escapeHtml(str) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+
     const searchInput = document.getElementById('search-input');
     const searchSwitchButtons = document.querySelectorAll('#search-switch');
     const searchButton = document.getElementById('search-button');
@@ -47,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupSearch(type, placeholderText) {
         console.log('Setting up search for type:', type);
 
+
+
         //clean up previous event listeners
         searchInput.removeEventListener('input', handleInput);
         searchInput.removeEventListener('keydown', handleKeydown);
@@ -62,6 +81,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleInput() {
+        console.log("Deactivate modal");
+        deactivateModal();
+
         clearTimeout(searchTimeout);
         const query = searchInput.value.trim();
         if (query.length >= 3) {
@@ -197,7 +219,8 @@ results.forEach((item) => {
 
 
   //populate with the new widgets from the search results
-  
+    
+    item["type"] = type;
     const widgetHTML = `
       <div class="col-6">
         <div class="grid-stack-item draggable-widget newWidget"
@@ -224,6 +247,7 @@ results.forEach((item) => {
   function addWidgetToGrid(item) {
    let ratingHTML = "";
    const metadata = JSON.parse(item.getAttribute('data-meta'));
+   metadata["type"] = type;
   if (type == "movie") {
     ratingHTML = `
 <!-- Parent container must have position: relative -->

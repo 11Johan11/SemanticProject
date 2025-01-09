@@ -21,7 +21,7 @@ def infer_shared_actors(movie_ids):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie ?otherMovieName
+    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie 
                    (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
@@ -29,10 +29,9 @@ def infer_shared_actors(movie_ids):
         ?targetMovie wdt:P161 ?sharedCastMember .
         ?sharedCastMember rdfs:label ?sharedCastMemberName .
         ?otherMovie wdt:P161 ?sharedCastMember .
-        ?otherMovie rdfs:label ?otherMovieName . 
         FILTER (?otherMovie != ?targetMovie) 
     }}
-    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie ?otherMovieName
+    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie
     ORDER BY DESC(?originalSharedMovies)
     """
 
@@ -45,12 +44,12 @@ def infer_shared_actors(movie_ids):
         shared_cast_member_name = str(row.sharedCastMemberName)
         original_shared_movies = int(row.originalSharedMovies)
         shared_movie_uris = str(row.sharedMovieUris).split(",")
-        other_movie_name = str(row.otherMovieName)
+        #other_movie_name = str(row.otherMovieName)
 
         # Initialize the structure if the movie isn't already present
         if other_movie not in movies_with_shared_actors:
             movies_with_shared_actors[other_movie] = {
-                "title": other_movie_name,
+                #"title": other_movie_name,
                 "originalSharedMovies": original_shared_movies,
                 "sharedMovieUris": shared_movie_uris,
                 "actors": []
@@ -215,20 +214,19 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
 
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # Combined query to fetch all relevant data in one go
+    # Combined query to fetch all relevant data in one go #?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
        
-    SELECT DISTINCT ?otherMovie ?otherMovieName ?sharedGenre ?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    SELECT DISTINCT ?otherMovie ?sharedGenre ?sharedGenreName
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}
         ?targetMovie wdt:P136 ?sharedGenre .
         ?otherMovie wdt:P136 ?sharedGenre .
-        ?otherMovie rdfs:label ?otherMovieName .
         ?sharedGenre rdfs:label ?sharedGenreName .
         FILTER (?otherMovie != ?targetMovie)
     }}
@@ -240,11 +238,11 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
     results = []
     for row in g.query(query):
         results.append({
-            "title": str(row.otherMovieName),
+            #"title": str(row.otherMovieName),
             "movie": str(row.otherMovie),
             "genre_uri": str(row.sharedGenre),
             "genre_name": str(row.sharedGenreName),
-            "originalSharedMovies": int(row.originalSharedMovies),
+            #"originalSharedMovies": int(row.originalSharedMovies),
             "sharedMovieUris": str(row.sharedMovieUris).split(",")
         })
 
@@ -255,8 +253,8 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
         movie = result["movie"]
         if movie not in movies_with_shared_genres:
             movies_with_shared_genres[movie] = {
-                "title": result["title"],
-                "originalSharedMovies": result["originalSharedMovies"],
+                #"title": result["title"],
+                #"originalSharedMovies": result["originalSharedMovies"],
                 "sharedMovieUris": result["sharedMovieUris"],
                 "genres": []
             }
@@ -308,4 +306,82 @@ def fetch_movie_data(movie_ids):
         }
     return results
 
+
+
+def fetch_movies_from_actors(actor_ids):
+    g = init_graph()
+    actor_filter = " ".join(f"wd:{actor}" for actor in actor_ids)
+    
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    
+    SELECT DISTINCT ?movie ?movieName ?actor ?actorName {{
+        VALUES ?actor {{ {actor_filter} }}
+        ?movie wdt:P161 ?actor.
+        ?movie rdfs:label ?movieName.
+        ?actor rdfs:label ?actorName.
+    }}
+    """
+
+    results = {}
+
+    for row in g.query(query):
+        movie_uri = str(row.movie)
+        actor_uri = str(row.actor)
+        actor_name = str(row.actorName)
+        
+        if movie_uri not in results:
+            results[movie_uri] = {
+                "wishedActors": [],  # Initialize a list to store multiple actors
+                #"movieName": str(row.movieName)  # Uncomment if needed
+            }
+
+        results[movie_uri]["wishedActors"].append({
+            "wishedActorUri": actor_uri,
+            "wishedActorName": actor_name
+        })
+
+    return results
+
+
+def fetch_movies_from_directors(director_ids):
+    g = init_graph()
+    director_filter = " ".join(f"wd:{director}" for director in director_ids)
+    
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    
+    SELECT DISTINCT ?movie ?movieName ?director ?directorName {{
+        VALUES ?director {{ {director_filter} }}
+        ?movie wdt:P57 ?director.
+        ?movie rdfs:label ?movieName.
+        ?director rdfs:label ?directorName.
+    }}
+    """
+
+    results = {}
+
+    for row in g.query(query):
+        movie_uri = str(row.movie)
+        director_uri = str(row.director)
+        director_name = str(row.directorName)
+        
+        if movie_uri not in results:
+            results[movie_uri] = {
+                "wishedDirectors": [],  #Initialize a list to store multiple directors!!!
+                #"movieName": str(row.movieName)  # Uncomment if needed
+            }
+
+        results[movie_uri]["wishedDirectors"].append({
+            "wishedDirectorUri": director_uri,
+            "wishedDirectorName": director_name
+        })
+
+    return results    
 #def fetch_everything(movie_ids):

@@ -37,6 +37,31 @@
     "publicationDate": "2015-12-11"
   },
   {
+    "title": "I Now Pronounce You Chuck and Larry",
+    "imdbId": "tt0762107",
+    "movie_uri": "http://www.wikidata.org/entity/Q832456",
+    "points": 138,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905",
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Adam Sandler",
+            "Dan Aykroyd",
+            "Rob Schneider",
+            "Rachel Dratch",
+            "Jackie Sandler",
+            "Kevin James"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2007-07-12"
+  },
+  {
     "title": "50 First Dates",
     "imdbId": "tt0343660",
     "movie_uri": "http://www.wikidata.org/entity/Q241482",
@@ -166,30 +191,6 @@
     "publicationDate": "2014-05-22"
   },
   {
-    "title": "I Now Pronounce You Chuck and Larry",
-    "imdbId": "tt0762107",
-    "movie_uri": "http://www.wikidata.org/entity/Q832456",
-    "points": 118,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905",
-          "Q496654"
-        ],
-        "common": {
-          "actors": [
-            "Adam Sandler",
-            "Dan Aykroyd",
-            "Rob Schneider",
-            "Jackie Sandler",
-            "Kevin James"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2007-07-12"
-  },
-  {
     "title": "Bedtime Stories",
     "imdbId": "tt0960731",
     "movie_uri": "http://www.wikidata.org/entity/Q726464",
@@ -257,6 +258,29 @@
     "publicationDate": "2007-01-01"
   },
   {
+    "title": "Just Go with It",
+    "imdbId": "tt1564367",
+    "movie_uri": "http://www.wikidata.org/entity/Q747496",
+    "points": 102,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905",
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Adam Sandler",
+            "Sadie Sandler",
+            "Rachel Dratch",
+            "Jackie Sandler"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2011-02-08"
+  },
+  {
     "title": "Grown Ups 2",
     "imdbId": "tt2191701",
     "movie_uri": "http://www.wikidata.org/entity/Q5611721",
@@ -288,6 +312,39 @@
       }
     ],
     "publicationDate": "2013-01-01"
+  },
+  {
+    "title": "That's My Boy",
+    "imdbId": "tt1232200",
+    "movie_uri": "http://www.wikidata.org/entity/Q32535",
+    "points": 99,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905",
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Adam Sandler",
+            "Sadie Sandler",
+            "Rachel Dratch",
+            "Jackie Sandler"
+          ]
+        }
+      },
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2012-01-01"
   },
   {
     "title": "Jack and Jill",
@@ -418,28 +475,6 @@
     "publicationDate": "2016-05-27"
   },
   {
-    "title": "Just Go with It",
-    "imdbId": "tt1564367",
-    "movie_uri": "http://www.wikidata.org/entity/Q747496",
-    "points": 82,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905",
-          "Q496654"
-        ],
-        "common": {
-          "actors": [
-            "Adam Sandler",
-            "Sadie Sandler",
-            "Jackie Sandler"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2011-02-08"
-  },
-  {
     "title": "You Don't Mess with the Zohan",
     "imdbId": "tt0960144",
     "movie_uri": "http://www.wikidata.org/entity/Q958417",
@@ -495,38 +530,6 @@
       }
     ],
     "publicationDate": "2006-01-01"
-  },
-  {
-    "title": "That's My Boy",
-    "imdbId": "tt1232200",
-    "movie_uri": "http://www.wikidata.org/entity/Q32535",
-    "points": 79,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905",
-          "Q496654"
-        ],
-        "common": {
-          "actors": [
-            "Adam Sandler",
-            "Sadie Sandler",
-            "Jackie Sandler"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2012-01-01"
   },
   {
     "title": "Eight Crazy Nights",
@@ -8245,6 +8248,28 @@
     "publicationDate": "2015-07-25"
   },
   {
+    "title": "Sisters",
+    "imdbId": "tt1850457",
+    "movie_uri": "http://www.wikidata.org/entity/Q17183934",
+    "points": 35,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2015-12-18"
+  },
+  {
     "title": "Running with Scissors",
     "imdbId": "tt0439289",
     "movie_uri": "http://www.wikidata.org/entity/Q1755538",
@@ -8571,6 +8596,37 @@
       }
     ],
     "publicationDate": "2006-01-01"
+  },
+  {
+    "title": "Shadows and Fog",
+    "imdbId": "tt0105378",
+    "movie_uri": "http://www.wikidata.org/entity/Q910523",
+    "points": 35,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905"
+        ],
+        "common": {
+          "actors": [
+            "Madonna",
+            "Julie Kavner",
+            "Peter Dinklage"
+          ]
+        }
+      },
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1991-01-01"
   },
   {
     "title": "Puff, Puff, Pass",
@@ -9004,36 +9060,6 @@
       }
     ],
     "publicationDate": "2009-12-24"
-  },
-  {
-    "title": "Spy Kids 3-D: Game Over",
-    "imdbId": "tt0338459",
-    "movie_uri": "http://www.wikidata.org/entity/Q550196",
-    "points": 34,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "fantasy film",
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2003-01-01"
   },
   {
     "title": "Total Recall",
@@ -10581,35 +10607,6 @@
     "publicationDate": "2014-06-04"
   },
   {
-    "title": "Bring It On: In It to Win It",
-    "imdbId": "tt0972785",
-    "movie_uri": "http://www.wikidata.org/entity/Q1507221",
-    "points": 33,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2007-01-01"
-  },
-  {
     "title": "Alexander and the Terrible, Horrible, No Good, Very Bad Day",
     "imdbId": "tt1698641",
     "movie_uri": "http://www.wikidata.org/entity/Q15104217",
@@ -11771,6 +11768,25 @@
     "publicationDate": "2011-01-01"
   },
   {
+    "title": "Woody Allen: A Documentary",
+    "imdbId": "tt1895299",
+    "movie_uri": "http://www.wikidata.org/entity/Q4020794",
+    "points": 32,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2011-11-20"
+  },
+  {
     "title": "I Love You Too",
     "imdbId": "tt1376709",
     "movie_uri": "http://www.wikidata.org/entity/Q4535752",
@@ -11894,6 +11910,29 @@
       }
     ],
     "publicationDate": "2011-01-01"
+  },
+  {
+    "title": "Little",
+    "imdbId": "tt8085790",
+    "movie_uri": "http://www.wikidata.org/entity/Q60631382",
+    "points": 32,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
+          "genres": [
+            "fantasy film",
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2019-04-12"
   },
   {
     "title": "Mission: Impossible – Ghost Protocol",
@@ -16746,35 +16785,6 @@
     "publicationDate": "2004-04-30"
   },
   {
-    "title": "Spring Breakers",
-    "imdbId": "tt2101441",
-    "movie_uri": "http://www.wikidata.org/entity/Q1781285",
-    "points": 31,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2013-01-01"
-  },
-  {
     "title": "Around the Bend",
     "imdbId": "tt0384810",
     "movie_uri": "http://www.wikidata.org/entity/Q1810952",
@@ -16977,35 +16987,6 @@
       }
     ],
     "publicationDate": "2008-05-15"
-  },
-  {
-    "title": "13 Going on 30",
-    "imdbId": "tt0337563",
-    "movie_uri": "http://www.wikidata.org/entity/Q224187",
-    "points": 31,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "fantasy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2004-04-23"
   },
   {
     "title": "Baywatch",
@@ -17539,6 +17520,28 @@
       }
     ],
     "publicationDate": "2004-06-18"
+  },
+  {
+    "title": "Freshman Orientation",
+    "imdbId": "tt0380420",
+    "movie_uri": "http://www.wikidata.org/entity/Q9340482",
+    "points": 31,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2004-01-01"
   },
   {
     "title": "Christmas with the Kranks",
@@ -18262,6 +18265,25 @@
     "publicationDate": "2015-01-01"
   },
   {
+    "title": "The Grief of Others",
+    "imdbId": "tt3545324",
+    "movie_uri": "http://www.wikidata.org/entity/Q21648835",
+    "points": 30,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2015-01-01"
+  },
+  {
     "title": "Home Alone 2: Lost in New York",
     "imdbId": "tt0104431",
     "movie_uri": "http://www.wikidata.org/entity/Q221202",
@@ -18292,37 +18314,6 @@
       }
     ],
     "publicationDate": "1992-11-20"
-  },
-  {
-    "title": "El asalto al Castillo de la Moncloa",
-    "imdbId": "tt0294308",
-    "movie_uri": "http://www.wikidata.org/entity/Q2842259",
-    "points": 30,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán",
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film",
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1978-01-01"
   },
   {
     "title": "Mission: Impossible III",
@@ -24043,6 +24034,28 @@
     "publicationDate": "2006-01-01"
   },
   {
+    "title": "Dickie Roberts: Former Child Star",
+    "imdbId": "tt0325258",
+    "movie_uri": "http://www.wikidata.org/entity/Q1210033",
+    "points": 29,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2003-01-01"
+  },
+  {
     "title": "Duplex",
     "imdbId": "tt0266489",
     "movie_uri": "http://www.wikidata.org/entity/Q128934",
@@ -24376,6 +24389,28 @@
         "common": {
           "actors": [
             "Rob Schneider"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2009-01-01"
+  },
+  {
+    "title": "Spring Breakdown",
+    "imdbId": "tt0814331",
+    "movie_uri": "http://www.wikidata.org/entity/Q2669623",
+    "points": 29,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
           ],
           "genres": [
             "comedy film"
@@ -25606,25 +25641,6 @@
     "publicationDate": "2016-01-01"
   },
   {
-    "title": "Elvis & Nixon",
-    "imdbId": "tt2093991",
-    "movie_uri": "http://www.wikidata.org/entity/Q18914954",
-    "points": 28,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2016-01-01"
-  },
-  {
     "title": "Mr. & Mrs. Smith",
     "imdbId": "tt0356910",
     "movie_uri": "http://www.wikidata.org/entity/Q191040",
@@ -25739,6 +25755,25 @@
     "publicationDate": "2016-01-01"
   },
   {
+    "title": "Hurricane Bianca",
+    "imdbId": "tt4007248",
+    "movie_uri": "http://www.wikidata.org/entity/Q20856799",
+    "points": 28,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2016-01-01"
+  },
+  {
     "title": "Romance & Cigarettes",
     "imdbId": "tt0368222",
     "movie_uri": "http://www.wikidata.org/entity/Q2092126",
@@ -25832,25 +25867,6 @@
       }
     ],
     "publicationDate": "2007-03-12"
-  },
-  {
-    "title": "For the Love of Spock",
-    "imdbId": "tt4572820",
-    "movie_uri": "http://www.wikidata.org/entity/Q23762870",
-    "points": 28,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2016-01-01"
   },
   {
     "title": "Patriots Day",
@@ -25979,6 +25995,25 @@
         "common": {
           "actors": [
             "Cameron Monaghan"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2005-01-01"
+  },
+  {
+    "title": "Winter Passing",
+    "imdbId": "tt0380817",
+    "movie_uri": "http://www.wikidata.org/entity/Q3063298",
+    "points": 28,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
           ]
         }
       }
@@ -33880,35 +33915,6 @@
     "publicationDate": "2019-03-21"
   },
   {
-    "title": "Spy Kids 2: The Island of Lost Dreams",
-    "imdbId": "tt0287717",
-    "movie_uri": "http://www.wikidata.org/entity/Q549908",
-    "points": 27,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2002-01-01"
-  },
-  {
     "title": "The Last Summer",
     "imdbId": "tt7957694",
     "movie_uri": "http://www.wikidata.org/entity/Q55395162",
@@ -33929,6 +33935,28 @@
           "Q496654"
         ],
         "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2019-01-01"
+  },
+  {
+    "title": "Wine Country",
+    "imdbId": "tt8169446",
+    "movie_uri": "http://www.wikidata.org/entity/Q55637796",
+    "points": 27,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
           "genres": [
             "comedy film"
           ]
@@ -33987,6 +34015,28 @@
       }
     ],
     "publicationDate": "2019-01-01"
+  },
+  {
+    "title": "Martin & Orloff",
+    "imdbId": "tt0283469",
+    "movie_uri": "http://www.wikidata.org/entity/Q6774846",
+    "points": 27,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2002-01-01"
   },
   {
     "title": "Moon Mater",
@@ -57614,6 +57664,44 @@
     "publicationDate": "2008-01-01"
   },
   {
+    "title": "Barn Red",
+    "imdbId": "tt0393081",
+    "movie_uri": "http://www.wikidata.org/entity/Q3635046",
+    "points": 26,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2004-01-01"
+  },
+  {
+    "title": "Looking for Kitty",
+    "imdbId": "tt0401593",
+    "movie_uri": "http://www.wikidata.org/entity/Q3836714",
+    "points": 26,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2004-01-01"
+  },
+  {
     "title": "Jobs",
     "imdbId": "tt2357129",
     "movie_uri": "http://www.wikidata.org/entity/Q392825",
@@ -57766,6 +57854,25 @@
     "publicationDate": "2004-01-01"
   },
   {
+    "title": "Harold",
+    "imdbId": "tt1041753",
+    "movie_uri": "http://www.wikidata.org/entity/Q5659852",
+    "points": 26,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2008-01-01"
+  },
+  {
     "title": "Get Smart",
     "imdbId": "tt0425061",
     "movie_uri": "http://www.wikidata.org/entity/Q570652",
@@ -57802,6 +57909,25 @@
       }
     ],
     "publicationDate": "2013-01-01"
+  },
+  {
+    "title": "Syrup",
+    "imdbId": "tt0762138",
+    "movie_uri": "http://www.wikidata.org/entity/Q7663530",
+    "points": 26,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2013-06-07"
   },
   {
     "title": "Street Kings",
@@ -66016,36 +66142,6 @@
     "publicationDate": "2001-09-21"
   },
   {
-    "title": "Shadows and Fog",
-    "imdbId": "tt0105378",
-    "movie_uri": "http://www.wikidata.org/entity/Q910523",
-    "points": 25,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Madonna",
-            "Peter Dinklage"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1991-01-01"
-  },
-  {
     "title": "Bicentennial Man",
     "imdbId": "tt0182789",
     "movie_uri": "http://www.wikidata.org/entity/Q170250",
@@ -70409,25 +70505,6 @@
       }
     ],
     "publicationDate": "2006-01-01"
-  },
-  {
-    "title": "Sisters",
-    "imdbId": "tt1850457",
-    "movie_uri": "http://www.wikidata.org/entity/Q17183934",
-    "points": 25,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2015-12-18"
   },
   {
     "title": "A Walk in the Woods",
@@ -89567,6 +89644,25 @@
     "publicationDate": "2003-01-01"
   },
   {
+    "title": "My Life in Ruins",
+    "imdbId": "tt0865559",
+    "movie_uri": "http://www.wikidata.org/entity/Q1419210",
+    "points": 24,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2009-01-01"
+  },
+  {
     "title": "Watchmen",
     "imdbId": "tt0409459",
     "movie_uri": "http://www.wikidata.org/entity/Q162182",
@@ -89605,6 +89701,25 @@
     "publicationDate": "2009-01-01"
   },
   {
+    "title": "Love N' Dancing",
+    "imdbId": "tt1028581",
+    "movie_uri": "http://www.wikidata.org/entity/Q1670516",
+    "points": 24,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2009-01-01"
+  },
+  {
     "title": "Crossing Over",
     "imdbId": "tt0924129",
     "movie_uri": "http://www.wikidata.org/entity/Q173955",
@@ -89622,6 +89737,25 @@
       }
     ],
     "publicationDate": "2009-01-01"
+  },
+  {
+    "title": "National Lampoon's Barely Legal",
+    "imdbId": "tt0302297",
+    "movie_uri": "http://www.wikidata.org/entity/Q2030569",
+    "points": 24,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2003-01-01"
   },
   {
     "title": "The Expendables 2",
@@ -90061,25 +90195,6 @@
     "publicationDate": "2003-02-07"
   },
   {
-    "title": "Her Smell",
-    "imdbId": "tt7942742",
-    "movie_uri": "http://www.wikidata.org/entity/Q52715587",
-    "points": 24,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2018-01-01"
-  },
-  {
     "title": "Everybody's Fine",
     "imdbId": "tt0780511",
     "movie_uri": "http://www.wikidata.org/entity/Q546917",
@@ -90213,6 +90328,25 @@
     "publicationDate": "2003-01-01"
   },
   {
+    "title": "Down with Love",
+    "imdbId": "tt0309530",
+    "movie_uri": "http://www.wikidata.org/entity/Q672528",
+    "points": 24,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2003-01-01"
+  },
+  {
     "title": "Noah's Ark: The New Beginning",
     "imdbId": "tt1091821",
     "movie_uri": "http://www.wikidata.org/entity/Q7045306",
@@ -90263,6 +90397,25 @@
         "common": {
           "actors": [
             "Kate Beckinsale"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2009-01-01"
+  },
+  {
+    "title": "I Hate Valentine's Day",
+    "imdbId": "tt0762105",
+    "movie_uri": "http://www.wikidata.org/entity/Q791573",
+    "points": 24,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
           ]
         }
       }
@@ -97026,6 +97179,26 @@
     "publicationDate": "2009-05-22"
   },
   {
+    "title": "Spy Kids 3-D: Game Over",
+    "imdbId": "tt0338459",
+    "movie_uri": "http://www.wikidata.org/entity/Q550196",
+    "points": 24,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "fantasy film",
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2003-01-01"
+  },
+  {
     "title": "Dominika",
     "imdbId": "tt6814390",
     "movie_uri": "http://www.wikidata.org/entity/Q55657816",
@@ -103564,6 +103737,25 @@
       }
     ],
     "publicationDate": "2016-07-21"
+  },
+  {
+    "title": "Bring It On: In It to Win It",
+    "imdbId": "tt0972785",
+    "movie_uri": "http://www.wikidata.org/entity/Q1507221",
+    "points": 23,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2007-01-01"
   },
   {
     "title": "If I Had Known I Was a Genius",
@@ -145848,26 +146040,6 @@
     "publicationDate": "2019-12-04"
   },
   {
-    "title": "Little",
-    "imdbId": "tt8085790",
-    "movie_uri": "http://www.wikidata.org/entity/Q60631382",
-    "points": 22,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "fantasy film",
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2019-04-12"
-  },
-  {
     "title": "Класа 2002",
     "imdbId": "tt0940890",
     "movie_uri": "http://www.wikidata.org/entity/Q61123953",
@@ -159068,6 +159240,25 @@
     "publicationDate": "2008-01-01"
   },
   {
+    "title": "Spring Breakers",
+    "imdbId": "tt2101441",
+    "movie_uri": "http://www.wikidata.org/entity/Q1781285",
+    "points": 21,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2013-01-01"
+  },
+  {
     "title": "Marie and Bruce",
     "imdbId": "tt0365480",
     "movie_uri": "http://www.wikidata.org/entity/Q178826",
@@ -161840,6 +162031,25 @@
       }
     ],
     "publicationDate": "2017-09-05"
+  },
+  {
+    "title": "13 Going on 30",
+    "imdbId": "tt0337563",
+    "movie_uri": "http://www.wikidata.org/entity/Q224187",
+    "points": 21,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "fantasy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2004-04-23"
   },
   {
     "title": "Onye Ozi",
@@ -190399,25 +190609,6 @@
     "publicationDate": "2004-01-01"
   },
   {
-    "title": "Freshman Orientation",
-    "imdbId": "tt0380420",
-    "movie_uri": "http://www.wikidata.org/entity/Q9340482",
-    "points": 21,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2004-01-01"
-  },
-  {
     "title": "G.O.R.A.",
     "imdbId": "tt0384116",
     "movie_uri": "http://www.wikidata.org/entity/Q934718",
@@ -191221,6 +191412,25 @@
     "publicationDate": "2020-01-01"
   },
   {
+    "title": "Someone Like You",
+    "imdbId": "tt0244970",
+    "movie_uri": "http://www.wikidata.org/entity/Q1346535",
+    "points": 20,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2001-01-01"
+  },
+  {
     "title": "Brainstorm",
     "imdbId": "tt0085271",
     "movie_uri": "http://www.wikidata.org/entity/Q1493657",
@@ -191465,6 +191675,26 @@
       }
     ],
     "publicationDate": "1987-01-01"
+  },
+  {
+    "title": "This Is My Life",
+    "imdbId": "tt0105577",
+    "movie_uri": "http://www.wikidata.org/entity/Q2559528",
+    "points": 20,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905"
+        ],
+        "common": {
+          "actors": [
+            "Dan Aykroyd",
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1992-01-01"
   },
   {
     "title": "The War with Grandpa",
@@ -191778,36 +192008,6 @@
     "publicationDate": "2001-01-01"
   },
   {
-    "title": "Star Trek II: The Wrath of Khan",
-    "imdbId": "tt0084726",
-    "movie_uri": "http://www.wikidata.org/entity/Q465478",
-    "points": 20,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q17182905",
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "science fiction film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1982-06-04"
-  },
-  {
     "title": "The Dead Zone",
     "imdbId": "tt0085407",
     "movie_uri": "http://www.wikidata.org/entity/Q466792",
@@ -191855,66 +192055,6 @@
       }
     ],
     "publicationDate": "2001-01-01"
-  },
-  {
-    "title": "Escape from the Planet of the Apes",
-    "imdbId": "tt0067065",
-    "movie_uri": "http://www.wikidata.org/entity/Q469639",
-    "points": 20,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q17182905",
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "science fiction film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1971-01-01"
-  },
-  {
-    "title": "Conquest of the Planet of the Apes",
-    "imdbId": "tt0068408",
-    "movie_uri": "http://www.wikidata.org/entity/Q469646",
-    "points": 20,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q17182905",
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "science fiction film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1972-01-01"
   },
   {
     "title": "Demolition Man",
@@ -192131,6 +192271,29 @@
       }
     ],
     "publicationDate": "2020-01-01"
+  },
+  {
+    "title": "Dr. Dolittle",
+    "imdbId": "tt0118998",
+    "movie_uri": "http://www.wikidata.org/entity/Q663014",
+    "points": 20,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
+          "genres": [
+            "fantasy film",
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1998-06-13"
   },
   {
     "title": "Mouse Hunt",
@@ -210512,25 +210675,6 @@
     "publicationDate": "2009-01-01"
   },
   {
-    "title": "Dickie Roberts: Former Child Star",
-    "imdbId": "tt0325258",
-    "movie_uri": "http://www.wikidata.org/entity/Q1210033",
-    "points": 19,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2003-01-01"
-  },
-  {
     "title": "Adopted",
     "imdbId": "tt1264103",
     "movie_uri": "http://www.wikidata.org/entity/Q12100409",
@@ -220257,25 +220401,6 @@
       }
     ],
     "publicationDate": "2012-03-30"
-  },
-  {
-    "title": "Spring Breakdown",
-    "imdbId": "tt0814331",
-    "movie_uri": "http://www.wikidata.org/entity/Q2669623",
-    "points": 19,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2009-01-01"
   },
   {
     "title": "Why We Laugh: Black Comedians on Black Comedy",
@@ -258164,6 +258289,25 @@
     "publicationDate": "2019-09-01"
   },
   {
+    "title": "Spy Kids 2: The Island of Lost Dreams",
+    "imdbId": "tt0287717",
+    "movie_uri": "http://www.wikidata.org/entity/Q549908",
+    "points": 17,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2002-01-01"
+  },
+  {
     "title": "Yesterday",
     "imdbId": "tt8079248",
     "movie_uri": "http://www.wikidata.org/entity/Q55076454",
@@ -258599,25 +258743,6 @@
       }
     ],
     "publicationDate": "2019-07-11"
-  },
-  {
-    "title": "Wine Country",
-    "imdbId": "tt8169446",
-    "movie_uri": "http://www.wikidata.org/entity/Q55637796",
-    "points": 17,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2019-01-01"
   },
   {
     "title": "Oru Yamandan Premakadha",
@@ -265137,25 +265262,6 @@
     "publicationDate": "2002-01-01"
   },
   {
-    "title": "Martin & Orloff",
-    "imdbId": "tt0283469",
-    "movie_uri": "http://www.wikidata.org/entity/Q6774846",
-    "points": 17,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2002-01-01"
-  },
-  {
     "title": "Owners",
     "imdbId": "tt10583170",
     "movie_uri": "http://www.wikidata.org/entity/Q67754190",
@@ -269649,6 +269755,28 @@
     "publicationDate": "1980-01-01"
   },
   {
+    "title": "I Love My Dad",
+    "imdbId": "tt14935966",
+    "movie_uri": "http://www.wikidata.org/entity/Q110895824",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Rachel Dratch"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "2022-03-12"
+  },
+  {
     "title": "We Have a Ghost",
     "imdbId": "tt7798604",
     "movie_uri": "http://www.wikidata.org/entity/Q110982644",
@@ -270392,6 +270520,28 @@
     "publicationDate": "1995-01-01"
   },
   {
+    "title": "Surrender",
+    "imdbId": "tt0094078",
+    "movie_uri": "http://www.wikidata.org/entity/Q1537112",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1987-01-01"
+  },
+  {
     "title": "The Great Outdoors",
     "imdbId": "tt0095253",
     "movie_uri": "http://www.wikidata.org/entity/Q1544359",
@@ -270982,6 +271132,28 @@
     "publicationDate": "1983-01-01"
   },
   {
+    "title": "A Walk on the Moon",
+    "imdbId": "tt0120613",
+    "movie_uri": "http://www.wikidata.org/entity/Q2604363",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1999-01-01"
+  },
+  {
     "title": "Excess Baggage",
     "imdbId": "tt0119086",
     "movie_uri": "http://www.wikidata.org/entity/Q2665942",
@@ -271150,33 +271322,26 @@
     "publicationDate": "1991-01-01"
   },
   {
-    "title": "Won Ton Ton, the Dog Who Saved Hollywood",
-    "imdbId": "tt0075436",
-    "movie_uri": "http://www.wikidata.org/entity/Q3569779",
+    "title": "Bad Medicine",
+    "imdbId": "tt0088765",
+    "movie_uri": "http://www.wikidata.org/entity/Q3738246",
     "points": 15,
     "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
       {
         "sharedMovies": [
           "Q496654"
         ],
         "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
           "genres": [
             "comedy film"
           ]
         }
       }
     ],
-    "publicationDate": "1976-01-01"
+    "publicationDate": "1985-01-01"
   },
   {
     "title": "Puss in Boots",
@@ -271250,6 +271415,28 @@
       }
     ],
     "publicationDate": "1987-01-01"
+  },
+  {
+    "title": "Story of a Bad Boy",
+    "imdbId": "tt0138834",
+    "movie_uri": "http://www.wikidata.org/entity/Q4204894",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1999-01-01"
   },
   {
     "title": "Rainbow",
@@ -271499,6 +271686,28 @@
     "publicationDate": "2000-01-01"
   },
   {
+    "title": "Deconstructing Harry",
+    "imdbId": "tt0118954",
+    "movie_uri": "http://www.wikidata.org/entity/Q551762",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1997-01-01"
+  },
+  {
     "title": "Doctor Detroit",
     "imdbId": "tt0085450",
     "movie_uri": "http://www.wikidata.org/entity/Q596319",
@@ -271674,35 +271883,6 @@
     "publicationDate": "1991-01-01"
   },
   {
-    "title": "Cannonball Run II",
-    "imdbId": "tt0087032",
-    "movie_uri": "http://www.wikidata.org/entity/Q646806",
-    "points": 15,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1984-01-01"
-  },
-  {
     "title": "Revenge of the Cheerleaders",
     "imdbId": "tt0075137",
     "movie_uri": "http://www.wikidata.org/entity/Q64847143",
@@ -271745,6 +271925,28 @@
       }
     ],
     "publicationDate": "1991-01-01"
+  },
+  {
+    "title": "Alice",
+    "imdbId": "tt0099012",
+    "movie_uri": "http://www.wikidata.org/entity/Q682262",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ],
+          "genres": [
+            "fantasy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1990-01-01"
   },
   {
     "title": "Dear God",
@@ -271818,6 +272020,35 @@
       }
     ],
     "publicationDate": "1997-01-01"
+  },
+  {
+    "title": "National Lampoon's Movie Madness",
+    "imdbId": "tt0082799",
+    "movie_uri": "http://www.wikidata.org/entity/Q6973975",
+    "points": 15,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      },
+      {
+        "sharedMovies": [
+          "Q17182905"
+        ],
+        "common": {
+          "genres": [
+            "parody film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1982-01-01"
   },
   {
     "title": "Plump Fiction",
@@ -271949,35 +272180,6 @@
       }
     ],
     "publicationDate": "2000-01-01"
-  },
-  {
-    "title": "The Naked Gun: From the Files of Police Squad!",
-    "imdbId": "tt0095705",
-    "movie_uri": "http://www.wikidata.org/entity/Q832047",
-    "points": 15,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      },
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1988-01-01"
   },
   {
     "title": "Blues Brothers 2000",
@@ -297085,25 +297287,6 @@
     "publicationDate": "2021-01-01"
   },
   {
-    "title": "La razón de la culpa",
-    "imdbId": "tt0035243",
-    "movie_uri": "http://www.wikidata.org/entity/Q104870489",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1942-01-01"
-  },
-  {
     "title": null,
     "imdbId": null,
     "movie_uri": "http://www.wikidata.org/entity/Q105605255",
@@ -297197,25 +297380,6 @@
       }
     ],
     "publicationDate": "2022-01-01"
-  },
-  {
-    "title": "Cheyenne Autumn",
-    "imdbId": "tt0057940",
-    "movie_uri": "http://www.wikidata.org/entity/Q1071402",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1964-01-01"
   },
   {
     "title": "Nanny",
@@ -297351,25 +297515,6 @@
     "publicationDate": null
   },
   {
-    "title": "Private Property",
-    "imdbId": "tt15167994",
-    "movie_uri": "http://www.wikidata.org/entity/Q111915739",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2022-05-13"
-  },
-  {
     "title": "True Romance",
     "imdbId": "tt0108399",
     "movie_uri": "http://www.wikidata.org/entity/Q1127709",
@@ -297389,25 +297534,6 @@
     "publicationDate": "1993-01-01"
   },
   {
-    "title": "The Money Trap",
-    "imdbId": "tt0059460",
-    "movie_uri": "http://www.wikidata.org/entity/Q1128273",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1966-01-01"
-  },
-  {
     "title": "Paradise Highway",
     "imdbId": "tt7469828",
     "movie_uri": "http://www.wikidata.org/entity/Q113070883",
@@ -297425,25 +297551,6 @@
       }
     ],
     "publicationDate": "2022-07-29"
-  },
-  {
-    "title": "The Singing Nun",
-    "imdbId": "tt0060983",
-    "movie_uri": "http://www.wikidata.org/entity/Q1131070",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1966-01-01"
   },
   {
     "title": "Ghostbusters: Frozen Empire",
@@ -297522,25 +297629,6 @@
     "publicationDate": "1995-01-01"
   },
   {
-    "title": "Border Incident",
-    "imdbId": "tt0041198",
-    "movie_uri": "http://www.wikidata.org/entity/Q1144382",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1949-01-01"
-  },
-  {
     "title": "Sharpe's Mission",
     "imdbId": "tt0117620",
     "movie_uri": "http://www.wikidata.org/entity/Q1150708",
@@ -297615,25 +297703,6 @@
       }
     ],
     "publicationDate": "2023-01-01"
-  },
-  {
-    "title": null,
-    "imdbId": null,
-    "movie_uri": "http://www.wikidata.org/entity/Q116275181",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      }
-    ],
-    "publicationDate": null
   },
   {
     "title": "King: A Filmed Record... Montgomery to Memphis",
@@ -297807,25 +297876,6 @@
     "publicationDate": "1971-01-01"
   },
   {
-    "title": "Desert Warrior",
-    "imdbId": "tt0048942",
-    "movie_uri": "http://www.wikidata.org/entity/Q1196927",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1957-01-01"
-  },
-  {
     "title": "Gardens of Stone",
     "imdbId": "tt0093073",
     "movie_uri": "http://www.wikidata.org/entity/Q1199648",
@@ -297959,44 +298009,6 @@
     "publicationDate": "1980-01-01"
   },
   {
-    "title": "The Deserter",
-    "imdbId": "tt0066984",
-    "movie_uri": "http://www.wikidata.org/entity/Q1213596",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1971-01-01"
-  },
-  {
-    "title": "The Hour of Truth",
-    "imdbId": "tt0217549",
-    "movie_uri": "http://www.wikidata.org/entity/Q12155672",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1945-01-01"
-  },
-  {
     "title": "The Great White Hope",
     "imdbId": "tt0065797",
     "movie_uri": "http://www.wikidata.org/entity/Q1218542",
@@ -298052,25 +298064,6 @@
       }
     ],
     "publicationDate": "2024-03-13"
-  },
-  {
-    "title": "McVeigh",
-    "imdbId": "tt32141536",
-    "movie_uri": "http://www.wikidata.org/entity/Q125585147",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ashley Benson"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2024-01-01"
   },
   {
     "title": null,
@@ -298261,25 +298254,6 @@
       }
     ],
     "publicationDate": "1994-01-14"
-  },
-  {
-    "title": "Hemingway's Adventures of a Young Man",
-    "imdbId": "tt0056063",
-    "movie_uri": "http://www.wikidata.org/entity/Q1452547",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1962-01-01"
   },
   {
     "title": "Best of the Best",
@@ -298510,25 +298484,6 @@
     "publicationDate": "1988-01-01"
   },
   {
-    "title": "Battleground",
-    "imdbId": "tt0041163",
-    "movie_uri": "http://www.wikidata.org/entity/Q1620831",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1950-01-01"
-  },
-  {
     "title": "Homeboy",
     "imdbId": "tt0095316",
     "movie_uri": "http://www.wikidata.org/entity/Q1625964",
@@ -298605,25 +298560,6 @@
     "publicationDate": "2022-05-27"
   },
   {
-    "title": "Three for Jamie Dawn",
-    "imdbId": "tt0049850",
-    "movie_uri": "http://www.wikidata.org/entity/Q16679992",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1956-01-01"
-  },
-  {
     "title": "Jane Eyre",
     "imdbId": "tt0116684",
     "movie_uri": "http://www.wikidata.org/entity/Q1682593",
@@ -298643,23 +298579,23 @@
     "publicationDate": "1996-01-01"
   },
   {
-    "title": "Right Cross",
-    "imdbId": "tt0042894",
-    "movie_uri": "http://www.wikidata.org/entity/Q1758744",
+    "title": "Forget Paris",
+    "imdbId": "tt0113097",
+    "movie_uri": "http://www.wikidata.org/entity/Q1760597",
     "points": 10,
     "shared_result": [
       {
         "sharedMovies": [
-          "Q17182905"
+          "Q496654"
         ],
         "common": {
           "actors": [
-            "Ricardo Montalbán"
+            "Julie Kavner"
           ]
         }
       }
     ],
-    "publicationDate": "1950-01-01"
+    "publicationDate": "1995-01-01"
   },
   {
     "title": "The Golden Bowl",
@@ -298814,25 +298750,6 @@
     "publicationDate": "1986-01-01"
   },
   {
-    "title": "The Mark of the Renegade",
-    "imdbId": "tt0043787",
-    "movie_uri": "http://www.wikidata.org/entity/Q19897969",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1951-08-02"
-  },
-  {
     "title": "A Century of Cinema",
     "imdbId": "tt0109390",
     "movie_uri": "http://www.wikidata.org/entity/Q1998730",
@@ -298869,25 +298786,6 @@
       }
     ],
     "publicationDate": "1978-01-01"
-  },
-  {
-    "title": "The Reluctant Saint",
-    "imdbId": "tt0056403",
-    "movie_uri": "http://www.wikidata.org/entity/Q2024661",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1962-01-01"
   },
   {
     "title": "Sharpe's Eagle",
@@ -299061,25 +298959,6 @@
     "publicationDate": "1987-01-01"
   },
   {
-    "title": "Sweet Charity",
-    "imdbId": "tt0065054",
-    "movie_uri": "http://www.wikidata.org/entity/Q2300646",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1969-01-01"
-  },
-  {
     "title": "Dangerous Game",
     "imdbId": "tt0106660",
     "movie_uri": "http://www.wikidata.org/entity/Q2337429",
@@ -299137,44 +299016,6 @@
     "publicationDate": "1987-01-01"
   },
   {
-    "title": "The Saracen Blade",
-    "imdbId": "tt0047448",
-    "movie_uri": "http://www.wikidata.org/entity/Q23755450",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1954-06-06"
-  },
-  {
-    "title": "Fiesta",
-    "imdbId": "tt0039377",
-    "movie_uri": "http://www.wikidata.org/entity/Q2412388",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1947-01-01"
-  },
-  {
     "title": "Next Stop, Greenwich Village",
     "imdbId": "tt0074963",
     "movie_uri": "http://www.wikidata.org/entity/Q2419797",
@@ -299211,25 +299052,6 @@
       }
     ],
     "publicationDate": "1996-12-25"
-  },
-  {
-    "title": "Neptune's Daughter",
-    "imdbId": "tt0041687",
-    "movie_uri": "http://www.wikidata.org/entity/Q2481884",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1950-01-01"
   },
   {
     "title": "Shopping",
@@ -299327,25 +299149,6 @@
     "publicationDate": "1996-01-01"
   },
   {
-    "title": "This Is My Life",
-    "imdbId": "tt0105577",
-    "movie_uri": "http://www.wikidata.org/entity/Q2559528",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Dan Aykroyd"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1992-01-01"
-  },
-  {
     "title": "Percy & Thunder",
     "imdbId": "tt0107804",
     "movie_uri": "http://www.wikidata.org/entity/Q25999828",
@@ -299382,25 +299185,6 @@
       }
     ],
     "publicationDate": "1982-09-24"
-  },
-  {
-    "title": "Latin Lovers",
-    "imdbId": "tt0045988",
-    "movie_uri": "http://www.wikidata.org/entity/Q2617901",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1953-01-01"
   },
   {
     "title": "A Shot at Glory",
@@ -299536,6 +299320,25 @@
     "publicationDate": "1998-02-24"
   },
   {
+    "title": "Judy Berlin",
+    "imdbId": "tt0181618",
+    "movie_uri": "http://www.wikidata.org/entity/Q2878100",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1999-01-01"
+  },
+  {
     "title": "Grosse Pointe Blank",
     "imdbId": "tt0119229",
     "movie_uri": "http://www.wikidata.org/entity/Q288355",
@@ -299553,25 +299356,6 @@
       }
     ],
     "publicationDate": "1997-01-01"
-  },
-  {
-    "title": "Blue",
-    "imdbId": "tt0062742",
-    "movie_uri": "http://www.wikidata.org/entity/Q2907133",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1068-09-01"
   },
   {
     "title": "The Broken Hearts Club",
@@ -299631,25 +299415,6 @@
     "publicationDate": "1975-01-01"
   },
   {
-    "title": "On an Island with You",
-    "imdbId": "tt0040665",
-    "movie_uri": "http://www.wikidata.org/entity/Q3015588",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1948-01-01"
-  },
-  {
     "title": "Rudy",
     "imdbId": "tt0108002",
     "movie_uri": "http://www.wikidata.org/entity/Q3107519",
@@ -299707,25 +299472,6 @@
     "publicationDate": "1995-01-01"
   },
   {
-    "title": "Mystery Street",
-    "imdbId": "tt0042771",
-    "movie_uri": "http://www.wikidata.org/entity/Q3209445",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1950-01-01"
-  },
-  {
     "title": "Swashbuckler",
     "imdbId": "tt0075294",
     "movie_uri": "http://www.wikidata.org/entity/Q3225632",
@@ -299743,25 +299489,6 @@
       }
     ],
     "publicationDate": "1976-01-01"
-  },
-  {
-    "title": "Sol Madrid",
-    "imdbId": "tt0063621",
-    "movie_uri": "http://www.wikidata.org/entity/Q3231790",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1968-01-01"
   },
   {
     "title": "The Shadow of the Eagle",
@@ -299897,25 +299624,6 @@
     "publicationDate": "1991-01-01"
   },
   {
-    "title": "Sombrero",
-    "imdbId": "tt0046344",
-    "movie_uri": "http://www.wikidata.org/entity/Q3489771",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1953-01-01"
-  },
-  {
     "title": "Stardom",
     "imdbId": "tt0192949",
     "movie_uri": "http://www.wikidata.org/entity/Q3497106",
@@ -300030,63 +299738,6 @@
     "publicationDate": "1995-01-01"
   },
   {
-    "title": "A Life in the Balance",
-    "imdbId": "tt0048301",
-    "movie_uri": "http://www.wikidata.org/entity/Q3602545",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1955-01-01"
-  },
-  {
-    "title": "Let No Man Write My Epitaph",
-    "imdbId": "tt0054021",
-    "movie_uri": "http://www.wikidata.org/entity/Q3666932",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1960-01-01"
-  },
-  {
-    "title": "Two Weeks with Love",
-    "imdbId": "tt0043081",
-    "movie_uri": "http://www.wikidata.org/entity/Q3716037",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1950-01-01"
-  },
-  {
     "title": "Mrs. Winterbourne",
     "imdbId": "tt0117104",
     "movie_uri": "http://www.wikidata.org/entity/Q371885",
@@ -300123,63 +299774,6 @@
       }
     ],
     "publicationDate": "1990-01-01"
-  },
-  {
-    "title": "Rage of the Buccaneers",
-    "imdbId": "tt0054937",
-    "movie_uri": "http://www.wikidata.org/entity/Q3773488",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1961-01-01"
-  },
-  {
-    "title": "The Kissing Bandit",
-    "imdbId": "tt0040513",
-    "movie_uri": "http://www.wikidata.org/entity/Q3793023",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1948-01-01"
-  },
-  {
-    "title": "My Man and I",
-    "imdbId": "tt0044938",
-    "movie_uri": "http://www.wikidata.org/entity/Q3794755",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1952-09-05"
   },
   {
     "title": "Illuminata",
@@ -300237,44 +299831,6 @@
       }
     ],
     "publicationDate": "1998-01-01"
-  },
-  {
-    "title": "Queen of Babylon",
-    "imdbId": "tt0049094",
-    "movie_uri": "http://www.wikidata.org/entity/Q3821927",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1954-01-01"
-  },
-  {
-    "title": "The Warrior and the Slave Girl",
-    "imdbId": "tt0052123",
-    "movie_uri": "http://www.wikidata.org/entity/Q3823922",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1958-01-01"
   },
   {
     "title": "Mad About Mambo",
@@ -300980,25 +300536,6 @@
     "publicationDate": "1990-01-01"
   },
   {
-    "title": "The Train Robbers",
-    "imdbId": "tt0070825",
-    "movie_uri": "http://www.wikidata.org/entity/Q568477",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1973-02-07"
-  },
-  {
     "title": "The Comedians",
     "imdbId": "tt0061502",
     "movie_uri": "http://www.wikidata.org/entity/Q568696",
@@ -301189,44 +300726,6 @@
     "publicationDate": "1977-01-07"
   },
   {
-    "title": "Santa",
-    "imdbId": "tt0202564",
-    "movie_uri": "http://www.wikidata.org/entity/Q6120207",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1943-06-10"
-  },
-  {
-    "title": "Sayonara",
-    "imdbId": "tt0050933",
-    "movie_uri": "http://www.wikidata.org/entity/Q614864",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1957-01-01"
-  },
-  {
     "title": "The Minus Man",
     "imdbId": "tt0151582",
     "movie_uri": "http://www.wikidata.org/entity/Q625309",
@@ -301244,25 +300743,6 @@
       }
     ],
     "publicationDate": "1999-01-01"
-  },
-  {
-    "title": "Madame X",
-    "imdbId": "tt0060645",
-    "movie_uri": "http://www.wikidata.org/entity/Q631841",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1966-01-01"
   },
   {
     "title": "My Little Girl",
@@ -301322,25 +300802,6 @@
     "publicationDate": "1989-01-01"
   },
   {
-    "title": "La fuga",
-    "imdbId": "tt0035906",
-    "movie_uri": "http://www.wikidata.org/entity/Q6466166",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1944-07-05"
-  },
-  {
     "title": "Legacy",
     "imdbId": "tt0156734",
     "movie_uri": "http://www.wikidata.org/entity/Q6517201",
@@ -301379,25 +300840,6 @@
     "publicationDate": "1990-01-01"
   },
   {
-    "title": "Love Is a Ball",
-    "imdbId": "tt0057262",
-    "movie_uri": "http://www.wikidata.org/entity/Q6588276",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1963-01-01"
-  },
-  {
     "title": "Blast from the Past",
     "imdbId": "tt0124298",
     "movie_uri": "http://www.wikidata.org/entity/Q678306",
@@ -301415,6 +300857,25 @@
       }
     ],
     "publicationDate": "1999-09-23"
+  },
+  {
+    "title": "Radio Days",
+    "imdbId": "tt0093818",
+    "movie_uri": "http://www.wikidata.org/entity/Q685109",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1987-01-01"
   },
   {
     "title": "Nothing Lasts Forever",
@@ -301550,25 +301011,6 @@
     "publicationDate": "1998-12-03"
   },
   {
-    "title": "Sombra verde",
-    "imdbId": "tt0132524",
-    "movie_uri": "http://www.wikidata.org/entity/Q7559319",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1954-12-23"
-  },
-  {
     "title": "At Close Range",
     "imdbId": "tt0090670",
     "movie_uri": "http://www.wikidata.org/entity/Q759474",
@@ -301605,25 +301047,6 @@
       }
     ],
     "publicationDate": "1989-01-01"
-  },
-  {
-    "title": "Across the Wide Missouri",
-    "imdbId": "tt0043262",
-    "movie_uri": "http://www.wikidata.org/entity/Q771620",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "actors": [
-            "Ricardo Montalbán"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1951-01-01"
   },
   {
     "title": "The Bingo Long Traveling All-Stars & Motor Kings",
@@ -301892,23 +301315,61 @@
     "publicationDate": "2023-03-31"
   },
   {
-    "title": null,
-    "imdbId": null,
-    "movie_uri": "http://www.wikidata.org/entity/Q85806566",
+    "title": "Awakenings",
+    "imdbId": "tt0099077",
+    "movie_uri": "http://www.wikidata.org/entity/Q842073",
     "points": 10,
     "shared_result": [
       {
         "sharedMovies": [
-          "Q17182905"
+          "Q496654"
         ],
         "common": {
           "actors": [
-            "Ashley Benson"
+            "Julie Kavner"
           ]
         }
       }
     ],
-    "publicationDate": null
+    "publicationDate": "1990-01-01"
+  },
+  {
+    "title": "Hannah and Her Sisters",
+    "imdbId": "tt0091167",
+    "movie_uri": "http://www.wikidata.org/entity/Q845057",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1986-01-01"
+  },
+  {
+    "title": "I'll Do Anything",
+    "imdbId": "tt0110097",
+    "movie_uri": "http://www.wikidata.org/entity/Q853425",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1994-01-01"
   },
   {
     "title": "Manhunter",
@@ -302137,6 +301598,25 @@
       }
     ],
     "publicationDate": "2023-11-15"
+  },
+  {
+    "title": "New York Stories",
+    "imdbId": "tt0097965",
+    "movie_uri": "http://www.wikidata.org/entity/Q977372",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "actors": [
+            "Julie Kavner"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1989-01-01"
   },
   {
     "title": "The Rat Savior",
@@ -328859,6 +328339,26 @@
     "publicationDate": "1966-01-01"
   },
   {
+    "title": "Star Trek II: The Wrath of Khan",
+    "imdbId": "tt0084726",
+    "movie_uri": "http://www.wikidata.org/entity/Q465478",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905",
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "science fiction film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1982-06-04"
+  },
+  {
     "title": "A Blind Bargain",
     "imdbId": "tt0012949",
     "movie_uri": "http://www.wikidata.org/entity/Q4655512",
@@ -328997,6 +328497,46 @@
       }
     ],
     "publicationDate": "1970-01-01"
+  },
+  {
+    "title": "Escape from the Planet of the Apes",
+    "imdbId": "tt0067065",
+    "movie_uri": "http://www.wikidata.org/entity/Q469639",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905",
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "science fiction film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1971-01-01"
+  },
+  {
+    "title": "Conquest of the Planet of the Apes",
+    "imdbId": "tt0068408",
+    "movie_uri": "http://www.wikidata.org/entity/Q469646",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q17182905",
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "science fiction film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1972-01-01"
   },
   {
     "title": "Battle for the Planet of the Apes",
@@ -360739,6 +360279,26 @@
     "publicationDate": "1990-08-18"
   },
   {
+    "title": "El asalto al Castillo de la Moncloa",
+    "imdbId": "tt0294308",
+    "movie_uri": "http://www.wikidata.org/entity/Q2842259",
+    "points": 10,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film",
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1978-01-01"
+  },
+  {
     "title": "Amour et Carburateur",
     "imdbId": "tt0190240",
     "movie_uri": "http://www.wikidata.org/entity/Q2843985",
@@ -378117,26 +377677,6 @@
       }
     ],
     "publicationDate": "1993-10-01"
-  },
-  {
-    "title": "Dr. Dolittle",
-    "imdbId": "tt0118998",
-    "movie_uri": "http://www.wikidata.org/entity/Q663014",
-    "points": 10,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "fantasy film",
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1998-06-13"
   },
   {
     "title": "Los Cuervos están de luto",
@@ -410249,25 +409789,6 @@
       }
     ],
     "publicationDate": "2022-01-01"
-  },
-  {
-    "title": "I Love My Dad",
-    "imdbId": "tt14935966",
-    "movie_uri": "http://www.wikidata.org/entity/Q110895824",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "2022-03-12"
   },
   {
     "title": "13",
@@ -483836,25 +483357,6 @@
       }
     ],
     "publicationDate": "1993-01-01"
-  },
-  {
-    "title": "Surrender",
-    "imdbId": "tt0094078",
-    "movie_uri": "http://www.wikidata.org/entity/Q1537112",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1987-01-01"
   },
   {
     "title": "Peter Pan",
@@ -569186,25 +568688,6 @@
     "publicationDate": "1931-01-01"
   },
   {
-    "title": "A Walk on the Moon",
-    "imdbId": "tt0120613",
-    "movie_uri": "http://www.wikidata.org/entity/Q2604363",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1999-01-01"
-  },
-  {
     "title": "27 Missing Kisses",
     "imdbId": "tt0246405",
     "movie_uri": "http://www.wikidata.org/entity/Q2604872",
@@ -621303,6 +620786,25 @@
     "publicationDate": "1927-01-01"
   },
   {
+    "title": "Won Ton Ton, the Dog Who Saved Hollywood",
+    "imdbId": "tt0075436",
+    "movie_uri": "http://www.wikidata.org/entity/Q3569779",
+    "points": 5,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1976-01-01"
+  },
+  {
     "title": "XXL",
     "imdbId": "tt0120537",
     "movie_uri": "http://www.wikidata.org/entity/Q3570478",
@@ -629870,25 +629372,6 @@
       }
     ],
     "publicationDate": "1990-01-01"
-  },
-  {
-    "title": "Bad Medicine",
-    "imdbId": "tt0088765",
-    "movie_uri": "http://www.wikidata.org/entity/Q3738246",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1985-01-01"
   },
   {
     "title": "Finishing School",
@@ -663804,25 +663287,6 @@
       }
     ],
     "publicationDate": "1929-06-25"
-  },
-  {
-    "title": "Story of a Bad Boy",
-    "imdbId": "tt0138834",
-    "movie_uri": "http://www.wikidata.org/entity/Q4204894",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1999-01-01"
   },
   {
     "title": "There's That Woman Again",
@@ -703345,25 +702809,6 @@
     "publicationDate": "1989-01-01"
   },
   {
-    "title": "Deconstructing Harry",
-    "imdbId": "tt0118954",
-    "movie_uri": "http://www.wikidata.org/entity/Q551762",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "comedy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1997-01-01"
-  },
-  {
     "title": "Galate Samsara",
     "imdbId": "tt1364216",
     "movie_uri": "http://www.wikidata.org/entity/Q5518030",
@@ -734847,6 +734292,25 @@
     "publicationDate": "1936-01-01"
   },
   {
+    "title": "Cannonball Run II",
+    "imdbId": "tt0087032",
+    "movie_uri": "http://www.wikidata.org/entity/Q646806",
+    "points": 5,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1984-01-01"
+  },
+  {
     "title": "Barmherzige Schwestern",
     "imdbId": "tt0103770",
     "movie_uri": "http://www.wikidata.org/entity/Q64692373",
@@ -744062,25 +743526,6 @@
     "publicationDate": "1998-01-01"
   },
   {
-    "title": "Alice",
-    "imdbId": "tt0099012",
-    "movie_uri": "http://www.wikidata.org/entity/Q682262",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q496654"
-        ],
-        "common": {
-          "genres": [
-            "fantasy film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1990-01-01"
-  },
-  {
     "title": "Dalia And The Sailors",
     "imdbId": "tt0057992",
     "movie_uri": "http://www.wikidata.org/entity/Q6822901",
@@ -747328,25 +746773,6 @@
       }
     ],
     "publicationDate": "1998-01-01"
-  },
-  {
-    "title": "National Lampoon's Movie Madness",
-    "imdbId": "tt0082799",
-    "movie_uri": "http://www.wikidata.org/entity/Q6973975",
-    "points": 5,
-    "shared_result": [
-      {
-        "sharedMovies": [
-          "Q17182905"
-        ],
-        "common": {
-          "genres": [
-            "parody film"
-          ]
-        }
-      }
-    ],
-    "publicationDate": "1982-01-01"
   },
   {
     "title": "Naukar Wohti Da",
@@ -784359,6 +783785,25 @@
       }
     ],
     "publicationDate": "1972-01-01"
+  },
+  {
+    "title": "The Naked Gun: From the Files of Police Squad!",
+    "imdbId": "tt0095705",
+    "movie_uri": "http://www.wikidata.org/entity/Q832047",
+    "points": 5,
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+    "publicationDate": "1988-01-01"
   },
   {
     "title": "Hot Shots!",
