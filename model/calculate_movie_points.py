@@ -128,13 +128,46 @@ And for now, i only want you to calculate like a distance so like the target mov
 
 good luck!
 
+
+
+
+
+ "http://www.wikidata.org/entity/Q1004433": {
+    "shared_result": [
+      {
+        "sharedMovies": [
+          "Q496654",
+          "Q56312570"
+        ],
+        "common": {
+          "actors": [
+            "Adam Sandler"
+          ],
+          "wishedActor": "Adam Sandler",
+          "wishedActorUri": "http://www.wikidata.org/entity/Q132952"
+        }
+      },
+      {
+        "sharedMovies": [
+          "Q496654"
+        ],
+        "common": {
+          "genres": [
+            "comedy film"
+          ]
+        }
+      }
+    ],
+
 """
 def calculate_movie_points(movie_data, movie_data_for_target_movies):
     # Define weights
     WEIGHTS = {
         "actors": 10,
         "genres": 5,
-        "directors": 15
+        "directors": 15,
+        "wishedActor": 30,
+        "wishedDirector": 30
     }
 
     # Extract publication years of target movies
@@ -166,6 +199,9 @@ def calculate_movie_points(movie_data, movie_data_for_target_movies):
                     multiplier = len(shared_movies)  # More shared movies, higher weight
                     points += len(items) * WEIGHTS[category] * multiplier
 
+
+
+
         # Calculate proximity bonus
         try:
             publication_year = int(details.get("publicationDate", "0").split("-")[0])
@@ -185,8 +221,8 @@ def calculate_movie_points(movie_data, movie_data_for_target_movies):
     # Sort movies by points (descending)
     recommended_movies.sort(key=lambda x: x["points"], reverse=True)
 
-    with open("johan_recommended_movies.json", "w", encoding="utf-8") as file:
-        json.dump(recommended_movies, file, ensure_ascii=False, indent=2)    
+    #with open("johan_recommended_movies.json", "w", encoding="utf-8") as file:
+        #json.dump(recommended_movies, file, ensure_ascii=False, indent=2)    
 
     #TODO: perhaps also add actors uris
     #time.sleep(99999)

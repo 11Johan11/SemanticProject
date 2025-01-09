@@ -1,6 +1,15 @@
 //recommend
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
+
+function reactivateModal() {
+    const modal = document.getElementById('movieDetailsModal');
+    modal.classList.add('fade');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = ''; // Reset display to default
+}
 
 
 
@@ -30,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
       .then(response => response.json())
 .then((data) => {
+    reactivateModal();
     console.log('Recommendation Response:', data);
 
     // Extracting data
@@ -126,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     recommendBtn.innerHTML = 'Recommend';
     recommendBtn.disabled = false;
-
+    
    
 
 
@@ -134,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize and show the modal
     const recommendModal = new bootstrap.Modal(document.getElementById('recommendModal'), {});
     recommendModal.show();
-
+    deactivateModal();
 
     //now fixx so we can clcik the movies for extra info
     document.addEventListener('click', function (e) {
@@ -198,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Restore the button on error
         recommendBtn.innerHTML = 'Recommend';
         recommendBtn.disabled = false;
+        deactivateModal();
       }); // Correct placement of catch
   });
 });

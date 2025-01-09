@@ -308,4 +308,82 @@ def fetch_movie_data(movie_ids):
         }
     return results
 
+
+
+def fetch_movies_from_actors(actor_ids):
+    g = init_graph()
+    actor_filter = " ".join(f"wd:{actor}" for actor in actor_ids)
+    
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    
+    SELECT DISTINCT ?movie ?movieName ?actor ?actorName {{
+        VALUES ?actor {{ {actor_filter} }}
+        ?movie wdt:P161 ?actor.
+        ?movie rdfs:label ?movieName.
+        ?actor rdfs:label ?actorName.
+    }}
+    """
+
+    results = {}
+
+    for row in g.query(query):
+        movie_uri = str(row.movie)
+        actor_uri = str(row.actor)
+        actor_name = str(row.actorName)
+        
+        if movie_uri not in results:
+            results[movie_uri] = {
+                "wishedActors": [],  # Initialize a list to store multiple actors
+                #"movieName": str(row.movieName)  # Uncomment if needed
+            }
+
+        results[movie_uri]["wishedActors"].append({
+            "wishedActorUri": actor_uri,
+            "wishedActorName": actor_name
+        })
+
+    return results
+
+
+def fetch_movies_from_directors(director_ids):
+    g = init_graph()
+    director_filter = " ".join(f"wd:{director}" for director in director_ids)
+    
+    query = f"""
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    
+    SELECT DISTINCT ?movie ?movieName ?director ?directorName {{
+        VALUES ?director {{ {director_filter} }}
+        ?movie wdt:P57 ?director.
+        ?movie rdfs:label ?movieName.
+        ?director rdfs:label ?directorName.
+    }}
+    """
+
+    results = {}
+
+    for row in g.query(query):
+        movie_uri = str(row.movie)
+        director_uri = str(row.director)
+        director_name = str(row.directorName)
+        
+        if movie_uri not in results:
+            results[movie_uri] = {
+                "wishedDirectors": [],  #Initialize a list to store multiple directors!!!
+                #"movieName": str(row.movieName)  # Uncomment if needed
+            }
+
+        results[movie_uri]["wishedDirectors"].append({
+            "wishedDirectorUri": director_uri,
+            "wishedDirectorName": director_name
+        })
+
+    return results    
 #def fetch_everything(movie_ids):

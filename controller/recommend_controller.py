@@ -48,9 +48,7 @@ def recommend():
     print(actor_ids)
     print(director_ids)
 
-    time.sleep(999999)
-
-    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids)
+    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids, actor_ids, director_ids)
 
     print("Calculating movie points...")
     recommended_movies = calculate_movie_points(shared_results, movie_data_for_target_movies) # !!!!!!
@@ -67,9 +65,10 @@ def recommend():
 
     recommended_movies = _map_metadata_to_recommended_movies(recommended_movies, recommended_movies_metadata)
  
-    with open("johan_recommended_with_metadata.json", "w", encoding="utf-8") as file:
-        json.dump(recommended_movies, file, ensure_ascii=False, indent=2)
+    #with open("johan_recommended_with_metadata.json", "w", encoding="utf-8") as file:
+        #json.dump(recommended_movies, file, ensure_ascii=False, indent=2)
 
+    #time.sleep(999999999)
 
     #now we got everything, imdb ratings, recommmended score, everything
     #TODO IS TO DO A FINAL POLISH ON THE SCORE AND LOWER SCORES WITH BAD IMDB RATINGS
