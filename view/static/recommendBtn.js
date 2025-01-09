@@ -1,15 +1,31 @@
 //recommend
 
-
-document.addEventListener('DOMContentLoaded', function () {
-
-
 function reactivateModal() {
+
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+
     const modal = document.getElementById('movieDetailsModal');
     modal.classList.add('fade');
     modal.setAttribute('aria-hidden', 'true');
     modal.style.display = ''; // Reset display to default
 }
+
+function deactivateModal() {
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+
+    const modal = document.getElementById('movieDetailsModal');
+    modal.classList.remove('fade');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'none'; // Hide the modal
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+
+
 
 
 
@@ -153,6 +169,11 @@ function reactivateModal() {
                   console.log(movieMeta)
                   // Populate the movie details modal
                   const movieDetailsContent = document.getElementById('movieDetailsContent');
+
+                        if (recommendModal._isShown) {
+                            //continue if recommendmodal is shown
+                        
+                 
                   
                   const pointBreakdown = movieMeta.point_breakdown || {};
                   let breakdownHTML = '<table style="width:100%; border-collapse: collapse;">';
@@ -209,6 +230,7 @@ function reactivateModal() {
                   // Show the movie details modal
                   const movieDetailsModal = new bootstrap.Modal(document.getElementById('movieDetailsModal'), {});
                   movieDetailsModal.show();
+              }
               }
           });
 
