@@ -21,7 +21,7 @@ def infer_shared_actors(movie_ids):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie ?otherMovieName
+    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie 
                    (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
@@ -29,10 +29,9 @@ def infer_shared_actors(movie_ids):
         ?targetMovie wdt:P161 ?sharedCastMember .
         ?sharedCastMember rdfs:label ?sharedCastMemberName .
         ?otherMovie wdt:P161 ?sharedCastMember .
-        ?otherMovie rdfs:label ?otherMovieName . 
         FILTER (?otherMovie != ?targetMovie) 
     }}
-    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie ?otherMovieName
+    GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie
     ORDER BY DESC(?originalSharedMovies)
     """
 
@@ -45,12 +44,12 @@ def infer_shared_actors(movie_ids):
         shared_cast_member_name = str(row.sharedCastMemberName)
         original_shared_movies = int(row.originalSharedMovies)
         shared_movie_uris = str(row.sharedMovieUris).split(",")
-        other_movie_name = str(row.otherMovieName)
+        #other_movie_name = str(row.otherMovieName)
 
         # Initialize the structure if the movie isn't already present
         if other_movie not in movies_with_shared_actors:
             movies_with_shared_actors[other_movie] = {
-                "title": other_movie_name,
+                #"title": other_movie_name,
                 "originalSharedMovies": original_shared_movies,
                 "sharedMovieUris": shared_movie_uris,
                 "actors": []
