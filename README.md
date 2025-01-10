@@ -2,11 +2,13 @@
 
 Movie Recommendation System
 
-Using a knowledge graph running on Jena Fuseki to infer relationships between movies
+A movie recommendation system that utilizes a knowledge graph fetched from Wikidata, comprising over 270k movies and 3m+ triples. The knowledge graph is hosted locally on a Jena Fuseki Server, which is then SPARQL queried from the Flask webapp using RDFLib. It infers relationships and scores movies based on a grading system, offering a user-friendly interface that provides insightful recommendations to users, and also provides recommendation insights.
 
-# Rerunning Instructions
+![SystemOverview (1)](https://github.com/user-attachments/assets/bbaa19d6-a992-4db2-8e4d-f99f3e38b698)
 
-All these commands should be executed in the top-level `SemanticProject`.
+# Running Instructions
+
+All these commands should be executed in the top-level folder `SemanticProject`.
 
 ## Step 1: Setup Jena Fuseki Server
 
