@@ -17,6 +17,11 @@ def load_movies(g):
     except (FileNotFoundError, EOFError):
         print("Movie dump not found, Querying local graph for a new dump...")
         local_query = """
+            PREFIX wd: <http://www.wikidata.org/entity/>
+            PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
             SELECT DISTINCT ?movie ?movieName ?imdb WHERE {
                 ?movie rdf:type wd:Q11424.       #instance of a film (movie) TODO: fix so we have like wikidata  wdt:P31
                 ?movie wdt:P345 ?imdb.          #must have an IMDb ID
@@ -44,6 +49,12 @@ def load_actors(g):
     except (FileNotFoundError, EOFError):
         print("Actor dump not found, Querying local graph for a new dump...")
         local_query = """
+
+            PREFIX wd: <http://www.wikidata.org/entity/>
+            PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
             SELECT DISTINCT ?actor ?actorName WHERE {
                 ?movie wdt:P161 ?actor.       
                 ?actor rdfs:label ?actorName.        
@@ -70,6 +81,12 @@ def load_directors(g):
     except (FileNotFoundError, EOFError):
         print("Director dump not found, Querying local graph for a new dump...")
         local_query = """
+        
+            PREFIX wd: <http://www.wikidata.org/entity/>
+            PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
             SELECT DISTINCT ?director ?directorName WHERE {
                 ?movie wdt:P57 ?director.       
                 ?director rdfs:label ?directorName.        

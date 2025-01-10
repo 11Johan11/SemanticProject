@@ -29,7 +29,7 @@ If not install java [here](https://www.java.com/download/ie_manual.jsp.)
 Then run the commands to start the Jena Fuseki Server for hosting the local knowledge graph
 
 ```bash
-java -cp jena-fuseki-server-5.2.0.jar tdb2.tdbloader --loc=tdb2 \model\graph\local_graph\complete_graph.ttl
+java -cp jena-fuseki-server-5.2.0.jar tdb2.tdbloader --loc=tdb2 model/graph/local_graph/complete_graph.ttl
 ```
 
 LOAD AND START WITH POPULATED TDB2
