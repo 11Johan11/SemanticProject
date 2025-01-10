@@ -18,7 +18,7 @@ Make sure you have Java and JDK23 installed
 java --version
 ```
 
-If not, install [Java](https://www.java.com/sv/download/) and also install [Java Development Kit 23](https://www.oracle.com/java/technologies/downloads/).
+If not, install [Java](https://www.java.com/sv/download/) and [Java Development Kit 23](https://www.oracle.com/java/technologies/downloads/).
 
 Then run the commands to start the Jena Fuseki Server for hosting the local knowledge graph. This command will load and export the already existing `.ttl` file into a TDB2 format, which is a high-performance storage format used by Apache Jena for persisting RDF data.
 
