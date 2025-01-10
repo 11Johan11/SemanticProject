@@ -2,4 +2,5 @@
 model/graph/local_graph/complete_graph.pkl
 model/search/search_movie_dump.json
 model/search/search_actor_dump.json
-model/graph/local_graph/tdb2/
+__pycache__/
+.vs/
