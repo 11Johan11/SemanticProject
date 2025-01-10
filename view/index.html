@@ -2,27 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Drag and Drop</title>
+  <title>Movie Recommendation System</title>
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
   <!-- GridStack CSS -->
   <link rel="stylesheet" href="node_modules/gridstack/dist/gridstack.min.css" />
 
-  <!--<link rel="stylesheet" href="styles.css">-->
 <style>
-  /* GridStack background + item styling */
   .grid-stack {
-    background: linear-gradient(to bottom, #2b2b2b, #1a1a1a); /* Neutral gradient */
-    min-height: 80vh; /* Ensure visibility */
-    border-radius: 10px; /* Add slight rounding for a polished look */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+    background: linear-gradient(to bottom, #2b2b2b, #1a1a1a); 
+    min-height: 80vh; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); 
   }
   #recommendBtn {
-  background: linear-gradient(to right, #20c997, #128f76); /* Green gradient */
+  background: linear-gradient(to right, #20c997, #128f76);
   color: #fff;
   border: none;
   font-weight: bold;
@@ -30,74 +27,60 @@
   padding: 10px 20px;
   transition: background 0.3s ease, transform 0.3s ease;
   }
-
-  /* Clear button */
 #clearAllBtn {
     background: #495057;
     color: #fff;
     border: none;
     border-radius: 8px;
   }
-
   #clearAllBtn:hover {
-    color: #20c997; /* Change icon color on hover */
-    transition: color 0.3s ease; /* Smooth hover effect */
+    color: #20c997; 
+    transition: color 0.3s ease;
     }
-
   .grid-stack-item {
     position: relative;
-    overflow: hidden; /* Ensures content stays within bounds */
+    overflow: hidden; 
   }
-  /* Search input styling */
   #search-input {
     background: #2c2c2c;
     color: #f8f9fa;
     border: 1px solid #495057;
     border-radius: 8px;
     padding: 8px;
-    box-shadow: inset 0 1px 3px rgba(156, 146, 146, 0.5); /* Subtle inner shadow */
+    box-shadow: inset 0 1px 3px rgba(156, 146, 146, 0.5);
   }
-
   #search-input::placeholder {
-  color: #868e96; /* Light gray color for placeholder */
-  opacity: 1; /* Ensure it's fully visible */
+  color: #868e96; 
+  opacity: 1;
   }
-
   body {
-  background: radial-gradient(circle at center, #2c2c2c, #121212 60%); /* Radial gradient */
-  background-attachment: fixed; /* Prevent scrolling background */
-  color: #f8f9fa; /* Default light text */
+  background: radial-gradient(circle at center, #2c2c2c, #121212 60%); 
+  background-attachment: fixed; 
+  color: #f8f9fa; 
   }
-
   #search-input:focus {
     outline: none;
     border-color: #20c997;
-    box-shadow: 0 0 8px rgba(32, 201, 151, 0.5); /* Highlight effect */
-  }
-
-    
+    box-shadow: 0 0 8px rgba(32, 201, 151, 0.5); 
+  } 
   .grid-stack-item-content, 
 .draggable-widget.newWidget {
-  background: linear-gradient(to bottom, #18bc9c, #128f76); /* Gradient for items */
+  background: linear-gradient(to bottom, #18bc9c, #128f76); 
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
   font-weight: bold;
   text-align: center;
-  border-radius: 6px; /* Slight rounding for smoothness */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+  border-radius: 6px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); 
 }
-
-/* Ensure hover effects apply to both */
 .grid-stack-item-content:hover,
 .draggable-widget.newWidget:hover {
-  transform: scale(1.05); /* Slight zoom effect */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6); /* Stronger shadow on hover */
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6); 
 }
-
-/* Banner and other internal styles remain consistent */
 .widget-title-bar {
   position: relative;
   background-color: rgba(0, 0, 0, 0.6);
@@ -107,7 +90,6 @@
   font-size: 16px;
   font-weight: bold;
 }
-
 .grid-stack-item .rating-banner,
 .draggable-widget.newWidget .rating-banner {
   position: absolute;
@@ -115,7 +97,7 @@
   right: 0;
   width: 35px;
   height: 50px;
-  background-color: #f1c40f; /* Yellow banner */
+  background-color: #f1c40f; 
   color: black;
   display: flex;
   align-items: flex-start;
@@ -133,72 +115,62 @@
   );
   z-index: 5;
 }
-
-      /* Input group container adjustments */
       .input-group-text {
-        background: #1a1a1a; /* Black background */
-        border: none; /* Remove any borders */
-        padding: 0; /* Remove unnecessary padding */
-        display: flex; /* Flexbox for alignment */
+        background: #1a1a1a; 
+        border: none; 
+        padding: 0; 
+        display: flex; 
         align-items: center;
         justify-content: center;
-        border-radius: 8px; /* Rounded corners */
-        height: 40px; /* Adjust height to match input */
-        width: 40px; /* Adjust width for square button */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Optional shadow for depth */
+        border-radius: 8px; 
+        height: 40px; 
+        width: 40px; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); 
       }
-
-      /* Button inside the input group */
       #search-button {
-        background: none; /* Transparent background to inherit parent */
-        border: none; /* Remove button border */
-        width: 100%; /* Take full width of the parent */
-        height: 100%; /* Take full height of the parent */
-        color: #f8f9fa; /* White icon for contrast */
-        cursor: pointer; /* Pointer cursor for interactivity */
-        font-size: 20px; /* Adjust icon size */
+        background: none; 
+        border: none; 
+        width: 100%; 
+        height: 100%; 
+        color: #f8f9fa; 
+        cursor: pointer; 
+        font-size: 20px;
       }
-
-      /* Button hover effect */
       #search-button:hover {
-        color: #20c997; /* Change icon color on hover */
-        transition: color 0.3s ease; /* Smooth hover effect */
+        color: #20c997; 
+        transition: color 0.3s ease; 
       }
-
-  
       .modal-content
       {
         background: linear-gradient(to bottom, #2b2b2b, #1a1a1a);
       }
-      /* Scrollable column style */
       .scroll-container {
         max-height: 80vh;
         overflow-y: auto;
         overflow-x: hidden;
-        background: #1a1a1a; /* Dark background for container */
-        padding: 10px; /* Uniform padding */
-        border: 1px solid #343a40; /* Border for clear separation */
+        background: #1a1a1a; 
+        padding: 10px; 
+        border: 1px solid #343a40; 
         border-radius: 8px;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5); 
       }
       .btn {
         color: #fff;
-        background-color: #495057; /* Dark gray button */
+        background-color: #495057; 
         border: none;
         border-radius: 6px;
         font-weight: bold;
-        transition: background 0.3s ease, transform 0.3s ease; /* Smooth effects */
+        transition: background 0.3s ease, transform 0.3s ease; 
       }
       .btn:hover {
-        color: #20c997; /* Change icon color on hover */
-        transition: color 0.3s ease; /* Smooth hover effect */
+        color: #20c997; 
+        transition: color 0.3s ease; 
       }
-      /* “Widgets” with DVD-like (2:3) ratio */
       .draggable-widget {
         width: 100px;
         height: 150px;
         background-color: #ccc;
-        margin: 0 auto 1rem auto; /* center horizontally, space below */
+        margin: 0 auto 1rem auto; 
         padding: 2px;
         cursor: move;
         border: 1px solid #999;
@@ -210,7 +182,6 @@
         font-weight: bold;
       }
   
-      /* Simple styling for the trash area */
       .trash {
         min-height: 80%;
         border: 2px dashed #ccc;
@@ -221,22 +192,17 @@
         justify-content: center;
         color: #e9ecef;
         background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
-        margin-top: 20px; /* some spacing from the grid above */
+        margin-top: 20px; 
       }
     </style>
 </head>
 
 <body>
-  <!-- Add a bit of padding with p-4 so the content isn't touching screen edges -->
   <div class="container-fluid p-4 ">
     <div class="row">
-      <!-- LEFT COLUMN: Buttons + Search bar + Scrollable draggable list -->
       <div class="col-md-3">
-
-        <!-- ROW OF SMALL BUTTONS (TOP) -->
         <div class="mb-3">
           <div class="d-flex mb-2">
-            <!-- You can change the icons or titles as desired -->
             <button type="button" class="btn btn-sm btn-primary me-2" id="search-switch" title="Movie">
               <i class="bi bi-film"></i>
             </button>
@@ -254,7 +220,6 @@
             </button>
           </div>
           
-          <!-- Simple Search Bar -->
           <div class="input-group">
             <input 
               type="text" 
@@ -272,7 +237,6 @@
           </div>
         </div>
 
-        <!-- Scrollable list of draggable widgets, displayed two per row -->
         <div class="scroll-container gs-3" id="scroll-grid">
           <div class="row" id="replace">                           
           </div>
@@ -283,7 +247,6 @@
   <div class="grid-stack grid-stack-item grid-stack-sub-grid ui-droppable" id="advanced-grid"></div>
 
   <div class="d-flex justify-content-between mt-3">
-    <!-- Clear Button -->
     <div class="align-self-start">
       <button id="clearAllBtn"
               type="button"
@@ -295,9 +258,7 @@
     </div>
 
 
-    <!-- Spacer for center alignment -->
     <div class="flex-grow-1 d-flex justify-content-center">
-      <!-- Recommend Button -->
       <button id="recommendBtn" type="button" 
               class="btn btn-success btn-lg px-5"
               style="background: #20c997; border: none; font-weight: bold;">
@@ -306,28 +267,18 @@
     </div>
   </div>
 </div>
-
-
-
-      <!-- TRASH AREA: drag items here to remove -->
       <div class="col-md-1">
         <div id="trash" class="trash">
           <i class="bi bi-trash" style="font-size: 1.5rem; margin-right: 5px;"></i>
-         <!-- Drop here to remove -->
         </div>
       </div>
-    </div><!-- end .row -->
-  </div><!-- end .container-fluid -->
-
-
-
-
+    </div>
+  </div>
 
   <!-- GridStack JS -->
   <script src="node_modules/gridstack/dist/gridstack-all.js"></script>
   <!-- Bootstrap JS (bundle includes Popper) -->
   <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // 1) Initialize the GridStack on the right, making the trash removable
@@ -341,16 +292,12 @@
       }, '#advanced-grid');
 
       window.grid = grid; 
-
-
   // Setup drag-in for draggable widgets
   GridStack.setupDragIn('.scroll-container > .row > .col-6 > .grid-stack-item', {
   width: 3,  // grid columns
   height: 2, // grid rows
   });
  
-  
-  //dhruhil 
   const clearAllBtn = document.getElementById('clearAllBtn');
 
   clearAllBtn.addEventListener('click', function () {
@@ -359,45 +306,34 @@
     if (confirmClear) {
       const gridElement = document.getElementById('advanced-grid');
       const grid = GridStack.init({}, gridElement);
-
       // Remove all widgets from the grid
       grid.removeAll();
     }
   });
 
     });
-
   </script>
-
 <script src="static/search.js"></script>
 <script src="static/recommendBtn.js"></script>
 
-
-
-  <!-- Recommend Modal -->
 <div class="modal fade" id="recommendModal" tabindex="-1" aria-labelledby="recommendModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg"> <!-- make it large, or use .modal-xl for extra large -->
+  <div class="modal-dialog modal-lg"> 
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="recommendModalLabel">Recommended Movies</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- todo in future fix filtering here -->
         <div id="recommendationContent" class="row">
-          <!-- movies will be injected here -->
         </div>
       </div>
       <div class="modal-footer">
-        <!-- something at the bottom?? :)? -->
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-
-<!-- Movie Details Modal -->
 <div class="modal" id="movieDetailsModal" tabindex="-1" aria-labelledby="movieDetailsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -406,7 +342,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="movieDetailsContent">
-        <!-- Movie details will be dynamically inserted here -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
