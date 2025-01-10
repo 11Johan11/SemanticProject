@@ -8,7 +8,7 @@ A movie recommendation system that utilizes a knowledge graph fetched from Wikid
 
 # Running Instructions
 
-All these commands should be executed in the top-level folder `SemanticProject`.
+All these commands should be executed inside the top-level folder `SemanticProject`.
 
 ## Step 1: Setup Jena Fuseki Server
 
@@ -34,9 +34,16 @@ java -jar jena-fuseki-server-5.2.0.jar --loc=tdb2 /dataset
 
 ## Step 2: Install Python and Libraries
 
-Download Python and install all necessary Python libraries. This command will install the required libraries using `pip` and start the Flask server:
+Download [Python](https://www.python.org/downloads/) if you don't already have it, Run the command below. This command will install the required libraries for this project using `pip`.
 
 ```bash
-python setup.py
+python -m pip install -r requirements.txt
 ```
+
+## Step 3: Start the Flask Webapp
+```bash
+python app.py
+```
+
+
 
