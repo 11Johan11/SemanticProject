@@ -4,7 +4,7 @@ Movie Recommendation System
 
 A movie recommendation system that utilizes a knowledge graph fetched from Wikidata, comprising over ___270k movies___ and ___3m+ triples___. The knowledge graph is hosted locally on a Jena Fuseki Server, which is then SPARQL queried from the Flask webapp using RDFLib. It infers relationships and scores movies based on a grading system, offering a user-friendly interface that provides insightful recommendations to users, and also provides recommendation insights.
 
-![SystemOverview (4)](https://github.com/user-attachments/assets/6b8aa8dc-b6f4-4b77-9e60-cd25bc90adee)
+![SystemOverview (6)](https://github.com/user-attachments/assets/cef3f4c6-d25f-4fc5-b711-1806ffe8dfb8)
 
 # Running Instructions
 
@@ -23,7 +23,7 @@ If not, install [Java](https://www.java.com/sv/download/) and [Java Development 
 Then run the commands to start the Jena Fuseki Server for hosting the local knowledge graph. This command will load and export the already existing `.ttl` file into a TDB2 format, which is a high-performance storage format used by Apache Jena for persisting RDF data.
 
 ```bash
-java -cp jena-fuseki-server-5.2.0.jar tdb2.tdbloader --loc=tdb2 model/graph/local_graph/complete_graph.ttl
+java -cp jena-fuseki-server-5.2.0.jar tdb2.tdbloader --loc=tdb2 model/local_graph/wikidata_graph_builder/wikidata_derived_graph.ttl
 ```
 
 Start Jena Fuseki Server and load the TDB2 dataset
