@@ -4,7 +4,7 @@ Movie Recommendation System
 
 A movie recommendation system that utilizes a knowledge graph fetched from Wikidata, comprising over ___270k movies___ and ___3m+ triples___. The knowledge graph is hosted locally on a Jena Fuseki Server, which is then SPARQL queried from the Flask webapp using RDFLib. It infers relationships and scores movies based on a grading system, offering a user-friendly interface that provides insightful recommendations to users, and also provides recommendation insights.
 
-![SystemOverview (6)](https://github.com/user-attachments/assets/cef3f4c6-d25f-4fc5-b711-1806ffe8dfb8)
+![SystemOverview (7)](https://github.com/user-attachments/assets/4416abaa-dd25-499a-8004-d8bfde8fc5e1)
 
 # Running Instructions
 
