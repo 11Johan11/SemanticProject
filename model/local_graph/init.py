@@ -10,7 +10,7 @@ def get_fuseki_query_access():
     endpoint_url = "http://localhost:3030/dataset/sparql"  #fuseki
     store = SPARQLStore(endpoint_url)
     store.method = 'POST'
-    graph = Graph(store)
+    graph = Graph(store) 
     return graph
     
 

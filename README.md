@@ -23,7 +23,7 @@ If not, install [Java](https://www.java.com/sv/download/) and [Java Development 
 Then run the commands to start the Jena Fuseki Server for hosting the local knowledge graph. This command will load and export the already existing `.ttl` file into a TDB2 format, which is a high-performance storage format used by Apache Jena for persisting RDF data.
 
 ```bash
-java -cp jena-fuseki-server-5.2.0.jar tdb2.tdbloader --loc=tdb2 model/graph/local_graph/complete_graph.ttl
+java -cp jena-fuseki-server-5.2.0.jar tdb2.tdbloader --loc=tdb2 model/local_graph/wikidata_graph_builder/wikidata_derived_graph.ttl
 ```
 
 Start Jena Fuseki Server and load the TDB2 dataset
