@@ -13,6 +13,6 @@ for file_path in files:
     print("Loaded graph " + file_path)
 
 #save the complete graph
-output_file = "complete_graph.ttl"
+output_file = "wikidata_derived_graph.ttl"
 g.serialize(destination=output_file, format="turtle")
 print(f"Extended graph saved to '{output_file}'.")

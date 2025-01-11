@@ -3,30 +3,20 @@ import os
 from controller.search_controller import search_blueprint
 from controller.recommend_controller import recommend_blueprint
 
-from model.graph.init import init_graph
-from model.search.search_preload import load_movies, load_actors, load_directors
+from model.local_graph.init import init
 from flask import Flask, render_template
-
 app = Flask(__name__, template_folder='view', static_folder='view/static', static_url_path='/static')
 
 #preload everything
 with app.app_context():
-    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true": 
 
-        #preload our graph
-        graph = init_graph()
+        graph,searchable_movies,searchable_actors,searchable_directors = init()   
+           
         app.config['LOCAL_GRAPH'] = graph
-
-        #preload the searchable movies
-        movies = load_movies(graph)
-        app.config['SEARCHABLE_MOVIES'] = movies
-
-        #preload the searchable actors
-        actors = load_actors(graph)
-        app.config['SEARCHABLE_ACTORS'] = actors
-
-        directors = load_directors(graph)
-        app.config["SEARCHABLE_DIRECTORS"] = directors        
+        app.config['SEARCHABLE_MOVIES'] = searchable_movies
+        app.config['SEARCHABLE_ACTORS'] = searchable_actors
+        app.config["SEARCHABLE_DIRECTORS"] = searchable_directors 
 
 #register Blueprints
 app.register_blueprint(search_blueprint)

@@ -1,30 +1,28 @@
-from model.graph.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors, fetch_movie_data, fetch_movies_from_actors, fetch_movies_from_directors
+from model.recommend.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors, fetch_movie_data, fetch_movies_from_actors, fetch_movies_from_directors
 import json
 import time
 
 def extract_id_from_uri(uri):
     return uri.split("/")[-1]
-def combine_recommendation_data(list_of_movies, list_of_actors, list_of_directors):
+def combine_recommendation_data(list_of_movies, list_of_actors, list_of_directors, g):
     # Fetch and process data for shared actors
 
-    actor_movies = fetch_movies_from_actors(list_of_actors)
+    actor_movies = fetch_movies_from_actors(list_of_actors,g)
 
-    director_movies = fetch_movies_from_directors(list_of_directors)
+    director_movies = fetch_movies_from_directors(list_of_directors,g)
 
     print("Infering actors....")
     shared_actor_data = filter_actor_popularity(
-        fetch_and_map_actor_metadata(infer_shared_actors(list_of_movies)),
+        fetch_and_map_actor_metadata(infer_shared_actors(list_of_movies,g)),
         threshold=30
     )
 
     print("Infering directors...")
-    # Fetch and process data for shared directors
     shared_director_data = fetch_and_map_director_metadata(
-        infer_shared_directors(list_of_movies)
+        infer_shared_directors(list_of_movies,g)
     )
     print("Infering shared genres..")
-    # Fetch and process data for shared genres
-    shared_genre_data = infer_shared_genres(list_of_movies)
+    shared_genre_data = infer_shared_genres(list_of_movies,g)
 
     shared_results = {}
 
@@ -36,7 +34,7 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
 
         if movie_uri not in shared_results:
             shared_results[movie_uri] = {
-                #"title": None,  # Title can be fetched if needed
+                #"title": None, 
                 "shared_result": []
             }
 
@@ -71,7 +69,6 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
 
 
     #WISHED ACTORS
-    # Process wished actors
     for movie_uri, data in actor_movies.items():
         wished_actors = data.get("wishedActors", [])
         if not wished_actors:
@@ -90,7 +87,6 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
                 },
             )
 
-    # Process wished directors
     for movie_uri, data in director_movies.items():
         wished_directors = data.get("wishedDirectors", [])
         if not wished_directors:
@@ -115,7 +111,7 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
         new_list_of_movies.append(extract_id_from_uri(uri))
 
     print("Fetch other moviedata (titel,publicationdate etc....)")
-    movie_data = fetch_movie_data(new_list_of_movies) 
+    movie_data = fetch_movie_data(new_list_of_movies,g) 
 
     for uri, data in shared_results.items():
         try:
@@ -125,7 +121,7 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
         except:
             pass
 
-    movie_data_for_target_movies = fetch_movie_data(list_of_movies) 
+    movie_data_for_target_movies = fetch_movie_data(list_of_movies,g) 
 
 
     return shared_results, movie_data_for_target_movies
