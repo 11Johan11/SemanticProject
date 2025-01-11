@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify, current_app
-from model.calculate_movie_points import calculate_movie_points
-from combine_recommendation_data import combine_recommendation_data
+from model.recommend.calculate_movie_points import calculate_movie_points
+from model.recommend.combine_recommendation_data import combine_recommendation_data
 from model.search.main import search,add_movie_metadata,add_person_metadata
-from model.graph.infer import infer_shared_actors
 import json
 import time
 
@@ -48,7 +47,7 @@ def recommend():
     print(actor_ids)
     print(director_ids)
 
-    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids, actor_ids, director_ids)
+    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids, actor_ids, director_ids, current_app.config['LOCAL_GRAPH'])
 
 
     print("Calculating movie points...")

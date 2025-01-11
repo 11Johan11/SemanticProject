@@ -2,9 +2,9 @@
 
 Movie Recommendation System
 
-A movie recommendation system that utilizes a knowledge graph fetched from Wikidata, comprising over 270k movies and 3m+ triples. The knowledge graph is hosted locally on a Jena Fuseki Server, which is then SPARQL queried from the Flask webapp using RDFLib. It infers relationships and scores movies based on a grading system, offering a user-friendly interface that provides insightful recommendations to users, and also provides recommendation insights.
+A movie recommendation system that utilizes a knowledge graph fetched from Wikidata, comprising over ___270k movies___ and ___3m+ triples___. The knowledge graph is hosted locally on a Jena Fuseki Server, which is then SPARQL queried from the Flask webapp using RDFLib. It infers relationships and scores movies based on a grading system, offering a user-friendly interface that provides insightful recommendations to users, and also provides recommendation insights.
 
-![SystemOverview (1)](https://github.com/user-attachments/assets/bbaa19d6-a992-4db2-8e4d-f99f3e38b698)
+![SystemOverview (4)](https://github.com/user-attachments/assets/6b8aa8dc-b6f4-4b77-9e60-cd25bc90adee)
 
 # Running Instructions
 
@@ -32,9 +32,9 @@ Start Jena Fuseki Server and load the TDB2 dataset
 java -jar jena-fuseki-server-5.2.0.jar --loc=tdb2 /dataset
 ```
 
-## Step 2: Install Python and Libraries
+## Step 2: Install Python and Dependencies
 
-Download [Python](https://www.python.org/downloads/) if you don't already have it, Run the command below. This command will install the required libraries for this project using `pip`.
+Download [Python](https://www.python.org/downloads/) if you don't already have it, Run the command below. This command will install the required dependencies for this project using `pip`.
 
 ```bash
 python -m pip install -r requirements.txt

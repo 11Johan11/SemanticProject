@@ -1,4 +1,4 @@
-from model.graph.init import init_graph 
+from model.local_graph.init import init
 import owlrl
 import time
 from model.search.main import add_person_metadata
@@ -7,14 +7,12 @@ import json
 
 #todo perhaps if there's > 5 target movies dont bother fetching for movies with distinct target movie = 1? HAVING (COUNT(DISTINCT ?targetMovie) > 1)
 #infer shared directors just like actos its wdt:P57
-def infer_shared_actors(movie_ids):
-    g = init_graph()  # Load our local graph
+def infer_shared_actors(movie_ids,g):
     print("Starting to reason...")
 
     target_movie_count = len(movie_ids)
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # Consolidated query to fetch shared actors, counts, and details
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -36,7 +34,6 @@ def infer_shared_actors(movie_ids):
     """
 
 
-    # Execute the query and process the results
     movies_with_shared_actors = {}
     for row in g.query(query):
         other_movie = str(row.otherMovie)
@@ -46,7 +43,6 @@ def infer_shared_actors(movie_ids):
         shared_movie_uris = str(row.sharedMovieUris).split(",")
         #other_movie_name = str(row.otherMovieName)
 
-        # Initialize the structure if the movie isn't already present
         if other_movie not in movies_with_shared_actors:
             movies_with_shared_actors[other_movie] = {
                 #"title": other_movie_name,
@@ -55,7 +51,6 @@ def infer_shared_actors(movie_ids):
                 "actors": []
             }
 
-        # Add the shared cast member details
         movies_with_shared_actors[other_movie]["actors"].append({
             "uri": shared_cast_member,
             "name": shared_cast_member_name
@@ -63,20 +58,6 @@ def infer_shared_actors(movie_ids):
 
     return movies_with_shared_actors
 
-"""
-structure that add_pers
-[
-    {
-        "uri": "http://www.wikidata.org/entity/Q3607626",
-    },
-    {
-        "uri": "http://www.wikidata.org/entity/Q329178"
-    }
-]
-
-actor_metadata = [{"uri": "http://www.wikidata.org/entity/Q4957491", "popularity": 1.508, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}, {"uri": "http://www.wikidata.org/entity/Q382523", "popularity": 1.495, "profile": "https://image.tmdb.org/t/p/original//uIyS0Rx2hDJNBBSoC3wQH49FXVi.jpg"}, {"uri": "http://www.wikidata.org/entity/Q2850927", "popularity": 1.48, "profile": "https://image.tmdb.org/t/p/original//p2uX1gxUt8BNBPT1f0UsUQDpogZ.jpg"}, {"uri": "http://www.wikidata.org/entity/Q2003843", "popularity": 1.38, "profile": "https://image.tmdb.org/t/p/original//wNle9vJfQmhJONZA8SdQbVZMqJh.jpg"}, {"uri": "http://www.wikidata.org/entity/Q15434786", "popularity": 1.323, "profile": "https://image.tmdb.org/t/p/original//88gHRiuIhFunoytQuobkzmDIaIc.jpg"}, {"uri": "http://www.wikidata.org/entity/Q20685594", "popularity": 0.045, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}, {"uri": "http://www.wikidata.org/entity/Q1514600", "popularity": 0, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}, {"uri": "http://www.wikidata.org/entity/Q5345686", "popularity": 0, "profile": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"}]
-
-"""
 
 def fetch_and_map_actor_metadata(movies_with_shared_actors):
     all_actor_uris = []
@@ -108,28 +89,22 @@ def fetch_and_map_actor_metadata(movies_with_shared_actors):
 
 
 def filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
-    # Filtered result dictionary
     filtered_movies = {}
 
     for movie_uri, movie_data in movies_with_shared_actors_metadata.items():
-        # Filter actors in the current movie based on popularity
         movie_data["actors"] = [actor for actor in movie_data["actors"] if actor["popularity"] >= threshold]
-
-        # Only include the movie if it has remaining actors
         if movie_data["actors"]:
             filtered_movies[movie_uri] = movie_data
 
     return filtered_movies
 
 
-def infer_shared_directors(movie_ids):
-    g = init_graph()  # Load our local graph
+def infer_shared_directors(movie_ids,g):
     print("Starting to reason...")
 
     target_movie_count = len(movie_ids)
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # Consolidated query to fetch shared directors, counts, and details
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -151,7 +126,6 @@ def infer_shared_directors(movie_ids):
     ORDER BY DESC(?originalSharedMovies)
     """
 
-    # Execute the query and process the results
     movies_with_shared_directors = {}
     for row in g.query(query):
         other_movie = str(row.otherMovie)
@@ -161,7 +135,6 @@ def infer_shared_directors(movie_ids):
         shared_movie_uris = str(row.sharedMovieUris).split(",")
         other_movie_name = str(row.otherMovieName)
 
-        # Initialize the structure if the movie isn't already present
         if other_movie not in movies_with_shared_directors:
             movies_with_shared_directors[other_movie] = {
                 "title": other_movie_name,
@@ -170,7 +143,6 @@ def infer_shared_directors(movie_ids):
                 "directors": []
             }
 
-        # Add the shared director details
         movies_with_shared_directors[other_movie]["directors"].append({
             "uri": shared_director,
             "name": shared_director_name
@@ -180,7 +152,7 @@ def infer_shared_directors(movie_ids):
 
 def fetch_and_map_director_metadata(movies_with_shared_directors):
     all_director_uris = []
-    unique_uris = set()  # To ensure unique URIs (no duplicates)
+    unique_uris = set()  #to ensure unique URIs (no duplicates)
 
     for movie_data in movies_with_shared_directors.values():
         for director in movie_data["directors"]:
@@ -189,10 +161,9 @@ def fetch_and_map_director_metadata(movies_with_shared_directors):
                 all_director_uris.append({"uri": director_uri})
                 unique_uris.add(director_uri)
 
-    # Fetch all metadata using add_person_metadata
     director_metadata = add_person_metadata(all_director_uris)
 
-    # Convert metadata to a dictionary for faster lookup
+    #convert metadata to a dictionary for faster lookup
     metadata_dict = {entry["uri"]: entry for entry in director_metadata}
 
     # Map metadata back to the original structure
@@ -208,13 +179,11 @@ def fetch_and_map_director_metadata(movies_with_shared_directors):
 
 
 
-def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
-
-    g = init_graph()  # Load our local graph
+def infer_shared_genres(movie_ids, g):
 
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    # Combined query to fetch all relevant data in one go #?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    #combined query to fetch all relevant data in one go, #?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -246,7 +215,6 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
             "sharedMovieUris": str(row.sharedMovieUris).split(",")
         })
 
-    # Process results into the desired structure
     print("Processing combined results...")
     movies_with_shared_genres = {}
     for result in results:
@@ -270,8 +238,7 @@ def infer_shared_genres(movie_ids, output_file="shared_genres.json"):
     #print(f"Results saved to {output_file}")
     return movies_with_shared_genres
 
-def fetch_movie_data(movie_ids):
-    g = init_graph()
+def fetch_movie_data(movie_ids,g):
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
     
     query = f"""
@@ -308,8 +275,7 @@ def fetch_movie_data(movie_ids):
 
 
 
-def fetch_movies_from_actors(actor_ids):
-    g = init_graph()
+def fetch_movies_from_actors(actor_ids,g):
     actor_filter = " ".join(f"wd:{actor}" for actor in actor_ids)
     
     query = f"""
@@ -335,8 +301,8 @@ def fetch_movies_from_actors(actor_ids):
         
         if movie_uri not in results:
             results[movie_uri] = {
-                "wishedActors": [],  # Initialize a list to store multiple actors
-                #"movieName": str(row.movieName)  # Uncomment if needed
+                "wishedActors": [],
+                #"movieName": str(row.movieName)
             }
 
         results[movie_uri]["wishedActors"].append({
@@ -347,8 +313,7 @@ def fetch_movies_from_actors(actor_ids):
     return results
 
 
-def fetch_movies_from_directors(director_ids):
-    g = init_graph()
+def fetch_movies_from_directors(director_ids,g):
     director_filter = " ".join(f"wd:{director}" for director in director_ids)
     
     query = f"""
