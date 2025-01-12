@@ -1,6 +1,5 @@
 from model.recommend.infer import infer_shared_actors, infer_shared_genres, fetch_and_map_actor_metadata, filter_actor_popularity, fetch_and_map_director_metadata, infer_shared_directors, fetch_movie_data, fetch_movies_from_actors, fetch_movies_from_directors
-import json
-import time
+
 
 def extract_id_from_uri(uri):
     return uri.split("/")[-1]

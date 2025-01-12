@@ -1,16 +1,88 @@
-from model.local_graph.init import init
-import owlrl
-import time
 from model.search.main import add_person_metadata
-import time
-import json
+"""
+This script provides functions to infer shared relations for
+movies, including actors, directors, genres, 
+and their associated metadata. It also allows filtering
+and mapping of actor and director popularity data 
+and fetches movie metadata based on input parameters.
 
-#todo perhaps if there's > 5 target movies dont bother fetching for movies with distinct target movie = 1? HAVING (COUNT(DISTINCT ?targetMovie) > 1)
+The primary functionalities include:
+- Inferring shared actors, directors, and genres across input movies and other movies.
+- Fetching and mapping metadata for actors and directors.
+- Filtering results based on popularity thresholds.
+- Fetching movies associated with specified actors or directors. (Wished actors & directors)
+
+Functions:
+1. infer_shared_actors(movie_ids, g):
+    Identifies actors shared among the input movies and other movies.
+
+2. fetch_and_map_actor_metadata(movies_with_shared_actors):
+    Fetches metadata for actors in shared movies and maps it back to the shared actors' data.
+
+3. filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
+    Filters actors in movies based on a popularity threshold.
+
+4. infer_shared_directors(movie_ids, g):
+    Identifies directors shared among the input movies and other movies.
+
+5. fetch_and_map_director_metadata(movies_with_shared_directors):
+    Fetches metadata for directors in shared movies and maps it back to the shared directors' data.
+
+6. infer_shared_genres(movie_ids, g):
+    Identifies genres shared among the input movies and other movies.
+
+7. fetch_movie_data(movie_ids, g):
+    Fetches metadata for the given movie IDs, including publication date, IMDb ID, and title.
+
+8. fetch_movies_from_actors(actor_ids, g):
+    Fetches movies associated with the given actor IDs.
+
+9. fetch_movies_from_directors(director_ids, g):
+    Fetches movies associated with the given director IDs.
+
+Example Usage:
+    movie_ids = ['Q12345', 'Q67890']
+    graph = current_app.config['LOCAL_GRAPH'] (Fuseki Graph Endpoint Object)
+    shared_actors = infer_shared_actors(movie_ids, graph)
+    actor_metadata = fetch_and_map_actor_metadata(shared_actors)
+    filtered_actors = filter_actor_popularity(actor_metadata, threshold=50)
+
+Dependencies:
+    - `add_person_metadata` function for fetching the actual metadata.
+"""
+#TODO: perhaps if there's > 5 target movies dont bother fetching for movies with distinct
+#target movie = 1? HAVING (COUNT(DISTINCT ?targetMovie) > 1)
 #infer shared directors just like actos its wdt:P57
+
 def infer_shared_actors(movie_ids,g):
+    """
+    This function takes in a list of Wikidata IDs representing
+    film entities andperforms reasoning to
+    find shared cast members between the specified films.
+
+    Parameters:
+    movie_ids (list of str): A list of Wikidata IDs (e.g., ['Q12345', 'Q67890']) for film entities.
+    g (object): A graph or database connection object used to execute the query. 
+
+    Returns:
+    dict: A dictionary where keys are movies (other than the input movies)
+    sharing cast members with the input movies.
+    Each key maps to a dictionary containing:
+    - "originalSharedMovies": The number of input movies shared with the cast member.
+    - "sharedMovieUris": A list of URIs of the input movies shared.
+    - "actors": A list of dictionaries with keys "uri" and "name" for each shared cast member.
+
+    Example: Actor1 & Actor2 from a outputmovie1 existed in inputmovie1 and inputmovie2
+    { "http://www.wikidata.org/entity/outputmovie1":
+         { "originalSharedMovies": 2, 
+            "sharedMovieUris": 
+                    [ "http://www.wikidata.org/entity/inputmovie1", 
+                    "http://www.wikidata.org/entity/inputmovie2" ], 
+        "actors": [ { "uri": "http://www.wikidata.org/entity/actor1", "name": "Actor Name 1" },   
+                    { "uri": "http://www.wikidata.org/entity/actor2", "name": "Actor Name 2" } ] } }
+    """
     print("Starting to reason...")
 
-    target_movie_count = len(movie_ids)
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
     query = f"""
@@ -60,6 +132,16 @@ def infer_shared_actors(movie_ids,g):
 
 
 def fetch_and_map_actor_metadata(movies_with_shared_actors):
+    """
+    Fetches metadata for actors involved in the movies with shared actors and
+    maps the metadata back to the movies.
+
+    Parameters:
+    movies_with_shared_actors (dict): A dictionary containing movies and their shared actors.
+
+    Returns:
+    dict: Updated dictionary with actor metadata including profile and popularity.
+    """
     all_actor_uris = []
     unique_uris = set()  #to ensure unique uris (no duplicates)
 
@@ -77,7 +159,7 @@ def fetch_and_map_actor_metadata(movies_with_shared_actors):
     metadata_dict = {entry["uri"]: entry for entry in actor_metadata}
 
     #map metadata back to the original structure
-    for movie, movie_data in movies_with_shared_actors.items():
+    for __, movie_data in movies_with_shared_actors.items():
         for actor in movie_data["actors"]:
             metadata = metadata_dict.get(str(actor["uri"]), {})
             actor["profile"] = metadata.get("profile", "")
@@ -89,6 +171,17 @@ def fetch_and_map_actor_metadata(movies_with_shared_actors):
 
 
 def filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
+
+    """
+    Filters actors in movies based on a popularity threshold.
+    Parameters:
+    movies_with_shared_actors_metadata (dict): A dictionary containing movies with actor metadata.
+    threshold (int): Minimum popularity required for actors to be included.
+
+    Returns:
+    dict: Filtered dictionary with actors meeting the popularity threshold.
+    """
+
     filtered_movies = {}
 
     for movie_uri, movie_data in movies_with_shared_actors_metadata.items():
@@ -100,9 +193,19 @@ def filter_actor_popularity(movies_with_shared_actors_metadata, threshold=30):
 
 
 def infer_shared_directors(movie_ids,g):
+    """
+    Identifies directors shared among the input movies and other movies.
     print("Starting to reason...")
 
-    target_movie_count = len(movie_ids)
+    Parameters:
+    movie_ids (list of str): List of Wikidata IDs for the input movies.
+    g (object): Graph or database connection object to execute the query.
+
+    Returns:
+    dict: A dictionary containing other movies with shared directors,
+    their shared movie URIs, and director details.
+    """
+
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
     query = f"""
@@ -151,6 +254,15 @@ def infer_shared_directors(movie_ids,g):
     return movies_with_shared_directors
 
 def fetch_and_map_director_metadata(movies_with_shared_directors):
+    """
+    Fetches metadata for directors involved in the movies with shared directors and maps the metadata back to the movies.
+
+    Parameters:
+    movies_with_shared_directors (dict): A dictionary containing movies and their shared directors.
+
+    Returns:
+    dict: Updated dictionary with director metadata including profile and popularity.
+    """
     all_director_uris = []
     unique_uris = set()  #to ensure unique URIs (no duplicates)
 
@@ -167,7 +279,7 @@ def fetch_and_map_director_metadata(movies_with_shared_directors):
     metadata_dict = {entry["uri"]: entry for entry in director_metadata}
 
     # Map metadata back to the original structure
-    for movie, movie_data in movies_with_shared_directors.items():
+    for __, movie_data in movies_with_shared_directors.items():
         for director in movie_data["directors"]:
             metadata = metadata_dict.get(str(director["uri"]), {})
             director["profile"] = metadata.get("profile", "")
@@ -181,9 +293,20 @@ def fetch_and_map_director_metadata(movies_with_shared_directors):
 
 def infer_shared_genres(movie_ids, g):
 
+    """
+    Identifies genres shared among the input movies and other movies.
+
+    Parameters:
+    movie_ids (list of str): List of Wikidata IDs for the input movies.
+    g (object): Graph or database connection object to execute the query.
+
+    Returns:
+    dict: A dictionary containing other movies with shared genres and their genre details.
+    """
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
-    #combined query to fetch all relevant data in one go, #?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    #combined query to fetch all relevant data in one go, 
+    #?sharedGenreName (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -239,8 +362,21 @@ def infer_shared_genres(movie_ids, g):
     return movies_with_shared_genres
 
 def fetch_movie_data(movie_ids,g):
+
+    """
+    Fetches metadata for the given movie IDs.
+
+    Parameters:
+    movie_ids (list of str): List of Wikidata IDs for the movies.
+    g (object): Graph or database connection object to execute the query.
+
+    Returns:
+    dict: A dictionary containing metadata for the movies including
+    publication date, IMDb ID, and title.
+    """
+
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
-    
+
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -264,7 +400,7 @@ def fetch_movie_data(movie_ids,g):
         raw_date = str(row.publicationDate)
         formatted_date = raw_date.split("T")[0]  #extract date portion before 'T'
         #except:
-       
+
 
         results[str(row.targetMovie)] = {
             "publicationDate": formatted_date,
@@ -276,8 +412,20 @@ def fetch_movie_data(movie_ids,g):
 
 
 def fetch_movies_from_actors(actor_ids,g):
+
+    """
+    Fetches movies associated with the given actor IDs.
+
+    Parameters:
+    actor_ids (list of str): List of Wikidata IDs for the actors.
+    g (object): Graph or database connection object to execute the query.
+
+    Returns:
+    dict: A dictionary containing movies and their associated actors.
+    """
+
     actor_filter = " ".join(f"wd:{actor}" for actor in actor_ids)
-    
+
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -298,7 +446,7 @@ def fetch_movies_from_actors(actor_ids,g):
         movie_uri = str(row.movie)
         actor_uri = str(row.actor)
         actor_name = str(row.actorName)
-        
+ 
         if movie_uri not in results:
             results[movie_uri] = {
                 "wishedActors": [],
@@ -314,8 +462,19 @@ def fetch_movies_from_actors(actor_ids,g):
 
 
 def fetch_movies_from_directors(director_ids,g):
+    """
+    Fetches movies associated with the given director IDs.
+
+    Parameters:
+    director_ids (list of str): List of Wikidata IDs for the directors.
+    g (object): Graph or database connection object to execute the query.
+
+    Returns:
+    dict: A dictionary containing movies and their associated directors.
+    """
+
     director_filter = " ".join(f"wd:{director}" for director in director_ids)
-    
+
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -336,7 +495,7 @@ def fetch_movies_from_directors(director_ids,g):
         movie_uri = str(row.movie)
         director_uri = str(row.director)
         director_name = str(row.directorName)
-        
+
         if movie_uri not in results:
             results[movie_uri] = {
                 "wishedDirectors": [],  #Initialize a list to store multiple directors!!!
@@ -347,6 +506,5 @@ def fetch_movies_from_directors(director_ids,g):
             "wishedDirectorUri": director_uri,
             "wishedDirectorName": director_name
         })
-
     return results    
 #def fetch_everything(movie_ids):
