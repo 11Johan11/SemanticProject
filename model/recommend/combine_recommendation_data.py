@@ -3,12 +3,16 @@ from model.recommend.infer import infer_shared_actors, infer_shared_genres, fetc
 
 def extract_id_from_uri(uri):
     return uri.split("/")[-1]
-def combine_recommendation_data(list_of_movies, list_of_actors, list_of_directors, g):
+def combine_recommendation_data(list_of_movies, list_of_actors, list_of_directors, g, searchable_movies):
     # Fetch and process data for shared actors
+    actor_movies = {}
+    director_movies = {}
 
-    actor_movies = fetch_movies_from_actors(list_of_actors,g)
+    if len(list_of_actors) > 0:
+        actor_movies = fetch_movies_from_actors(list_of_actors,g)
 
-    director_movies = fetch_movies_from_directors(list_of_directors,g)
+    if len(list_of_directors) > 0:
+        director_movies = fetch_movies_from_directors(list_of_directors,g)
 
     print("Infering actors....")
     shared_actor_data = filter_actor_popularity(
@@ -106,12 +110,30 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
 
 
     new_list_of_movies = []
+    seen = set()
+
+    new_list_of_movies = []
     for uri, data in shared_results.items():
-        new_list_of_movies.append(extract_id_from_uri(uri))
+        movie_id = extract_id_from_uri(uri)
+        new_list_of_movies.append(movie_id)
+        if movie_id not in seen:
+            seen.add(movie_id)
+            new_list_of_movies.append(movie_id)
 
     print("Fetch other moviedata (titel,publicationdate etc....)")
-    movie_data = fetch_movie_data(new_list_of_movies,g) 
+    # movie_data = fetch_movie_data(new_list_of_movies,g) 
 
+    movies_dict = {movie["uri"]: movie for movie in searchable_movies} #TODO: perhaps just fix so searchable are dict from beginning
+
+    for uri, data in shared_results.items():
+        try:
+            shared_results[uri]["title"] = movies_dict[uri]["name"]
+            shared_results[uri]["publicationDate"] = movies_dict[uri]["publicationDate"]
+            shared_results[uri]["imdbId"] = movies_dict[uri]["imdb"]
+        except:
+            pass        
+
+        """
     for uri, data in shared_results.items():
         try:
             shared_results[uri]["title"] = movie_data[uri]["title"]
@@ -119,6 +141,7 @@ def combine_recommendation_data(list_of_movies, list_of_actors, list_of_director
             shared_results[uri]["imdbId"] = movie_data[uri]["imdbId"]
         except:
             pass
+            """
 
     movie_data_for_target_movies = fetch_movie_data(list_of_movies,g) 
 

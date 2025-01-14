@@ -47,7 +47,7 @@ def recommend():
     print(actor_ids)
     print(director_ids)
 
-    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids, actor_ids, director_ids, current_app.config['LOCAL_GRAPH'])
+    shared_results, movie_data_for_target_movies = combine_recommendation_data(movie_ids, actor_ids, director_ids, current_app.config['LOCAL_GRAPH'], searchable_movies=current_app.config['SEARCHABLE_MOVIES'])
 
 
     print("Calculating movie points...")

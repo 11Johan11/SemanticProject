@@ -92,6 +92,7 @@ def calculate_movie_points(movie_data, movie_data_for_target_movies):
         })
 
     #sort movies by points (descending)
+    #recommended_movies = [movie for movie in recommended_movies if movie["points"] > 0]
     recommended_movies.sort(key=lambda x: x["points"], reverse=True)
 
     return recommended_movies

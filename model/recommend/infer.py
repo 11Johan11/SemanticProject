@@ -85,40 +85,50 @@ def infer_shared_actors(movie_ids,g):
 
     movie_filter = " ".join(f"wd:{movie}" for movie in movie_ids)
 
+    """
+    5) Consider whether you really need all rows in one big query
+    If performance is still a problem because you have extremely large data, you can sometimes break it up:
+
+    First, figure out who the cast members are for your two movies.
+    Then, in a second step, query for their other movies.
+    This is less convenient in one-liner SPARQL but can sometimes reduce the burden on the engine (especially if step 1 is heavily filtered).
+
+    """
     query = f"""
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedCastMember ?sharedCastMemberName ?otherMovie 
-                   (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
-                   (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
+    SELECT ?sharedCastMember ?sharedCastMemberName ?otherMovie
+           (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
-        VALUES ?targetMovie {{ {movie_filter} }}
-        ?targetMovie wdt:P161 ?sharedCastMember .
-        ?sharedCastMember rdfs:label ?sharedCastMemberName .
-        ?otherMovie wdt:P161 ?sharedCastMember .
-        FILTER (?otherMovie != ?targetMovie) 
+      VALUES ?targetMovie {{ {movie_filter} }}
+
+      ?targetMovie wdt:P161 ?sharedCastMember .
+      ?otherMovie wdt:P161 ?sharedCastMember .
+      FILTER (?otherMovie != ?targetMovie)
+      ?sharedCastMember rdfs:label ?sharedCastMemberName .
     }}
     GROUP BY ?sharedCastMember ?sharedCastMemberName ?otherMovie
-    ORDER BY DESC(?originalSharedMovies)
+
     """
 
 
     movies_with_shared_actors = {}
     for row in g.query(query):
+        #print(row)
         other_movie = str(row.otherMovie)
         shared_cast_member = str(row.sharedCastMember)
         shared_cast_member_name = str(row.sharedCastMemberName)
-        original_shared_movies = int(row.originalSharedMovies)
+        #original_shared_movies = int(row.originalSharedMovies)
         shared_movie_uris = str(row.sharedMovieUris).split(",")
         #other_movie_name = str(row.otherMovieName)
 
         if other_movie not in movies_with_shared_actors:
             movies_with_shared_actors[other_movie] = {
                 #"title": other_movie_name,
-                "originalSharedMovies": original_shared_movies,
+                #"originalSharedMovies": original_shared_movies,
                 "sharedMovieUris": shared_movie_uris,
                 "actors": []
             }
@@ -214,19 +224,16 @@ def infer_shared_directors(movie_ids,g):
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
 
-    SELECT DISTINCT ?sharedDirector ?sharedDirectorName ?otherMovie ?otherMovieName
-                   (COUNT(DISTINCT ?targetMovie) AS ?originalSharedMovies) 
+    SELECT ?sharedDirector ?sharedDirectorName ?otherMovie
                    (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
         VALUES ?targetMovie {{ {movie_filter} }}
         ?targetMovie wdt:P57 ?sharedDirector .
-        ?sharedDirector rdfs:label ?sharedDirectorName .
         ?otherMovie wdt:P57 ?sharedDirector .
-        ?otherMovie rdfs:label ?otherMovieName .
-        FILTER (?otherMovie != ?targetMovie) 
+        FILTER (?otherMovie != ?targetMovie)
+        ?sharedDirector rdfs:label ?sharedDirectorName .
     }}
-    GROUP BY ?sharedDirector ?sharedDirectorName ?otherMovie ?otherMovieName
-    ORDER BY DESC(?originalSharedMovies)
+    GROUP BY ?sharedDirector ?sharedDirectorName ?otherMovie
     """
 
     movies_with_shared_directors = {}
@@ -234,14 +241,14 @@ def infer_shared_directors(movie_ids,g):
         other_movie = str(row.otherMovie)
         shared_director = str(row.sharedDirector)
         shared_director_name = str(row.sharedDirectorName)
-        original_shared_movies = int(row.originalSharedMovies)
+        #original_shared_movies = int(row.originalSharedMovies)
         shared_movie_uris = str(row.sharedMovieUris).split(",")
-        other_movie_name = str(row.otherMovieName)
+        #other_movie_name = str(row.otherMovieName)
 
         if other_movie not in movies_with_shared_directors:
             movies_with_shared_directors[other_movie] = {
-                "title": other_movie_name,
-                "originalSharedMovies": original_shared_movies,
+                #"title": other_movie_name,
+                #"originalSharedMovies": original_shared_movies,
                 "sharedMovieUris": shared_movie_uris,
                 "directors": []
             }
@@ -312,29 +319,31 @@ def infer_shared_genres(movie_ids, g):
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
-       
-    SELECT DISTINCT ?otherMovie ?sharedGenre ?sharedGenreName
-                   (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
+
+    SELECT ?otherMovie ?sharedGenre ?sharedGenreName
+           (GROUP_CONCAT(DISTINCT ?targetMovie; separator=",") AS ?sharedMovieUris)
     WHERE {{
-        VALUES ?targetMovie {{ {movie_filter} }}
-        ?targetMovie wdt:P136 ?sharedGenre .
-        ?otherMovie wdt:P136 ?sharedGenre .
-        ?sharedGenre rdfs:label ?sharedGenreName .
-        FILTER (?otherMovie != ?targetMovie)
+      VALUES ?targetMovie {{
+         {movie_filter} 
+      }}
+
+      ?targetMovie wdt:P136 ?sharedGenre .
+      ?sharedGenre rdfs:label ?sharedGenreName .
+      ?otherMovie wdt:P136 ?sharedGenre .
+      FILTER (?otherMovie != ?targetMovie)
     }}
-    GROUP BY ?otherMovie ?otherMovieName ?sharedGenre ?sharedGenreName
-    ORDER BY DESC(?originalSharedMovies)
+    GROUP BY ?otherMovie ?sharedGenre ?sharedGenreName
+
     """
 
+    print(query)
     print("Running combined query...")
     results = []
     for row in g.query(query):
         results.append({
-            #"title": str(row.otherMovieName),
             "movie": str(row.otherMovie),
             "genre_uri": str(row.sharedGenre),
             "genre_name": str(row.sharedGenreName),
-            #"originalSharedMovies": int(row.originalSharedMovies),
             "sharedMovieUris": str(row.sharedMovieUris).split(",")
         })
 
@@ -361,6 +370,7 @@ def infer_shared_genres(movie_ids, g):
     #print(f"Results saved to {output_file}")
     return movies_with_shared_genres
 
+#fuck this fix tomorrow so, we dump publication dates in searchable movies instead, maybe dump all properties in all reality
 def fetch_movie_data(movie_ids,g):
 
     """
@@ -391,6 +401,7 @@ def fetch_movie_data(movie_ids,g):
 
     }}
     """
+
 
     results = {}
 
@@ -443,6 +454,7 @@ def fetch_movies_from_actors(actor_ids,g):
     results = {}
 
     for row in g.query(query):
+        #print(row.movie)
         movie_uri = str(row.movie)
         actor_uri = str(row.actor)
         actor_name = str(row.actorName)
@@ -489,9 +501,11 @@ def fetch_movies_from_directors(director_ids,g):
     }}
     """
 
+    print(query)
     results = {}
 
     for row in g.query(query):
+        print(row)
         movie_uri = str(row.movie)
         director_uri = str(row.director)
         director_name = str(row.directorName)
