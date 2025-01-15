@@ -22,7 +22,7 @@ app = Flask(
     static_folder='view/static',
     static_url_path='/static'
     )
-
+CORS(app)
 with app.app_context():
 
     # Preload the required data for the search module to avoid unnecessary delays during runtime.
